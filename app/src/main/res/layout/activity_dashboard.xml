@@ -1,20 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    tools:context="com.reis.semester_quiz.DashboardActivity">
 
-    <com.astuetz.PagerSlidingTabStrip
-        android:id="@+id/dashboard_tabs"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="48dip"
-        android:background="#5160BB" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Hello"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/dashboard_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_tabs"
-        tools:context=".DashboardActivity" />
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

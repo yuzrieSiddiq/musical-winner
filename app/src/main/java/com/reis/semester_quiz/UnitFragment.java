@@ -1,6 +1,6 @@
 package com.reis.semester_quiz;
 
-import android.content.res.ColorStateList;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -13,18 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class DashboardFragment extends Fragment {
+public class UnitFragment extends Fragment {
 
     private static final String ARG_POSITION = "position";
 
     private int position;
 
-    public static DashboardFragment newInstance(int position) {
-        DashboardFragment f = new DashboardFragment();
+    public static UnitFragment newInstance(int position) {
+        UnitFragment f = new UnitFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
@@ -57,9 +55,25 @@ public class DashboardFragment extends Fragment {
             v.setLayoutParams(params);
             v.setGravity(Gravity.CENTER);
             v.setBackgroundResource(R.drawable.background_card);
-            v.setText("AVAILABLE QUIZ LIST");
+            v.setText("LIST OF AVAILABLE QUIZZES");
+
+            // CREATE ANSWERS
+            Button samplequiz = new Button(getActivity());
+            samplequiz.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            samplequiz.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            samplequiz.setGravity(Gravity.CENTER);
+            samplequiz.setText("SAMPLE QUIZ: iRAT1");
 
             fl.addView(v);
+            fl.addView(samplequiz);
+
+            samplequiz.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), QuizActivity.class);
+                    startActivity(intent);
+                }
+            });
 
         } else if (position == 1) {
             // UNIT INFO

@@ -8,10 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
  * Created by reis on 20/03/2017.
  */
 
-public class DashboardPagerAdapter extends FragmentPagerAdapter {
+public class UnitPagerAdapter extends FragmentPagerAdapter {
     private final String[] TITLES = { "AVAILABLE QUIZZES", "UNIT INFO", "TEAM INFO" };
 
-    public DashboardPagerAdapter(FragmentManager fm) {
+    public UnitPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -27,6 +27,6 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return DashboardFragment.newInstance(position);
+        return UnitFragment.newInstance(position);
     }
 }
