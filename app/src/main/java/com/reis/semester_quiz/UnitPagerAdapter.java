@@ -1,5 +1,6 @@
 package com.reis.semester_quiz;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -27,6 +28,15 @@ public class UnitPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return UnitFragment.newInstance(position);
+        switch (position) {
+            case 0:
+                return new FragmentPage();
+            case 1:
+                return new FragmentPage2();
+            case 2:
+                return new FragmentPage3();
+            default:
+                return new QuizFragment();
+        }
     }
 }
