@@ -17,7 +17,7 @@ public class FragmentPage2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_test_2, container, false);
+        View view = inflater.inflate(R.layout.unit_info_fragment, container, false);
         // probably cast to ViewGroup and find your ListView
 
         return view;

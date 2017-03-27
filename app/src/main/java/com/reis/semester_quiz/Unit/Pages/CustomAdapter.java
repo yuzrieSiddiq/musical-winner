@@ -20,7 +20,7 @@ import com.reis.semester_quiz.R;
 public class CustomAdapter extends ArrayAdapter<String> {
 
     public CustomAdapter(@NonNull Context context, String [] values) {
-        super(context, R.layout.testlayout, values);
+        super(context, R.layout.unit_list_fragment, values);
     }
 
     @NonNull
@@ -28,7 +28,7 @@ public class CustomAdapter extends ArrayAdapter<String> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        View view = layoutInflater.inflate(R.layout.testlayout, parent, false);
+        View view = layoutInflater.inflate(R.layout.unit_list_fragment, parent, false);
 
         // set the values for each text views and buttons here
         Button attemptQuiz = (Button) view.findViewById(R.id.attemptQuiz);

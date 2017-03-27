@@ -23,7 +23,7 @@ public class UnitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_unit);
+        setContentView(R.layout.unit_index);
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.dashboard_tabs);
         pager = (ViewPager) findViewById(R.id.dashboard_pager);

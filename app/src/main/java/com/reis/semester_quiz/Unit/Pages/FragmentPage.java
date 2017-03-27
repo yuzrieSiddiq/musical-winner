@@ -21,7 +21,7 @@ public class FragmentPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         String[] testarray = {"Test 1", "Test 2", "Test 3"};
 
-        View view = inflater.inflate(R.layout.activity_test_list, container, false);
+        View view = inflater.inflate(R.layout.unit_list, container, false);
         ListAdapter listAdapter = new CustomAdapter(getContext(), testarray);
 
         ListView mylist = (ListView) view.findViewById(R.id.mylist);
