@@ -52,5 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:textColor="#FFF"
+        android:backgroundTint="#689F38"
         android:text="UPDATE LIST"/>
 </LinearLayout>

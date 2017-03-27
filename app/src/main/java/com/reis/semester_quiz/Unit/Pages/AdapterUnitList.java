@@ -30,7 +30,7 @@ public class AdapterUnitList extends ArrayAdapter<String> {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View view = layoutInflater.inflate(R.layout.unit_list_fragment, parent, false);
 
-        // set the values for each text views and buttons here
+        // TODO: use `position` to determine which quiz its refering to
         Button attemptQuiz = (Button) view.findViewById(R.id.attemptQuiz);
         attemptQuiz.setOnClickListener(new View.OnClickListener() {
             @Override

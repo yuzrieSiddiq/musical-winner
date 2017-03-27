@@ -27,6 +27,6 @@ public class QuizPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return QuizFragment.newInstance(position);
+        return QuizFragment.newInstance(position, getCount());
     }
 }
