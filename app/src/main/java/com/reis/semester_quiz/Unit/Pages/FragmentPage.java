@@ -1,4 +1,4 @@
-package com.reis.semester_quiz;
+package com.reis.semester_quiz.Unit.Pages;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import com.reis.semester_quiz.R;
 
 /**
  * Created by reis on 22/03/2017.

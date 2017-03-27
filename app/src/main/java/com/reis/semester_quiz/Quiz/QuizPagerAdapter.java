@@ -1,4 +1,4 @@
-package com.reis.semester_quiz;
+package com.reis.semester_quiz.Quiz;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

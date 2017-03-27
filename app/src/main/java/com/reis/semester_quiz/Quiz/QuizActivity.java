@@ -1,32 +1,33 @@
-package com.reis.semester_quiz;
+package com.reis.semester_quiz.Quiz;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.reis.semester_quiz.R;
 
-public class UnitActivity extends AppCompatActivity {
+public class QuizActivity extends AppCompatActivity {
 
     private final Handler handler = new Handler();
 
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
-    private UnitPagerAdapter adapter;
+    private QuizPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_unit);
+        setContentView(R.layout.activity_quiz);
 
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.dashboard_tabs);
-        pager = (ViewPager) findViewById(R.id.dashboard_pager);
-        adapter = new UnitPagerAdapter(getSupportFragmentManager());
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        pager = (ViewPager) findViewById(R.id.pager);
+        adapter = new QuizPagerAdapter(getSupportFragmentManager());
 
         pager.setAdapter(adapter);
 

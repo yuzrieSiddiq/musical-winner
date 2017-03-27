@@ -10,5 +10,47 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello - This is fragment 3"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:text="TEAM MEMBER"
+        android:gravity="center"/>
+
+    <!-- stores list of current members -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"/>
+
+    <!-- similar to <hr> tag in HTML -->
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#CCC"/>
+
+    <!-- spinner to get the name of available members -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:text="ENLIST NEW MEMBER"
+        android:gravity="center"/>
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- Empty view to push button to bottom-->
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="UPDATE LIST"/>
 </LinearLayout>

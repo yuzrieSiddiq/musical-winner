@@ -1,4 +1,4 @@
-package com.reis.semester_quiz;
+package com.reis.semester_quiz.Quiz;
 
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -16,6 +16,8 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.reis.semester_quiz.R;
 
 public class QuizFragment extends Fragment {
 

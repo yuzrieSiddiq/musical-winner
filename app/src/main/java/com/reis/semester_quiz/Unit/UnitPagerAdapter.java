@@ -1,9 +1,13 @@
-package com.reis.semester_quiz;
+package com.reis.semester_quiz.Unit;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.reis.semester_quiz.Unit.Pages.FragmentPage;
+import com.reis.semester_quiz.Unit.Pages.FragmentPage2;
+import com.reis.semester_quiz.Unit.Pages.FragmentPage3;
+import com.reis.semester_quiz.Quiz.QuizFragment;
 
 /**
  * Created by reis on 20/03/2017.
