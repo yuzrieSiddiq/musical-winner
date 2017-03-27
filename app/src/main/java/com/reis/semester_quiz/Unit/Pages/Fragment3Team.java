@@ -13,7 +13,7 @@ import com.reis.semester_quiz.R;
  * Created by reis on 22/03/2017.
  */
 
-public class FragmentPage3 extends Fragment {
+public class Fragment3Team extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

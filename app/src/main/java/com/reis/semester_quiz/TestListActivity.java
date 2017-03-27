@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.reis.semester_quiz.Unit.Pages.CustomAdapter;
+import com.reis.semester_quiz.Unit.Pages.AdapterUnitList;
 
 public class TestListActivity extends AppCompatActivity {
 
@@ -16,7 +16,7 @@ public class TestListActivity extends AppCompatActivity {
 
         String [] samples = {"A", "B", "C"};
 
-        ListAdapter listAdapter = new CustomAdapter(this, samples);
+        ListAdapter listAdapter = new AdapterUnitList(this, samples);
 
         ListView mylist = (ListView) findViewById(R.id.mylist);
         mylist.setAdapter(listAdapter);

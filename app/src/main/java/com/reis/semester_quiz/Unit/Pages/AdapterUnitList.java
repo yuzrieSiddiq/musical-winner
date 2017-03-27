@@ -17,9 +17,9 @@ import com.reis.semester_quiz.R;
  * Created by reis on 22/03/2017.
  */
 
-public class CustomAdapter extends ArrayAdapter<String> {
+public class AdapterUnitList extends ArrayAdapter<String> {
 
-    public CustomAdapter(@NonNull Context context, String [] values) {
+    public AdapterUnitList(@NonNull Context context, String [] values) {
         super(context, R.layout.unit_list_fragment, values);
     }
 

@@ -15,14 +15,14 @@ import com.reis.semester_quiz.R;
  * Created by reis on 22/03/2017.
  */
 
-public class FragmentPage extends Fragment {
+public class Fragment1UnitList extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         String[] testarray = {"Test 1", "Test 2", "Test 3"};
 
         View view = inflater.inflate(R.layout.unit_list, container, false);
-        ListAdapter listAdapter = new CustomAdapter(getContext(), testarray);
+        ListAdapter listAdapter = new AdapterUnitList(getContext(), testarray);
 
         ListView mylist = (ListView) view.findViewById(R.id.mylist);
         mylist.setAdapter(listAdapter);
