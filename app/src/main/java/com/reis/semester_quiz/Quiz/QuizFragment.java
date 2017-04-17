@@ -1,6 +1,7 @@
 package com.reis.semester_quiz.Quiz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
 
 public class QuizFragment extends Fragment {
@@ -63,7 +66,16 @@ public class QuizFragment extends Fragment {
 
         } else {
             View view = inflater.inflate(R.layout.quiz_submit, container, false);
+            Button submit = (Button) view.findViewById(R.id.submit);
 
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent backToDashboard = new Intent(getContext(), DashboardActivity.class);
+                    getContext().startActivity(backToDashboard);
+                    Toast.makeText(getContext(), "Quiz has successfully been submitted", Toast.LENGTH_SHORT).show();
+                }
+            });
             return view;
         }
     }
