@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.reis.semester_quiz.Unit.Pages.Fragment1UnitList;
+import com.reis.semester_quiz.Unit.Pages.Fragment1QuizList;
 import com.reis.semester_quiz.Unit.Pages.Fragment2UnitInfo;
 import com.reis.semester_quiz.Unit.Pages.Fragment3Team;
 import com.reis.semester_quiz.Quiz.QuizFragment;
@@ -34,7 +34,7 @@ public class UnitPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new Fragment1UnitList();
+                return new Fragment1QuizList();
             case 1:
                 return new Fragment2UnitInfo();
             case 2:

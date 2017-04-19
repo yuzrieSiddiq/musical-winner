@@ -9,10 +9,23 @@
     tools:openDrawer="start">
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/welcome_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:paddingTop="80dp"
+        android:gravity="top|center"
         android:text="Welcome"/>
+
+    <ListView
+        android:id="@+id/unit_listing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="200dp"
+        android:divider="#FFF">
+
+    </ListView>
 
     <include
         layout="@layout/dashboard_app_bar"

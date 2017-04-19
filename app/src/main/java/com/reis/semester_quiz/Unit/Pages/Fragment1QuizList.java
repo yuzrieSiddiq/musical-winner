@@ -15,7 +15,7 @@ import com.reis.semester_quiz.R;
  * Created by reis on 22/03/2017.
  */
 
-public class Fragment1UnitList extends Fragment {
+public class Fragment1QuizList extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

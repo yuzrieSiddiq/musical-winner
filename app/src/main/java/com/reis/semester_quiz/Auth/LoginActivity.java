@@ -2,6 +2,7 @@ package com.reis.semester_quiz.Auth;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     String Email, Password;
     ProgressDialog prgDialog;
+    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                 params.put("password", Password);
                 // Invoke RESTful Web Service with Http parameters
                 invokeWS(params);
-//                samplejson.setText(params.toString());
             }
             // When Email is invalid
             else{
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("http://10.0.2.2:8000/api/auth/login",params ,new AsyncHttpResponseHandler() {
+        client.post(API_URL + "auth/login", params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog
@@ -94,7 +95,13 @@ public class LoginActivity extends AppCompatActivity {
                     // JSON Object
                     String jsonstring = new String (responseBody);
                     JSONObject obj = new JSONObject(jsonstring);
-                    navigatetoHomeActivity(obj.getString("token"));
+
+                    // add token to app
+                    SharedPreferences.Editor preferences_editor= getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+                    preferences_editor.putString("_token", obj.getString("token"));
+                    preferences_editor.apply();
+
+                    navigatetoHomeActivity(jsonstring);
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -125,10 +132,31 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Method which navigates from Login Activity to Home Activity
      */
-    public void navigatetoHomeActivity(String token){
-        Intent homeIntent = new Intent(getApplicationContext(),DashboardActivity.class);
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(homeIntent);
+    public void navigatetoHomeActivity(String json_data){
+
+        try {
+            JSONObject obj = new JSONObject(json_data);
+            JSONObject user = obj.getJSONObject("user");
+
+            // add token to app
+            SharedPreferences.Editor preferences_editor= getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+            preferences_editor.putString("_token", obj.getString("token"));
+            preferences_editor.apply();
+
+            // switch page intent
+            Intent homeIntent = new Intent(getApplicationContext(),DashboardActivity.class);
+
+            // add to bundle
+            Bundle bundle = new Bundle();
+            bundle.putString("user_id", user.getString("id"));
+            homeIntent.putExtras(bundle);
+
+            homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(homeIntent);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
 
