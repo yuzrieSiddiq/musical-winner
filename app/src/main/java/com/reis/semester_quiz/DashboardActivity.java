@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.reis.semester_quiz.Quiz.QuizActivity;
 import com.reis.semester_quiz.Unit.Pages.AdapterUnitList;
 import com.reis.semester_quiz.Unit.UnitActivity;
 
@@ -151,14 +154,20 @@ public class DashboardActivity extends AppCompatActivity
 
                     JSONArray jsonArray = new JSONArray(jsonstring);
 
-                    ArrayList<HashMap<String, String>> listitems = new ArrayList<HashMap<String, String>>();
+                    final ArrayList<HashMap<String, String>> listitems = new ArrayList<HashMap<String, String>>();
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject obj = jsonArray.getJSONObject(i);
                         JSONObject unit = obj.getJSONObject("unit");
 
+                        Integer student_id = obj.getInt("id");
+                        Integer unit_id = obj.getInt("unit_id");
+                        Integer user_id = obj.getInt("user_id");
+
                         HashMap<String, String> data = new HashMap<String, String>();
                         data.put("unit_code", unit.getString("code"));
                         data.put("unit_name", unit.getString("name"));
+                        data.put("unit_id", String.valueOf(unit_id));
+                        data.put("student_id", String.valueOf(student_id));
                         data.put("semester", obj.getString("semester"));
                         data.put("year", obj.getString("year"));
 
@@ -174,6 +183,13 @@ public class DashboardActivity extends AppCompatActivity
                     ArrayAdapter arrayAdapter = new DashboardUnitList(getApplicationContext(), listitems);
                     unit_listingListView = (ListView) findViewById(R.id.unit_listing);
                     unit_listingListView.setAdapter(arrayAdapter);
+                    unit_listingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            Toast.makeText(DashboardActivity.this, listitems.get(position).get("unit_id"), Toast.LENGTH_SHORT).show();
+                            navigatetoUnitActivity(listitems.get(position).get("unit_id"));
+                        }
+                    });
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
@@ -200,5 +216,18 @@ public class DashboardActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    public void navigatetoUnitActivity(String unit_id){
+
+        // switch page intent
+        Intent unitintent = new Intent(getApplicationContext(), UnitActivity.class);
+
+        // add to bundle
+        Bundle bundle = new Bundle();
+        bundle.putString("unit_id", unit_id);
+        unitintent.putExtras(bundle);
+
+        startActivity(unitintent  );
     }
 }

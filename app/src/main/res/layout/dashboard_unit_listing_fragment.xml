@@ -20,7 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="unit"/>
+                android:text="unit"
+                android:textColor="#000"/>
 
         </LinearLayout>
 
@@ -35,14 +36,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:text="SN"
-                android:textSize="11sp"/>
+                android:textSize="11sp"
+                android:textColor="#000"/>
 
             <TextView
                 android:id="@+id/year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="year"
-                android:textSize="11sp"/>
+                android:textSize="11sp"
+                android:textColor="#000"/>
 
         </LinearLayout>
     </LinearLayout>

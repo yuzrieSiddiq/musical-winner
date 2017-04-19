@@ -44,16 +44,6 @@ public class DashboardUnitList extends ArrayAdapter<HashMap<String, String>> {
         semesterTextView.setText(listitems.get(position).get("semester").toString());
         yearTextView.setText(listitems.get(position).get("year").toString());
 
-//        // TODO: use `position` to determine which quiz its refering to
-//        Button attemptQuiz = (Button) view.findViewById(R.id.attemptQuiz);
-//        attemptQuiz.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent quizpageIntent = new Intent(getContext(), QuizActivity.class);
-//                getContext().startActivity(quizpageIntent);
-//            }
-//        });
-
         return view;
     }
 }
