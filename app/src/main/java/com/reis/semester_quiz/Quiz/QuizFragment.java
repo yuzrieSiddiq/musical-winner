@@ -23,10 +23,13 @@ import android.widget.Toast;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
 
+import java.util.HashMap;
+
 public class QuizFragment extends Fragment {
 
     private static final String ARG_POSITION = "position";
-    private static final String ARG_LENGTH= "length";
+    private static final String ARG_LENGTH = "length";
+    private static final String ARG_QUESTION = "question";
     private String [] questions = new String[] {
             "Stereotypes are useful as they allow us to categorize lots of information easily. Rigid stereotypes about people generally lead to prejudice.  Stereotyping is considered as ",
             "Highly prejudiced people tend to have what is referred to by psychologists as an authoritarian personality. Which one of the following is not considered as one of the characteristics of authoritarian personality:",
@@ -35,12 +38,14 @@ public class QuizFragment extends Fragment {
     };
 
     private int position, length;
+    HashMap<String, String> question;
 
-    public static QuizFragment newInstance(int position, int length) {
+    public static QuizFragment newInstance(int position, int length, HashMap<String, String> question) {
         QuizFragment f = new QuizFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         b.putInt(ARG_LENGTH, length);
+        b.putSerializable(ARG_QUESTION, question);
         f.setArguments(b);
         return f;
     }
@@ -49,22 +54,17 @@ public class QuizFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
-        length= getArguments().getInt(ARG_LENGTH);
+        length = getArguments().getInt(ARG_LENGTH);
+        question = (HashMap<String, String>) getArguments().getSerializable(ARG_QUESTION);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         // start counting from 0, hence -1
-        if (position < length-1) {
-            View view = inflater.inflate(R.layout.quiz_questions, container, false);
-            TextView question = (TextView) view.findViewById(R.id.question);
-            question.setText(questions[position]);
+        if (question.get("question_no").equals("n")) {
 
-            return view;
-
-        } else {
+            // TODO: update the questions no with their answer
             View view = inflater.inflate(R.layout.quiz_submit, container, false);
             Button submit = (Button) view.findViewById(R.id.submit);
 
@@ -76,6 +76,22 @@ public class QuizFragment extends Fragment {
                     Toast.makeText(getContext(), "Quiz has successfully been submitted", Toast.LENGTH_SHORT).show();
                 }
             });
+            return view;
+        } else {
+            View view = inflater.inflate(R.layout.quiz_questions, container, false);
+
+            TextView questionTextView = (TextView) view.findViewById(R.id.question);
+            Button answerA = (Button) view.findViewById(R.id.answerA);
+            Button answerB = (Button) view.findViewById(R.id.answerB);
+            Button answerC = (Button) view.findViewById(R.id.answerC);
+            Button answerD = (Button) view.findViewById(R.id.answerD);
+
+            questionTextView.setText(question.get("question"));
+            answerA.setText(question.get("answer1"));
+            answerB.setText(question.get("answer2"));
+            answerC.setText(question.get("answer3"));
+            answerD.setText(question.get("answer4"));
+
             return view;
         }
     }
