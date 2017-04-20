@@ -40,9 +40,9 @@ public class DashboardUnitList extends ArrayAdapter<HashMap<String, String>> {
         TextView semesterTextView = (TextView) view.findViewById(R.id.semester);
         TextView yearTextView = (TextView) view.findViewById(R.id.year);
 
-        unitTextView.setText(listitems.get(position).get("unit_code").toString() + " " + listitems.get(position).get("unit_name").toString());
-        semesterTextView.setText(listitems.get(position).get("semester").toString());
-        yearTextView.setText(listitems.get(position).get("year").toString());
+        unitTextView.setText(listitems.get(position).get("unit_code") + " " + listitems.get(position).get("unit_name"));
+        semesterTextView.setText(listitems.get(position).get("semester"));
+        yearTextView.setText(listitems.get(position).get("year"));
 
         return view;
     }

@@ -11,17 +11,32 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <!-- quiz title -->
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:textSize="16sp"
-            android:text="QUIZ 1: iRAT1"/>
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:text="Individual"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:text="Group"/>
+
+        </LinearLayout>
 
         <!-- 2nd parent layout -->
         <LinearLayout
-            android:id="@+id/quiz1_individual"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -29,6 +44,7 @@
 
             <!-- left child layout -->
             <LinearLayout
+                android:id="@+id/left_side"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -36,42 +52,45 @@
                 android:padding="4dp">
 
                 <TextView
+                    android:id="@+id/left_quiz_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center"
-                    android:text="Individual"/>
+                    android:text="iRat"/>
 
                 <TextView
+                    android:id="@+id/left_quiz_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Status: Untested"/>
 
                 <TextView
+                    android:id="@+id/left_quiz_rank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Rank: N/A"/>
 
                 <TextView
+                    android:id="@+id/left_quiz_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Score: N/A"/>
 
                 <Button
-                    android:id="@+id/attemptQuiz"
+                    android:id="@+id/left_quiz_attempt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ATTEMPT QUIZ"
-                    android:backgroundTint="#6AB344"/>
+                    android:text="ATTEMPT QUIZ"/>
 
             </LinearLayout> <!-- left child layout -->
 
             <!-- right child layout -->
             <LinearLayout
-                android:id="@+id/quiz1_group"
+                android:id="@+id/right_side"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -79,31 +98,36 @@
                 android:padding="4dp">
 
                 <TextView
+                    android:id="@+id/right_quiz_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center"
-                    android:text="Group"/>
+                    android:text="gRat"/>
 
                 <TextView
+                    android:id="@+id/right_quiz_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Status: Untested"/>
 
                 <TextView
+                    android:id="@+id/right_quiz_rank"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Rank: N/A"/>
 
                 <TextView
+                    android:id="@+id/right_quiz_score"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Score: N/A"/>
 
                 <Button
+                    android:id="@+id/right_quiz_attempt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="CLOSED"/>

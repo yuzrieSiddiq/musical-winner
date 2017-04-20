@@ -15,16 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import com.reis.semester_quiz.Quiz.QuizActivity;
-import com.reis.semester_quiz.Unit.Pages.AdapterUnitList;
 import com.reis.semester_quiz.Unit.UnitActivity;
 
 import org.json.JSONArray;
@@ -64,9 +60,6 @@ public class DashboardActivity extends AppCompatActivity
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
-
-//        ArrayList<HashMap<String, String>> listitems = new ArrayList<HashMap<String, String>>();
-//        listitems.add("");
 
         welcomeTextView = (TextView) findViewById(R.id.welcome_text);
         unit_listingListView = (ListView) findViewById(R.id.unit_listing);
