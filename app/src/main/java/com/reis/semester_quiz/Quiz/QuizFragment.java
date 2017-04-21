@@ -1,7 +1,9 @@
 package com.reis.semester_quiz.Quiz;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,11 +22,23 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class QuizFragment extends Fragment {
 
@@ -32,22 +46,21 @@ public class QuizFragment extends Fragment {
     private static final String ARG_LENGTH = "length";
     private static final String ARG_QUESTION = "question";
     private static final String ARG_ANSWERS = "answers";
-    private String [] questions = new String[] {
-            "Stereotypes are useful as they allow us to categorize lots of information easily. Rigid stereotypes about people generally lead to prejudice.  Stereotyping is considered as ",
-            "Highly prejudiced people tend to have what is referred to by psychologists as an authoritarian personality. Which one of the following is not considered as one of the characteristics of authoritarian personality:",
-            "We may learn to be prejudiced from home, school, government, workplace, place of worship, and the media. Which of the following is related to the media?",
-            "Different people may express prejudice differently. There are people who often disclose outwardly how they are opposed to unequal treatment, but their inner feelings may suggest otherwise. They may say they are egalitarian and use that open display as an excuse when they act in a way that is not in the interests of diversity. This way of expressing prejudice is known as"
-    };
+    private static final String ARG_QUIZ_ID = "quiz_id";
 
     private int position, length;
+    String _token, quiz_id;
+    ProgressDialog prgDialog;
     HashMap<String, String> question;
     ArrayList<HashMap<String, String>> answers;
+    String API_URL = "http://10.0.2.2:8000/api/";
 
-    public static QuizFragment newInstance(int position, int length, HashMap<String, String> question, ArrayList<HashMap<String, String>> answers) {
+    public static QuizFragment newInstance(int position, int length, HashMap<String, String> question, ArrayList<HashMap<String, String>> answers, String quiz_id) {
         QuizFragment f = new QuizFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         b.putInt(ARG_LENGTH, length);
+        b.putString(ARG_QUIZ_ID, quiz_id);
         b.putSerializable(ARG_QUESTION, question);
         b.putSerializable(ARG_ANSWERS, answers);
         f.setArguments(b);
@@ -59,14 +72,23 @@ public class QuizFragment extends Fragment {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt(ARG_POSITION);
         length = getArguments().getInt(ARG_LENGTH);
+        quiz_id = getArguments().getString(ARG_QUIZ_ID);
         question = (HashMap<String, String>) getArguments().getSerializable(ARG_QUESTION);
         answers = (ArrayList<HashMap<String, String>>) getArguments().getSerializable(ARG_ANSWERS);
+
+        // get token from shared preferences
+        SharedPreferences preferences = getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE);
+        _token = preferences.getString("_token", null);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // start counting from 0, hence -1
+        prgDialog = new ProgressDialog(getContext());
+        prgDialog.setMessage("Please wait...");
+        prgDialog.setCancelable(false);
+
+        // generate page depends on question no (as long not submit page)
         if (question.get("question_no").equals("n")) {
 
             // TODO: update the questions no with their answer
@@ -75,10 +97,16 @@ public class QuizFragment extends Fragment {
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), answers.toString(), Toast.LENGTH_SHORT).show();
-//                    Intent backToDashboard = new Intent(getContext(), DashboardActivity.class);
-//                    getContext().startActivity(backToDashboard);
-//                    Toast.makeText(getContext(), "Quiz has successfully been submitted", Toast.LENGTH_SHORT).show();
+                    ArrayList<JSONObject> list_answer_json = new ArrayList<JSONObject>();
+                    for (HashMap<String, String> answer : answers) {
+                        JSONObject obj = new JSONObject(answer);
+                        list_answer_json.add(obj);
+                    }
+
+                    JSONArray answers_json = new JSONArray(list_answer_json);
+                    RequestParams params = new RequestParams();
+                    params.put("answers", answers_json);
+                    invokeWS(params);
                 }
             });
             return view;
@@ -131,5 +159,39 @@ public class QuizFragment extends Fragment {
 
             return view;
         }
+    }
+
+    public void invokeWS(RequestParams params){
+        // Show Progress Dialog
+        prgDialog.show();
+        // Make RESTful webservice call using AsyncHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(API_URL + "quizzes/submit/" + quiz_id + "?token=" + _token, params ,new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // Hide Progress Dialog
+                prgDialog.hide();
+                Intent backToDashboard = new Intent(getContext(), DashboardActivity.class);
+                getContext().startActivity(backToDashboard);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // Hide Progress Dialog
+                prgDialog.hide();
+                // When Http response code is '404'
+                if(statusCode == 404){
+                    Toast.makeText(getContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 500){
+                    Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else{
+                    Toast.makeText(getContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }

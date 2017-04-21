@@ -149,7 +149,7 @@ public class QuizActivity extends AppCompatActivity {
                     data.put("question_no", "n");
                     questions.add(data);
 
-                    QuizPagerAdapter adapter = new QuizPagerAdapter(getSupportFragmentManager(), questions, student_answers);
+                    QuizPagerAdapter adapter = new QuizPagerAdapter(getSupportFragmentManager(), questions, student_answers, quiz_id);
                     pager.setAdapter(adapter);
 
                     final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());

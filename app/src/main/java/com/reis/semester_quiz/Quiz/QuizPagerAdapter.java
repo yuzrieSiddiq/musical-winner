@@ -15,11 +15,13 @@ public class QuizPagerAdapter extends FragmentPagerAdapter {
     private final String[] TITLES = { "Q1", "Q2", "Q3", "Q4", "SUBMIT" };
     ArrayList<HashMap<String, String>> questions;
     ArrayList<HashMap<String, String>> answers;
+    String quiz_id;
 
-    public QuizPagerAdapter(FragmentManager fm, ArrayList<HashMap<String, String>> questions, ArrayList<HashMap<String, String>> answers) {
+    public QuizPagerAdapter(FragmentManager fm, ArrayList<HashMap<String, String>> questions, ArrayList<HashMap<String, String>> answers, String quiz_id) {
         super(fm);
         this.questions = questions;
         this.answers = answers;
+        this.quiz_id = quiz_id;
     }
 
     @Override
@@ -40,6 +42,6 @@ public class QuizPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return QuizFragment.newInstance(position, getCount(), questions.get(position), answers);
+        return QuizFragment.newInstance(position, getCount(), questions.get(position), answers, quiz_id);
     }
 }
