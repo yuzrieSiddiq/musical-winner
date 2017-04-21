@@ -14,15 +14,23 @@ import java.util.HashMap;
 public class QuizPagerAdapter extends FragmentPagerAdapter {
     private final String[] TITLES = { "Q1", "Q2", "Q3", "Q4", "SUBMIT" };
     ArrayList<HashMap<String, String>> questions;
+    ArrayList<HashMap<String, String>> answers;
 
-    public QuizPagerAdapter(FragmentManager fm, ArrayList<HashMap<String, String>> questions) {
+    public QuizPagerAdapter(FragmentManager fm, ArrayList<HashMap<String, String>> questions, ArrayList<HashMap<String, String>> answers) {
         super(fm);
         this.questions = questions;
+        this.answers = answers;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return questions.get(position).get("question_no");
+        // if not at question_no "n", translate the question no to QNumber
+        if (position != questions.size()-1) {
+            Integer question_no = Integer.valueOf(questions.get(position).get("question_no")) + 1;
+            return "Q" + question_no;
+        } else {
+            return "SUBMIT";
+        }
     }
 
     @Override
@@ -32,6 +40,6 @@ public class QuizPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return QuizFragment.newInstance(position, getCount(), questions.get(position));
+        return QuizFragment.newInstance(position, getCount(), questions.get(position), answers);
     }
 }

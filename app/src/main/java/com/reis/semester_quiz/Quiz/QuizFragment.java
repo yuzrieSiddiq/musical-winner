@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class QuizFragment extends Fragment {
@@ -30,6 +31,7 @@ public class QuizFragment extends Fragment {
     private static final String ARG_POSITION = "position";
     private static final String ARG_LENGTH = "length";
     private static final String ARG_QUESTION = "question";
+    private static final String ARG_ANSWERS = "answers";
     private String [] questions = new String[] {
             "Stereotypes are useful as they allow us to categorize lots of information easily. Rigid stereotypes about people generally lead to prejudice.  Stereotyping is considered as ",
             "Highly prejudiced people tend to have what is referred to by psychologists as an authoritarian personality. Which one of the following is not considered as one of the characteristics of authoritarian personality:",
@@ -39,13 +41,15 @@ public class QuizFragment extends Fragment {
 
     private int position, length;
     HashMap<String, String> question;
+    ArrayList<HashMap<String, String>> answers;
 
-    public static QuizFragment newInstance(int position, int length, HashMap<String, String> question) {
+    public static QuizFragment newInstance(int position, int length, HashMap<String, String> question, ArrayList<HashMap<String, String>> answers) {
         QuizFragment f = new QuizFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         b.putInt(ARG_LENGTH, length);
         b.putSerializable(ARG_QUESTION, question);
+        b.putSerializable(ARG_ANSWERS, answers);
         f.setArguments(b);
         return f;
     }
@@ -56,6 +60,7 @@ public class QuizFragment extends Fragment {
         position = getArguments().getInt(ARG_POSITION);
         length = getArguments().getInt(ARG_LENGTH);
         question = (HashMap<String, String>) getArguments().getSerializable(ARG_QUESTION);
+        answers = (ArrayList<HashMap<String, String>>) getArguments().getSerializable(ARG_ANSWERS);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -67,18 +72,21 @@ public class QuizFragment extends Fragment {
             // TODO: update the questions no with their answer
             View view = inflater.inflate(R.layout.quiz_submit, container, false);
             Button submit = (Button) view.findViewById(R.id.submit);
-
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent backToDashboard = new Intent(getContext(), DashboardActivity.class);
-                    getContext().startActivity(backToDashboard);
-                    Toast.makeText(getContext(), "Quiz has successfully been submitted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), answers.toString(), Toast.LENGTH_SHORT).show();
+//                    Intent backToDashboard = new Intent(getContext(), DashboardActivity.class);
+//                    getContext().startActivity(backToDashboard);
+//                    Toast.makeText(getContext(), "Quiz has successfully been submitted", Toast.LENGTH_SHORT).show();
                 }
             });
             return view;
         } else {
             View view = inflater.inflate(R.layout.quiz_questions, container, false);
+
+            final Integer question_no = Integer.valueOf(question.get("question_no"));
+            Toast.makeText(getContext(), String.valueOf(question_no), Toast.LENGTH_SHORT).show();
 
             TextView questionTextView = (TextView) view.findViewById(R.id.question);
             Button answerA = (Button) view.findViewById(R.id.answerA);
@@ -91,6 +99,35 @@ public class QuizFragment extends Fragment {
             answerB.setText(question.get("answer2"));
             answerC.setText(question.get("answer3"));
             answerD.setText(question.get("answer4"));
+
+
+            answerA.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    answers.get(question_no).put("answer", question.get("answer1"));
+                }
+            });
+
+            answerB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    answers.get(question_no).put("answer", question.get("answer2"));
+                }
+            });
+
+            answerC.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    answers.get(question_no).put("answer", question.get("answer3"));
+                }
+            });
+
+            answerD.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    answers.get(question_no).put("answer", question.get("answer4"));
+                }
+            });
 
             return view;
         }

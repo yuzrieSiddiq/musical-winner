@@ -35,7 +35,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
-    private QuizPagerAdapter adapter;
 
     String API_URL = "http://10.0.2.2:8000/api/";
     String _token, quiz_id;
@@ -115,48 +114,47 @@ public class QuizActivity extends AppCompatActivity {
 
                     // populate the quizzes
                     final ArrayList<HashMap<String, String>> questions = new ArrayList<HashMap<String, String>>();
+                    final ArrayList<HashMap<String, String>> student_answers = new ArrayList<HashMap<String, String>>();
+
                     Integer question_no = 0;
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject question = jsonArray.getJSONObject(i);
 
                         Integer question_id = question.getInt("id");
+
+                        HashMap<String, String> data_question = new HashMap<String, String>();
+                        data_question.put("question_id", String.valueOf(question_id));
+                        data_question.put("question_no", String.valueOf(question_no));
+                        data_question.put("question", question.getString("question"));
+                        data_question.put("answer1", question.getString("answer1"));
+                        data_question.put("answer2", question.getString("answer2"));
+                        data_question.put("answer3", question.getString("answer3"));
+                        data_question.put("answer4", question.getString("answer4"));
+                        data_question.put("answer5", question.getString("answer5"));
+                        data_question.put("correct_answer", question.getString("correct_answer"));
+
+                        questions.add(data_question);
+
+                        HashMap<String, String> data_answers = new HashMap<String, String>();
+                        data_answers.put("question_id", String.valueOf(question_id));
+                        data_answers.put("question_no", String.valueOf(question_no));
+                        data_answers.put("answer", "");
+
+                        student_answers.add(data_answers);
+
                         question_no++;
-
-                        HashMap<String, String> data = new HashMap<String, String>();
-                        data.put("question_id", String.valueOf(question_id));
-                        data.put("question_no", String.valueOf(question_no));
-                        data.put("question", question.getString("question"));
-                        data.put("answer1", question.getString("answer1"));
-                        data.put("answer2", question.getString("answer2"));
-                        data.put("answer3", question.getString("answer3"));
-                        data.put("answer4", question.getString("answer4"));
-                        data.put("answer5", question.getString("answer5"));
-                        data.put("correct_answer", question.getString("correct_answer"));
-
-                        questions.add(data);
                     }
 
                     HashMap<String, String> data = new HashMap<String, String>();
                     data.put("question_no", "n");
                     questions.add(data);
 
-                    Toast.makeText(QuizActivity.this, questions.toString(), Toast.LENGTH_SHORT).show();
-
-                    // adapter is AdapterUnitQuizList, quiz_list get from unit_quiz_list.xml, in array adapter is from unit_quiz_list_fragment
-//                    ArrayAdapter arrayAdapter = new AdapterUnitQuizList(getApplicationContext(), questions);
-//                    quiz_list= (ListView) view.findViewById(R.id.mylist);
-//                    quiz_list.setAdapter(arrayAdapter);
-
-                    adapter = new QuizPagerAdapter(getSupportFragmentManager(), questions);
-
+                    QuizPagerAdapter adapter = new QuizPagerAdapter(getSupportFragmentManager(), questions, student_answers);
                     pager.setAdapter(adapter);
 
-                    final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-                            .getDisplayMetrics());
+                    final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
                     pager.setPageMargin(pageMargin);
-
                     tabs.setViewPager(pager);
-
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
