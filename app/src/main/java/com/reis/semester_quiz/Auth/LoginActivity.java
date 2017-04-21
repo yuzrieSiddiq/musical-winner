@@ -30,7 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     String Email, Password;
     ProgressDialog prgDialog;
-    String API_URL = "http://10.0.2.2:8000/api/";
+    String API_URL = "http://192.168.43.2:8000/api/";
+//    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

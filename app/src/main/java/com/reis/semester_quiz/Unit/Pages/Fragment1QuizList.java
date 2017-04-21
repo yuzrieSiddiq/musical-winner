@@ -33,10 +33,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Fragment1QuizList extends Fragment {
 
-//    ProgressDialog prgDialog;
-    String API_URL = "http://10.0.2.2:8000/api/";
+    ProgressDialog prgDialog;
     String _token, unit_id;
-    ListView quiz_list;
+    ListView individual_quiz_list, group_quiz_list;
+    String API_URL = "http://192.168.43.2:8000/api/";
+//    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Nullable
     @Override
@@ -49,9 +50,9 @@ public class Fragment1QuizList extends Fragment {
         SharedPreferences preferences = this.getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE);
         _token = preferences.getString("_token", null);
 
-//        prgDialog = new ProgressDialog(getContext());
-//        prgDialog.setMessage("Please wait...");
-//        prgDialog.setCancelable(false);
+        prgDialog = new ProgressDialog(getContext());
+        prgDialog.setMessage("Please wait...");
+        prgDialog.setCancelable(false);
 
         // get the view and invoke the REST call
         View view = inflater.inflate(R.layout.unit_quiz_list, container, false);
@@ -62,23 +63,29 @@ public class Fragment1QuizList extends Fragment {
 
     public void invokeWS(final View view){
         // Show Progress Dialog
-//        prgDialog.show();
+        prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(API_URL + "quizzes/unit/" + unit_id + "?token=" + _token ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog
-//                prgDialog.hide();
+                prgDialog.hide();
                 try {
                     // JSON Object
                     String jsonstring = new String (responseBody);
                     JSONArray jsonArray = new JSONArray(jsonstring);
 
                     // populate the quizzes
-                    final ArrayList<HashMap<String, String>> listitems = new ArrayList<HashMap<String, String>>();
+                    final ArrayList<HashMap<String, String>> individual_list_items = new ArrayList<HashMap<String, String>>();
+                    final ArrayList<HashMap<String, String>> group_list_items = new ArrayList<HashMap<String, String>>();
+
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject quiz = jsonArray.getJSONObject(i);
+                        JSONObject quiz_data = jsonArray.getJSONObject(i);
+                        JSONObject quiz = new JSONObject(quiz_data.getString("quiz"));
+                        Boolean attempted = quiz_data.getBoolean("has_been_attempted");
+                        Integer answers_count = quiz_data.getInt("answers_count");
+                        Integer correct_count = quiz_data.getInt("correct_count");
 
                         Integer quiz_id = quiz.getInt("id");
 
@@ -87,14 +94,24 @@ public class Fragment1QuizList extends Fragment {
                         data.put("title", quiz.getString("title"));
                         data.put("type", quiz.getString("type"));
                         data.put("status", quiz.getString("status"));
+                        data.put("has_been_attempted", String.valueOf(attempted));
+                        data.put("answers_count", String.valueOf(answers_count));
+                        data.put("correct_count", String.valueOf(correct_count));
 
-                        listitems.add(data);
+                        if (quiz.getString("type").toLowerCase().equals("individual"))
+                            individual_list_items.add(data);
+                        else if (quiz.getString("type").toLowerCase().equals("group"))
+                            group_list_items.add(data);
                     }
 
                     // adapter is AdapterUnitQuizList, quiz_list get from unit_quiz_list.xml, in array adapter is from unit_quiz_list_fragment
-                    ArrayAdapter arrayAdapter = new AdapterUnitQuizList(getContext(), listitems);
-                    quiz_list= (ListView) view.findViewById(R.id.mylist);
-                    quiz_list.setAdapter(arrayAdapter);
+                    ArrayAdapter individualListAdapter = new AdapterUnitQuizList(getContext(), individual_list_items);
+                    individual_quiz_list = (ListView) view.findViewById(R.id.individual_list);
+                    individual_quiz_list.setAdapter(individualListAdapter);
+
+                    ArrayAdapter groupListAdapter = new AdapterUnitQuizList(getContext(), group_list_items);
+                    group_quiz_list = (ListView) view.findViewById(R.id.group_list);
+                    group_quiz_list.setAdapter(groupListAdapter);
 
 
                 } catch (JSONException e) {
@@ -107,7 +124,7 @@ public class Fragment1QuizList extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 // Hide Progress Dialog
-                //prgDialog.hide();
+                prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){
                     Toast.makeText(getContext(), "Requested resource not found", Toast.LENGTH_LONG).show();

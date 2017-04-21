@@ -36,9 +36,10 @@ public class QuizActivity extends AppCompatActivity {
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
 
-    String API_URL = "http://10.0.2.2:8000/api/";
     String _token, quiz_id;
     ListView quiz_list;
+    String API_URL = "http://192.168.43.2:8000/api/";
+//    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,138 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- root parent -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<android.support.v7.widget.GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:grid="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/choice_grid"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_centerHorizontal="true"
+    android:padding="4dp"
 
-    <!-- 1st parent layout -->
+    grid:alignmentMode="alignBounds"
+    grid:columnCount="2"
+    grid:rowOrderPreserved="false"
+    grid:useDefaultMargins="true">
+
     <LinearLayout
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        grid:layout_columnWeight="1"
+        grid:layout_gravity="fill_horizontal"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="4dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/quiz_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:text="iRat"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:gravity="center"
-                android:text="Individual"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                android:gravity="center"
-                android:text="Group"/>
-
-        </LinearLayout>
-
-        <!-- 2nd parent layout -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/quiz_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_margin="4dp"
+            android:text="Type: "/>
 
-            <!-- left child layout -->
-            <LinearLayout
-                android:id="@+id/left_side"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="4dp">
+        <TextView
+            android:id="@+id/quiz_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Status: Untested"/>
 
-                <TextView
-                    android:id="@+id/left_quiz_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:gravity="center"
-                    android:text="iRat"/>
+        <TextView
+            android:id="@+id/quiz_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Rank: N/A"/>
 
-                <TextView
-                    android:id="@+id/left_quiz_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Status: Untested"/>
+        <TextView
+            android:id="@+id/quiz_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="Score: N/A"/>
 
-                <TextView
-                    android:id="@+id/left_quiz_rank"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Rank: N/A"/>
+        <Button
+            android:id="@+id/quiz_attempt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ATTEMPT QUIZ"/>
 
-                <TextView
-                    android:id="@+id/left_quiz_score"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Score: N/A"/>
+    </LinearLayout>
 
-                <Button
-                    android:id="@+id/left_quiz_attempt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="ATTEMPT QUIZ"/>
 
-            </LinearLayout> <!-- left child layout -->
-
-            <!-- right child layout -->
-            <LinearLayout
-                android:id="@+id/right_side"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="4dp">
-
-                <TextView
-                    android:id="@+id/right_quiz_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:gravity="center"
-                    android:text="gRat"/>
-
-                <TextView
-                    android:id="@+id/right_quiz_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Status: Untested"/>
-
-                <TextView
-                    android:id="@+id/right_quiz_rank"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Rank: N/A"/>
-
-                <TextView
-                    android:id="@+id/right_quiz_score"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:text="Score: N/A"/>
-
-                <Button
-                    android:id="@+id/right_quiz_attempt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="CLOSED"/>
-
-            </LinearLayout> <!-- right child layout -->
-        </LinearLayout> <!-- 2nd parent: cover left and right linear layout -->
-    </LinearLayout> <!-- 1st parent: cover text area and 2nd parent -->
-</LinearLayout> <!-- root layout -->
+</android.support.v7.widget.GridLayout>

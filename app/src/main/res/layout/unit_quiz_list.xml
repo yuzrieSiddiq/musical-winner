@@ -4,11 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.reis.semester_quiz.Unit.Pages.Fragment1QuizList"
-    android:orientation="vertical">
-
+    android:orientation="horizontal">
 
     <ListView
-        android:id="@+id/mylist"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:id="@+id/individual_list"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:divider="@null"/>
+
+    <ListView
+        android:id="@+id/group_list"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:divider="@null"/>
+
 </LinearLayout>

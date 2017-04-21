@@ -1,11 +1,15 @@
 package com.reis.semester_quiz.Unit.Pages;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +39,7 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
         quiz_item = values;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -42,49 +47,42 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View view = layoutInflater.inflate(R.layout.unit_quiz_list_fragment, parent, false);
 
-        // set the views
-        LinearLayout left_side = (LinearLayout) view.findViewById(R.id.left_side);
-        LinearLayout right_side = (LinearLayout) view.findViewById(R.id.right_side);
 
-        TextView left_quiz_title = (TextView) view.findViewById(R.id.left_quiz_title);
-        TextView left_quiz_status = (TextView) view.findViewById(R.id.left_quiz_status);
-        TextView left_quiz_rank = (TextView) view.findViewById(R.id.left_quiz_rank);
-        TextView left_quiz_score = (TextView) view.findViewById(R.id.left_quiz_score);
+        TextView quiz_title = (TextView) view.findViewById(R.id.quiz_title);
+        TextView quiz_type = (TextView) view.findViewById(R.id.quiz_type);
+        TextView quiz_status = (TextView) view.findViewById(R.id.quiz_status);
+        TextView quiz_rank = (TextView) view.findViewById(R.id.quiz_rank);
+        TextView quiz_score = (TextView) view.findViewById(R.id.quiz_score);
 
-        TextView right_quiz_title = (TextView) view.findViewById(R.id.right_quiz_title);
-        TextView right_quiz_status = (TextView) view.findViewById(R.id.right_quiz_status);
-        TextView right_quiz_rank = (TextView) view.findViewById(R.id.right_quiz_rank);
-        TextView right_quiz_score = (TextView) view.findViewById(R.id.right_quiz_score);
+        Button attempt_button = (Button) view.findViewById(R.id.quiz_attempt);
 
-        Button left_attempt_button = (Button) view.findViewById(R.id.left_quiz_attempt);
-        Button right_attempt_button = (Button) view.findViewById(R.id.right_quiz_attempt);
+        quiz_title.setText(quiz_item.get(position).get("title"));
 
-        if (quiz_item.get(position).get("type").toLowerCase().equals("individual")) {
-            left_quiz_title.setText(quiz_item.get(position).get("title"));
-            left_quiz_status.setText(quiz_item.get(position).get("status"));
-            left_quiz_rank.setText("-");    // only available to do after quiz can be submitted and can see results
-            left_quiz_score.setText("-");   // only available to do after quiz can be submitted and can see results
+        // if quiz is not yet attempted, its open
+        if (quiz_item.get(position).get("has_been_attempted").toLowerCase().equals("false")) {
+            quiz_type.setText("TYPE: " + quiz_item.get(position).get("type").toUpperCase());
+            quiz_status.setText("STATUS: " + quiz_item.get(position).get("status").toUpperCase());
+            quiz_rank.setText("RANK: -");
+            quiz_score.setText("SCORE: -");
 
-            left_attempt_button.setOnClickListener(new View.OnClickListener() {
+            attempt_button.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.answerA));
+            attempt_button.setTextColor(getContext().getResources().getColor(R.color.white));
+            attempt_button.setText("OPEN");
+            attempt_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     navigatetoUnitActivity(quiz_item.get(position).get("quiz_id"));
                 }
             });
+        } else {
+            String score = quiz_item.get(position).get("correct_count") + "/" + quiz_item.get(position).get("answers_count");
+            Integer score_percentage = (Integer.parseInt(quiz_item.get(position).get("correct_count")) * 100 / Integer.parseInt(quiz_item.get(position).get("answers_count")));
+            quiz_type.setText("TYPE: " + quiz_item.get(position).get("type").toUpperCase());
+            quiz_status.setText("STATUS: ATTEMPTED");
+            quiz_rank.setText("RANK: -");
+            quiz_score.setText("SCORE: " + score_percentage + "% (" + score + ")");
 
-        } else if (quiz_item.get(position).get("type").toLowerCase().equals("group")) {
-            right_quiz_title.setText(quiz_item.get(position).get("title"));
-            right_quiz_status.setText(quiz_item.get(position).get("status"));
-            right_quiz_rank.setText("-");    // only available to do after quiz can be submitted and can see results
-            right_quiz_score.setText("-");   // only available to do after quiz can be submitted and can see results
-
-            right_attempt_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    navigatetoUnitActivity(quiz_item.get(position).get("quiz_id"));
-                }
-            });
-
+            attempt_button.setText("CLOSED");
         }
 
         return view;

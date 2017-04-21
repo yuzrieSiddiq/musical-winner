@@ -53,7 +53,8 @@ public class QuizFragment extends Fragment {
     ProgressDialog prgDialog;
     HashMap<String, String> question;
     ArrayList<HashMap<String, String>> answers;
-    String API_URL = "http://10.0.2.2:8000/api/";
+//    String API_URL = "http://10.0.2.2:8000/api/";
+    String API_URL = "http://192.168.43.2:8000/api/";
 
     public static QuizFragment newInstance(int position, int length, HashMap<String, String> question, ArrayList<HashMap<String, String>> answers, String quiz_id) {
         QuizFragment f = new QuizFragment();
@@ -114,7 +115,6 @@ public class QuizFragment extends Fragment {
             View view = inflater.inflate(R.layout.quiz_questions, container, false);
 
             final Integer question_no = Integer.valueOf(question.get("question_no"));
-            Toast.makeText(getContext(), String.valueOf(question_no), Toast.LENGTH_SHORT).show();
 
             TextView questionTextView = (TextView) view.findViewById(R.id.question);
             Button answerA = (Button) view.findViewById(R.id.answerA);
