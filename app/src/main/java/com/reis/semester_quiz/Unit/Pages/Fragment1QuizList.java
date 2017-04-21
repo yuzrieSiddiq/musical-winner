@@ -33,7 +33,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Fragment1QuizList extends Fragment {
 
-    ProgressDialog prgDialog;
     String _token, unit_id;
     ListView individual_quiz_list, group_quiz_list;
     String API_URL = "http://192.168.43.2:8000/api/";
@@ -50,10 +49,6 @@ public class Fragment1QuizList extends Fragment {
         SharedPreferences preferences = this.getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE);
         _token = preferences.getString("_token", null);
 
-        prgDialog = new ProgressDialog(getContext());
-        prgDialog.setMessage("Please wait...");
-        prgDialog.setCancelable(false);
-
         // get the view and invoke the REST call
         View view = inflater.inflate(R.layout.unit_quiz_list, container, false);
         invokeWS(view);
@@ -62,15 +57,11 @@ public class Fragment1QuizList extends Fragment {
     }
 
     public void invokeWS(final View view){
-        // Show Progress Dialog
-        prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(API_URL + "quizzes/unit/" + unit_id + "?token=" + _token ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Hide Progress Dialog
-                prgDialog.hide();
                 try {
                     // JSON Object
                     String jsonstring = new String (responseBody);
@@ -123,8 +114,6 @@ public class Fragment1QuizList extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // Hide Progress Dialog
-                prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){
                     Toast.makeText(getContext(), "Requested resource not found", Toast.LENGTH_LONG).show();

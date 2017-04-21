@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.reis.semester_quiz.Unit.UnitActivity"
     android:orientation="vertical">
 
 
@@ -18,9 +17,11 @@
 
     <!-- stores list of current members -->
     <ListView
+        android:id="@+id/team_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"/>
+        android:layout_margin="4dp"
+        android:divider="@null"/>
 
     <!-- similar to <hr> tag in HTML -->
     <View
@@ -49,6 +50,7 @@
         android:layout_weight="1"/>
 
     <Button
+        android:id="@+id/enlist_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

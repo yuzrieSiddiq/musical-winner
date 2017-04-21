@@ -14,10 +14,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -94,6 +96,11 @@ public class QuizFragment extends Fragment {
 
             // TODO: update the questions no with their answer
             View view = inflater.inflate(R.layout.quiz_submit, container, false);
+
+            ListView answersListView = (ListView) view.findViewById(R.id.answers_list);
+            ArrayAdapter<HashMap<String, String>> answersadapter = new AdapterQuizAnswerList(getContext(), answers);
+            answersListView.setAdapter(answersadapter);
+
             Button submit = (Button) view.findViewById(R.id.submit);
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
