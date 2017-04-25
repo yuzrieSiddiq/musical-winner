@@ -3,6 +3,8 @@ package com.reis.semester_quiz.Auth;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,7 +28,7 @@ import cz.msebera.android.httpclient.Header;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    TextView samplejson, samplejson2;
+    Typeface typeface;
     EditText email, password;
     String Email, Password;
     ProgressDialog prgDialog;
@@ -37,16 +39,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_index);
-        // Set up the login form.
+        getSupportActionBar().hide();
+
+        AssetManager assetManager = getAssets();
+        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
+
+        TextView app_title = (TextView) findViewById(R.id.app_title);
+        app_title.setTypeface(typeface);
 
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
-        samplejson = (TextView) findViewById(R.id.sample_json);
-        samplejson2 = (TextView) findViewById(R.id.sample_json_2);
 
         prgDialog = new ProgressDialog(this);
         // Set Progress Dialog Text
-        prgDialog.setMessage("Please wait...");
+        prgDialog.setMessage("Authenticating...");
         // Set Cancelable as False
         prgDialog.setCancelable(false);
     }
