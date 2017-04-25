@@ -3,9 +3,11 @@ package com.reis.semester_quiz.Quiz;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +38,7 @@ public class QuizActivity extends AppCompatActivity {
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
 
-    String _token, quiz_id;
+    String _token, quiz_id, quiz_name;
     ListView quiz_list;
     String API_URL = "http://192.168.43.2:8000/api/";
 //    String API_URL = "http://10.0.2.2:8000/api/";
@@ -46,29 +48,21 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_index);
 
+        // get from bundle
+        quiz_name = getIntent().getExtras().getString("quiz_name");
         quiz_id = getIntent().getExtras().getString("quiz_id");
+
+        getSupportActionBar().setTitle(quiz_name);
 
         // get token from shared preferences
         SharedPreferences preferences = getSharedPreferences("semester_quiz", MODE_PRIVATE);
         _token = preferences.getString("_token", null);
-
 
         // set the original view
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pager = (ViewPager) findViewById(R.id.pager);
 
         invokeWS();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

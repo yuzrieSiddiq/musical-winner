@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -14,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -57,6 +60,7 @@ public class QuizFragment extends Fragment {
     ArrayList<HashMap<String, String>> answers;
 //    String API_URL = "http://10.0.2.2:8000/api/";
     String API_URL = "http://192.168.43.2:8000/api/";
+    Typeface typeface, typeface2;
 
     public static QuizFragment newInstance(int position, int length, HashMap<String, String> question, ArrayList<HashMap<String, String>> answers, String quiz_id) {
         QuizFragment f = new QuizFragment();
@@ -84,6 +88,8 @@ public class QuizFragment extends Fragment {
         _token = preferences.getString("_token", null);
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,10 +97,12 @@ public class QuizFragment extends Fragment {
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
 
+        AssetManager assetManager = getContext().getAssets();
+        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
+        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Regular.ttf");
+
         // generate page depends on question no (as long not submit page)
         if (question.get("question_no").equals("n")) {
-
-            // TODO: update the questions no with their answer
             View view = inflater.inflate(R.layout.quiz_submit, container, false);
 
             ListView answersListView = (ListView) view.findViewById(R.id.answers_list);
@@ -117,6 +125,9 @@ public class QuizFragment extends Fragment {
                     invokeWS(params);
                 }
             });
+
+            submit.setTypeface(typeface);
+
             return view;
         } else {
             View view = inflater.inflate(R.layout.quiz_questions, container, false);
@@ -163,6 +174,12 @@ public class QuizFragment extends Fragment {
                     answers.get(question_no).put("answer", question.get("answer4"));
                 }
             });
+
+            questionTextView.setTypeface(typeface);
+            answerA.setTypeface(typeface2);
+            answerB.setTypeface(typeface2);
+            answerC.setTypeface(typeface2);
+            answerD.setTypeface(typeface2);
 
             return view;
         }

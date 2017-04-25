@@ -2,6 +2,8 @@ package com.reis.semester_quiz.Unit.Pages;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +28,8 @@ import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
+import static android.R.attr.type;
+import static android.R.attr.typeface;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -37,6 +41,7 @@ public class Fragment2UnitInfo extends Fragment {
     String _token, unit_id;
     String API_URL = "http://192.168.43.2:8000/api/";
 //    String API_URL = "http://10.0.2.2:8000/api/";
+    Typeface typeface, typeface2, typeface3;
 
     @Nullable
     @Override
@@ -70,7 +75,16 @@ public class Fragment2UnitInfo extends Fragment {
 //                    Toast.makeText(getContext(), unit, Toast.LENGTH_SHORT).show();
 
                     TextView unit_nameTextView = (TextView) view.findViewById(R.id.unit_name);
+                    TextView unit_descriptionTextView = (TextView) view.findViewById(R.id.unit_description);
                     unit_nameTextView.setText(unit);
+
+                    AssetManager assetManager = getContext().getAssets();
+                    typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
+                    typeface2 = Typeface.createFromAsset(assetManager, "fonts/Roboto-Regular.ttf");
+                    typeface3 = Typeface.createFromAsset(assetManager, "fonts/Roboto-Medium.ttf");
+
+                    unit_nameTextView.setTypeface(typeface3);
+                    unit_descriptionTextView.setTypeface(typeface);
 
                 } catch (JSONException e) {
                     Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();

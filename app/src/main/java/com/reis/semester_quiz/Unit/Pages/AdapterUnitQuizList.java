@@ -3,7 +3,9 @@ package com.reis.semester_quiz.Unit.Pages;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +35,8 @@ import java.util.HashMap;
 public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
 
     ArrayList<HashMap<String, String>> quiz_item;
+    String quiz_name;
+    Typeface typeface, typeface2;
 
     public AdapterUnitQuizList(@NonNull Context context, ArrayList<HashMap<String, String>> values) {
         super(context, R.layout.unit_quiz_list_fragment, values);
@@ -47,23 +51,30 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View view = layoutInflater.inflate(R.layout.unit_quiz_list_fragment, parent, false);
 
-
         TextView quiz_title = (TextView) view.findViewById(R.id.quiz_title);
         TextView quiz_type = (TextView) view.findViewById(R.id.quiz_type);
-        TextView quiz_status = (TextView) view.findViewById(R.id.quiz_status);
         TextView quiz_rank = (TextView) view.findViewById(R.id.quiz_rank);
         TextView quiz_score = (TextView) view.findViewById(R.id.quiz_score);
 
         Button attempt_button = (Button) view.findViewById(R.id.quiz_attempt);
 
-        quiz_title.setText(quiz_item.get(position).get("title"));
+        AssetManager assetManager = getContext().getAssets();
+        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
+        typeface2 = Typeface.createFromAsset(assetManager, "fonts/Roboto-Regular.ttf");
+        quiz_title.setTypeface(typeface);
+        quiz_type.setTypeface(typeface);
+        quiz_rank.setTypeface(typeface);
+        quiz_score.setTypeface(typeface);
+        attempt_button.setTypeface(typeface2);
+
+        quiz_name = quiz_item.get(position).get("title");
+        quiz_title.setText(quiz_name);
 
         // if quiz is not yet attempted, its open
         if (quiz_item.get(position).get("has_been_attempted").toLowerCase().equals("false")) {
-            quiz_type.setText("TYPE: " + quiz_item.get(position).get("type").toUpperCase());
-            quiz_status.setText("STATUS: " + quiz_item.get(position).get("status").toUpperCase());
-            quiz_rank.setText("RANK: -");
-            quiz_score.setText("SCORE: -");
+            quiz_type.setText("Type: " + quiz_item.get(position).get("type"));
+            quiz_rank.setText("Rank: -");
+            quiz_score.setText("Score: -");
 
             attempt_button.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.answerA));
             attempt_button.setTextColor(getContext().getResources().getColor(R.color.white));
@@ -77,12 +88,11 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
         } else {
             String score = quiz_item.get(position).get("correct_count") + "/" + quiz_item.get(position).get("answers_count");
             Integer score_percentage = (Integer.parseInt(quiz_item.get(position).get("correct_count")) * 100 / Integer.parseInt(quiz_item.get(position).get("answers_count")));
-            quiz_type.setText("TYPE: " + quiz_item.get(position).get("type").toUpperCase());
-            quiz_status.setText("STATUS: ATTEMPTED");
-            quiz_rank.setText("RANK: -");
-            quiz_score.setText("SCORE: " + score_percentage + "% (" + score + ")");
+            quiz_type.setText("Type: " + quiz_item.get(position).get("type"));
+            quiz_rank.setText("Rank: -");
+            quiz_score.setText("Score: " + score_percentage + "% (" + score + ")");
 
-            attempt_button.setText("CLOSED");
+            attempt_button.setText("ATTEMPTED");
         }
 
         return view;
@@ -96,6 +106,7 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
         // add to bundle
         Bundle bundle = new Bundle();
         bundle.putString("quiz_id", quiz_id);
+        bundle.putString("quiz_name", quiz_name);
         quizintent.putExtras(bundle);
 
         getContext().startActivity(quizintent);

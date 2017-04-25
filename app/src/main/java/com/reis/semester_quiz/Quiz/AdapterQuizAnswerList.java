@@ -1,6 +1,8 @@
 package com.reis.semester_quiz.Quiz;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +30,7 @@ import java.util.HashMap;
 public class AdapterQuizAnswerList extends ArrayAdapter<HashMap<String, String>> {
 
     ArrayList<HashMap<String, String>> answers;
+    Typeface typeface;
 
     public AdapterQuizAnswerList(@NonNull Context context, ArrayList<HashMap<String, String>> answers) {
         super(context, R.layout.quiz_submit_list_fragment, answers);
@@ -47,6 +50,11 @@ public class AdapterQuizAnswerList extends ArrayAdapter<HashMap<String, String>>
         Integer question_number = Integer.parseInt(answers.get(position).get("question_no"))+1;
         question_no.setText("QUESTION " + question_number);
         question_answer.setText(answers.get(position).get("answer"));
+
+        AssetManager assetManager = getContext().getAssets();
+        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
+        question_answer.setTypeface(typeface);
+        question_no.setTypeface(typeface);
 
         return view;
     }

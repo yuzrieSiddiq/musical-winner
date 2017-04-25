@@ -90,28 +90,6 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -180,8 +158,9 @@ public class DashboardActivity extends AppCompatActivity
                     unit_listingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                            Toast.makeText(DashboardActivity.this, listitems.get(position).get("unit_id"), Toast.LENGTH_SHORT).show();
-                            navigatetoUnitActivity(listitems.get(position).get("unit_id"));
+                            String unit_id = listitems.get(position).get("unit_id");
+                            String unit_title = listitems.get(position).get("unit_code") + " " + listitems.get(position).get("unit_name");
+                            navigatetoUnitActivity(unit_id, unit_title);
                         }
                     });
 
@@ -212,7 +191,7 @@ public class DashboardActivity extends AppCompatActivity
         });
     }
 
-    public void navigatetoUnitActivity(String unit_id){
+    public void navigatetoUnitActivity(String unit_id, String unit_name){
 
         // switch page intent
         Intent unitintent = new Intent(getApplicationContext(), UnitActivity.class);
@@ -220,6 +199,7 @@ public class DashboardActivity extends AppCompatActivity
         // add to bundle
         Bundle bundle = new Bundle();
         bundle.putString("unit_id", unit_id);
+        bundle.putString("unit_name", unit_name);
         unitintent.putExtras(bundle);
 
         startActivity(unitintent  );

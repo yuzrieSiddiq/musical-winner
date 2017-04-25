@@ -25,6 +25,10 @@ public class UnitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.unit_index);
 
+        // get from bundle
+        String unit_name = getIntent().getExtras().getString("unit_name");
+        getSupportActionBar().setTitle(unit_name);
+
         tabs = (PagerSlidingTabStrip) findViewById(R.id.dashboard_tabs);
         pager = (ViewPager) findViewById(R.id.dashboard_pager);
         adapter = new UnitPagerAdapter(getSupportFragmentManager());
@@ -36,17 +40,6 @@ public class UnitActivity extends AppCompatActivity {
         pager.setPageMargin(pageMargin);
 
         tabs.setViewPager(pager);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

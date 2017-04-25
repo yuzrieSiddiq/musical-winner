@@ -12,7 +12,6 @@ import java.util.HashMap;
  */
 
 public class QuizPagerAdapter extends FragmentPagerAdapter {
-    private final String[] TITLES = { "Q1", "Q2", "Q3", "Q4", "SUBMIT" };
     ArrayList<HashMap<String, String>> questions;
     ArrayList<HashMap<String, String>> answers;
     String quiz_id;
