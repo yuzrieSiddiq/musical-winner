@@ -73,7 +73,7 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
         // if quiz is not yet attempted, its open
         if (quiz_item.get(position).get("has_been_attempted").toLowerCase().equals("false")) {
             quiz_type.setText("Type: " + quiz_item.get(position).get("type"));
-            quiz_rank.setText("Rank: -");
+            quiz_rank.setText("Rank: -" + "/" + quiz_item.get(position).get("total_students"));
             quiz_score.setText("Score: -");
 
             attempt_button.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.answerA));
@@ -89,7 +89,7 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
             String score = quiz_item.get(position).get("correct_count") + "/" + quiz_item.get(position).get("answers_count");
             Integer score_percentage = (Integer.parseInt(quiz_item.get(position).get("correct_count")) * 100 / Integer.parseInt(quiz_item.get(position).get("answers_count")));
             quiz_type.setText("Type: " + quiz_item.get(position).get("type"));
-            quiz_rank.setText("Rank: -");
+            quiz_rank.setText("Rank: " + quiz_item.get(position).get("rank_no") + "/" + quiz_item.get(position).get("total_students"));
             quiz_score.setText("Score: " + score_percentage + "% (" + score + ")");
 
             attempt_button.setText("ATTEMPTED");

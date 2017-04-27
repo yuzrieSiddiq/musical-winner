@@ -77,6 +77,7 @@ public class Fragment1QuizList extends Fragment {
                         Boolean attempted = quiz_data.getBoolean("has_been_attempted");
                         Integer answers_count = quiz_data.getInt("answers_count");
                         Integer correct_count = quiz_data.getInt("correct_count");
+                        Integer total_students = quiz_data.getInt("total_students");
 
                         Integer quiz_id = quiz.getInt("id");
 
@@ -88,11 +89,20 @@ public class Fragment1QuizList extends Fragment {
                         data.put("has_been_attempted", String.valueOf(attempted));
                         data.put("answers_count", String.valueOf(answers_count));
                         data.put("correct_count", String.valueOf(correct_count));
+                        data.put("total_students", String.valueOf(total_students));
 
-                        if (quiz.getString("type").toLowerCase().equals("individual"))
+                        if (!quiz_data.isNull("rank")) {
+                            JSONObject rank = new JSONObject(quiz_data.getString("rank"));
+                            Integer ranking_no = rank.getInt("rank_no");
+                            data.put("rank_no", String.valueOf(ranking_no));
+                        }
+
+                        if (quiz.getString("type").toLowerCase().equals("individual")) {
                             individual_list_items.add(data);
-                        else if (quiz.getString("type").toLowerCase().equals("group"))
+                        }
+                        else if (quiz.getString("type").toLowerCase().equals("group")) {
                             group_list_items.add(data);
+                        }
                     }
 
                     // adapter is AdapterUnitQuizList, quiz_list get from unit_quiz_list.xml, in array adapter is from unit_quiz_list_fragment
