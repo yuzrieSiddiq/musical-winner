@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.reis.semester_quiz.Quiz.QuizActivity;
 
@@ -36,13 +37,11 @@ public class DashboardUnitList extends ArrayAdapter<HashMap<String, String>> {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View view = layoutInflater.inflate(R.layout.dashboard_unit_listing_fragment, parent, false);
 
-//        TextView unitTextView = (TextView) view.findViewById(R.id.unit);
-//        TextView semesterTextView = (TextView) view.findViewById(R.id.semester);
-//        TextView yearTextView = (TextView) view.findViewById(R.id.year);
-//
-//        unitTextView.setText(listitems.get(position).get("unit_code") + " " + listitems.get(position).get("unit_name"));
-//        semesterTextView.setText(listitems.get(position).get("semester"));
-//        yearTextView.setText(listitems.get(position).get("year"));
+        TextView unitTextView = (TextView) view.findViewById(R.id.unit);
+        TextView semesterTextView = (TextView) view.findViewById(R.id.semester_intake);
+
+        unitTextView.setText(listitems.get(position).get("unit_code") + " " + listitems.get(position).get("unit_name"));
+        semesterTextView.setText(listitems.get(position).get("semester") + " " + listitems.get(position).get("year"));
 
         return view;
     }
