@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="200dp"
+        android:paddingTop="150dp"
         android:divider="#FFF">
 
     </ListView>
