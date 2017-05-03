@@ -1,13 +1,16 @@
 package com.reis.semester_quiz.Unit.Pages;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.reis.semester_quiz.R;
+import com.reis.semester_quiz.Unit.UnitActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -101,6 +105,41 @@ public class Fragment3Team extends Fragment {
                     ListView teamListView = (ListView) view.findViewById(R.id.team_list);
                     ArrayAdapter<HashMap<String, String>> adapter = new AdapterTeamList(getContext(), this_team_list, this_student);
                     teamListView.setAdapter(adapter);
+                    teamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+                            // set title
+                            alertDialogBuilder.setTitle("Confirm remove member?");
+
+                            // set dialog message
+                            alertDialogBuilder
+                                    .setMessage("Student ID: " + this_team_list.get(position).get("student_std_id") + "\n" +
+                                            "Name: " + this_team_list.get(position).get("user_name"))
+                                    .setCancelable(true)
+                                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            String student_id = this_team_list.get(position).get("student_id");
+                                            final String unit_id = getActivity().getIntent().getExtras().getString("unit_id");
+                                            final String unit_name = getActivity().getIntent().getExtras().getString("unit_name");
+
+                                            invokeWS(student_id, unit_id, unit_name);
+                                        }
+                                    })
+                                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                            // create alert dialog
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+
+                            // show it
+                            alertDialog.show();
+                        }
+                    });
 
 
                     final ArrayList<HashMap<String, String>> available_students_list = new ArrayList<HashMap<String, String>>();
@@ -147,6 +186,39 @@ public class Fragment3Team extends Fragment {
                     e.printStackTrace();
 
                 }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // When Http response code is '404'
+                if(statusCode == 404){
+                    Toast.makeText(getContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 500){
+                    Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else{
+                    Toast.makeText(getContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void invokeWS(String student_id, final String unit_id, final String unit_name){
+        // Make RESTful webservice call using AsyncHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(API_URL + "delist/" + student_id + "/unit/" + unit_id + "?token=" + _token, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Intent backToUnitIntent = new Intent(getContext(), UnitActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("unit_id", unit_id);
+                bundle.putString("unit_name", unit_name);
+                backToUnitIntent.putExtras(bundle);
+                startActivity(backToUnitIntent);
             }
 
             @Override

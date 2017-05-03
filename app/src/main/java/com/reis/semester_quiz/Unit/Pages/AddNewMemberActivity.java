@@ -36,6 +36,7 @@ public class AddNewMemberActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("Enlist New Member");
         setContentView(R.layout.activity_add_new_member);
 
         // get token from shared preferences
