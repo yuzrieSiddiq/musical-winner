@@ -1,5 +1,6 @@
 package com.reis.semester_quiz.Unit.Pages;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +71,7 @@ public class Fragment3Team extends Fragment {
 
                     JSONObject this_student = new JSONObject(team_info.getString("this_student"));
                     JSONArray this_team = new JSONArray(team_info.getString("this_team"));
-                    JSONArray available_students = new JSONArray(team_info.getString("available_students"));
+                    final JSONArray available_students = new JSONArray(team_info.getString("available_students"));
 
                     // get data this_team
                     final ArrayList<HashMap<String, String>> this_team_list = new ArrayList<HashMap<String, String>>();
@@ -102,7 +105,7 @@ public class Fragment3Team extends Fragment {
 
                     final ArrayList<HashMap<String, String>> available_students_list = new ArrayList<HashMap<String, String>>();
 
-                    for (int i = 0; i < this_team.length(); i++) {
+                    for (int i = 0; i < available_students.length(); i++) {
                         JSONObject student = available_students.getJSONObject(i);
 
                         Integer student_id = student.getInt("student_id");
@@ -117,12 +120,15 @@ public class Fragment3Team extends Fragment {
                         available_students_list.add(data);
                     }
 
-                    // set to spinner data: available students
-                    Spinner dropdown = (Spinner) view.findViewById(R.id.spinner);
-                    ArrayAdapter<HashMap<String, String>> spinnerAdapter = new AdapterTeamSpinner(getContext(), available_students_list);
-                    dropdown.setAdapter(spinnerAdapter);
-
-//                    Toast.makeText(getContext(), this_team_list.get(0).toString(), Toast.LENGTH_SHORT).show();
+                    Button addNewMember = (Button) view.findViewById(R.id.enlist_new);
+                    addNewMember.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent addMemberIntent = new Intent(getContext(), AddNewMemberActivity.class);
+                            addMemberIntent.putExtra("available_students_list", available_students_list);
+                            startActivity(addMemberIntent);
+                        }
+                    });
 
                 } catch (JSONException e) {
                     Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();

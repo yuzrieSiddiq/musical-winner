@@ -35,7 +35,7 @@ public class AdapterTeamList extends ArrayAdapter<HashMap<String, String>> {
 
     ArrayList<HashMap<String, String>> team_list;
     JSONObject this_student;
-    Typeface typeface, typeface2;
+    Typeface typeface;
 
     public AdapterTeamList(@NonNull Context context, ArrayList<HashMap<String, String>> team_list, JSONObject this_student) {
         super(context, R.layout.unit_team_list_fragment, team_list);
@@ -53,26 +53,14 @@ public class AdapterTeamList extends ArrayAdapter<HashMap<String, String>> {
 
         TextView studentnameTextView= (TextView) view.findViewById(R.id.student_name);
         TextView studentidTextView= (TextView) view.findViewById(R.id.student_id);
-        ImageView remove_button = (ImageView) view.findViewById(R.id.remove_student_from_team);
 
         studentnameTextView.setText(team_list.get(position).get("user_name"));
         studentidTextView.setText(team_list.get(position).get("student_std_id"));
 
-        try {
-            if (this_student.getInt("is_group_leader") == 1) {
-                remove_button.setVisibility(View.INVISIBLE);
-            } else {
-                remove_button.setVisibility(View.VISIBLE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         AssetManager assetManager = getContext().getAssets();
-        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Medium.ttf");
-        typeface2 = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
-        studentnameTextView.setTypeface(typeface2);
+        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
         studentidTextView.setTypeface(typeface);
+        studentnameTextView.setTypeface(typeface);
 
         return view;
     }

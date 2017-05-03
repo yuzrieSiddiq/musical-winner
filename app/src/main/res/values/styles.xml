@@ -21,7 +21,8 @@
         <item name="hintTextAppearance">@style/TextInputLayoutCustom</item>
         <item name="errorTextAppearance">@style/TextInputLayoutCustom</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
-        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow
+        </item>
     </style>
 
     <style name="TextInputLayoutCustom">
