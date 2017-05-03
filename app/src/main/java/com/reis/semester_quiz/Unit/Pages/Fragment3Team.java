@@ -69,7 +69,7 @@ public class Fragment3Team extends Fragment {
                     String jsonstring = new String (responseBody);
                     JSONObject team_info = new JSONObject(jsonstring);
 
-                    JSONObject this_student = new JSONObject(team_info.getString("this_student"));
+                    final JSONObject this_student = new JSONObject(team_info.getString("this_student"));
                     JSONArray this_team = new JSONArray(team_info.getString("this_team"));
                     final JSONArray available_students = new JSONArray(team_info.getString("available_students"));
 
@@ -124,9 +124,21 @@ public class Fragment3Team extends Fragment {
                     addNewMember.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent addMemberIntent = new Intent(getContext(), AddNewMemberActivity.class);
-                            addMemberIntent.putExtra("available_students_list", available_students_list);
-                            startActivity(addMemberIntent);
+                            try {
+                                JSONObject unitObject = new JSONObject(this_student.getString("unit"));
+                                Intent addMemberIntent = new Intent(getContext(), AddNewMemberActivity.class);
+
+                                Bundle bundle = new Bundle();
+                                bundle.putString("unit_id", String.valueOf(unitObject.getInt("id")));
+                                bundle.putString("unit_name", unitObject.getString("name"));
+                                bundle.putSerializable("available_students_list", available_students_list);
+                                addMemberIntent.putExtras(bundle);
+
+                                startActivity(addMemberIntent);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
