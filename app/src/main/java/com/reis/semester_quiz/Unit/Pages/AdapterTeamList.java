@@ -35,7 +35,7 @@ public class AdapterTeamList extends ArrayAdapter<HashMap<String, String>> {
 
     ArrayList<HashMap<String, String>> team_list;
     JSONObject this_student;
-    Typeface typeface;
+    Typeface typeface, typeface2;
 
     public AdapterTeamList(@NonNull Context context, ArrayList<HashMap<String, String>> team_list, JSONObject this_student) {
         super(context, R.layout.unit_team_list_fragment, team_list);
@@ -69,9 +69,10 @@ public class AdapterTeamList extends ArrayAdapter<HashMap<String, String>> {
         }
 
         AssetManager assetManager = getContext().getAssets();
-        typeface = Typeface.createFromAsset(assetManager, "fonts/LucidaGrande-Regular.ttf");
+        typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Medium.ttf");
+        typeface2 = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
+        studentnameTextView.setTypeface(typeface2);
         studentidTextView.setTypeface(typeface);
-        studentnameTextView.setTypeface(typeface);
 
         return view;
     }

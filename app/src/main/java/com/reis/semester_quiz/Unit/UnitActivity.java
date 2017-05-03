@@ -30,6 +30,8 @@ public class UnitActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(unit_name);
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.dashboard_tabs);
+        tabs.setIndicatorColorResource(R.color.answerD);
+        tabs.setIndicatorHeight(8);
         pager = (ViewPager) findViewById(R.id.dashboard_pager);
         adapter = new UnitPagerAdapter(getSupportFragmentManager());
 

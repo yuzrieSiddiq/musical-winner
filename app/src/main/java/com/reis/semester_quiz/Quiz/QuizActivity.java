@@ -60,6 +60,8 @@ public class QuizActivity extends AppCompatActivity {
 
         // set the original view
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setIndicatorColorResource(R.color.answerD);
+        tabs.setIndicatorHeight(8);
         pager = (ViewPager) findViewById(R.id.pager);
 
         invokeWS();
