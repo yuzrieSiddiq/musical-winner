@@ -93,6 +93,7 @@ public class QuizFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         position = getArguments().getInt(ARG_POSITION);
         length = getArguments().getInt(ARG_LENGTH);
         quiz_id = getArguments().getString(ARG_QUIZ_ID);
@@ -151,6 +152,7 @@ public class QuizFragment extends Fragment {
 
             final Integer question_no = Integer.valueOf(question.get("question_no"));
 
+            // overlay tutorial on first time use
             if (position == 0) {
                 final RelativeLayout overlayLayout = (RelativeLayout) view.findViewById(R.id.rlOverlay);
 
@@ -184,7 +186,6 @@ public class QuizFragment extends Fragment {
                         overlayLayout.startAnimation(fadeOut);
                     }
                 });
-
             }
 
             TextView questionTextView = (TextView) view.findViewById(R.id.question);
@@ -203,44 +204,44 @@ public class QuizFragment extends Fragment {
             answerA.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    answers.get(question_no).put("answer", question.get("answer1"));
                     answerA.getBackground().setColorFilter(Color.parseColor(color_answerA), PorterDuff.Mode.MULTIPLY);
                     answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answers.get(question_no).put("answer", question.get("answer1"));
                 }
             });
 
             answerB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    answers.get(question_no).put("answer", question.get("answer2"));
                     answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerB.getBackground().setColorFilter(Color.parseColor(color_answerB), PorterDuff.Mode.MULTIPLY);
                     answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answers.get(question_no).put("answer", question.get("answer2"));
                 }
             });
 
             answerC.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    answers.get(question_no).put("answer", question.get("answer3"));
                     answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerC.getBackground().setColorFilter(Color.parseColor(color_answerC), PorterDuff.Mode.MULTIPLY);
                     answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answers.get(question_no).put("answer", question.get("answer3"));
                 }
             });
 
             answerD.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    answers.get(question_no).put("answer", question.get("answer4"));
                     answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                     answerD.getBackground().setColorFilter(Color.parseColor(color_answerD), PorterDuff.Mode.MULTIPLY);
+                    answers.get(question_no).put("answer", question.get("answer4"));
                 }
             });
 
