@@ -19,12 +19,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +70,7 @@ public class QuizFragment extends Fragment {
 
     private int position, length;
     String _token, quiz_id;
+    Boolean quiz_tutorial;
     ProgressDialog prgDialog;
     HashMap<String, String> question;
     ArrayList<HashMap<String, String>> answers;
@@ -97,6 +102,7 @@ public class QuizFragment extends Fragment {
         // get token from shared preferences
         SharedPreferences preferences = getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE);
         _token = preferences.getString("_token", null);
+        quiz_tutorial = preferences.getBoolean("quiz_tutorial", true);
     }
 
 
@@ -144,6 +150,42 @@ public class QuizFragment extends Fragment {
             View view = inflater.inflate(R.layout.quiz_questions, container, false);
 
             final Integer question_no = Integer.valueOf(question.get("question_no"));
+
+            if (position == 0) {
+                final RelativeLayout overlayLayout = (RelativeLayout) view.findViewById(R.id.rlOverlay);
+
+                if (quiz_tutorial) {
+                    overlayLayout.setVisibility(View.VISIBLE);
+                } else {
+                    overlayLayout.setVisibility(View.GONE);
+                }
+
+                overlayLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SharedPreferences.Editor preferences_editor= getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+                        preferences_editor.putBoolean("quiz_tutorial", false);
+                        preferences_editor.apply();
+
+                        Animation fadeOut = new AlphaAnimation(1, 0);
+                        fadeOut.setInterpolator(new AccelerateInterpolator());
+                        fadeOut.setDuration(300);
+
+                        fadeOut.setAnimationListener(new Animation.AnimationListener()
+                        {
+                            public void onAnimationEnd(Animation animation)
+                            {
+                                overlayLayout.setVisibility(View.GONE);
+                            }
+                            public void onAnimationRepeat(Animation animation) {}
+                            public void onAnimationStart(Animation animation) {}
+                        });
+
+                        overlayLayout.startAnimation(fadeOut);
+                    }
+                });
+
+            }
 
             TextView questionTextView = (TextView) view.findViewById(R.id.question);
             final Button answerA = (Button) view.findViewById(R.id.answerA);
