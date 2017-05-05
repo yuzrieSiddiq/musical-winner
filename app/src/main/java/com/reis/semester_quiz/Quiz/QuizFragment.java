@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -52,6 +54,15 @@ public class QuizFragment extends Fragment {
     private static final String ARG_QUESTION = "question";
     private static final String ARG_ANSWERS = "answers";
     private static final String ARG_QUIZ_ID = "quiz_id";
+
+    private String color_darkgrey= "#4B4B4B";
+    private String color_white   = "#FFFFFF";
+    private String color_answerA = "#679E36";
+    private String color_answerB = "#C64B46";
+    private String color_answerC = "#F3822C";
+    private String color_answerD = "#3F9EDE";
+    private String color_answerE = "#4D62BB";
+    private String color_maintheme = "#5160BB";
 
     private int position, length;
     String _token, quiz_id;
@@ -135,10 +146,10 @@ public class QuizFragment extends Fragment {
             final Integer question_no = Integer.valueOf(question.get("question_no"));
 
             TextView questionTextView = (TextView) view.findViewById(R.id.question);
-            Button answerA = (Button) view.findViewById(R.id.answerA);
-            Button answerB = (Button) view.findViewById(R.id.answerB);
-            Button answerC = (Button) view.findViewById(R.id.answerC);
-            Button answerD = (Button) view.findViewById(R.id.answerD);
+            final Button answerA = (Button) view.findViewById(R.id.answerA);
+            final Button answerB = (Button) view.findViewById(R.id.answerB);
+            final Button answerC = (Button) view.findViewById(R.id.answerC);
+            final Button answerD = (Button) view.findViewById(R.id.answerD);
 
             questionTextView.setText(question.get("question"));
             answerA.setText(question.get("answer1"));
@@ -151,6 +162,10 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     answers.get(question_no).put("answer", question.get("answer1"));
+                    answerA.getBackground().setColorFilter(Color.parseColor(color_answerA), PorterDuff.Mode.MULTIPLY);
+                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                 }
             });
 
@@ -158,6 +173,10 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     answers.get(question_no).put("answer", question.get("answer2"));
+                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerB.getBackground().setColorFilter(Color.parseColor(color_answerB), PorterDuff.Mode.MULTIPLY);
+                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                 }
             });
 
@@ -165,6 +184,10 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     answers.get(question_no).put("answer", question.get("answer3"));
+                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerC.getBackground().setColorFilter(Color.parseColor(color_answerC), PorterDuff.Mode.MULTIPLY);
+                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
                 }
             });
 
@@ -172,6 +195,10 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     answers.get(question_no).put("answer", question.get("answer4"));
+                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                    answerD.getBackground().setColorFilter(Color.parseColor(color_answerD), PorterDuff.Mode.MULTIPLY);
                 }
             });
 
