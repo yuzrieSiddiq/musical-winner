@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -74,6 +75,7 @@ public class QuizFragment extends Fragment {
     ProgressDialog prgDialog;
     HashMap<String, String> question;
     ArrayList<HashMap<String, String>> answers;
+
 //    String API_URL = "http://10.0.2.2:8000/api/";
     String API_URL = "http://192.168.43.2:8000/api/";
     Typeface typeface, typeface2;
@@ -123,8 +125,8 @@ public class QuizFragment extends Fragment {
         if (question.get("question_no").equals("n")) {
             View view = inflater.inflate(R.layout.quiz_submit, container, false);
 
-            ListView answersListView = (ListView) view.findViewById(R.id.answers_list);
-            ArrayAdapter<HashMap<String, String>> answersadapter = new AdapterQuizAnswerList(getContext(), answers);
+            final ListView answersListView = (ListView) view.findViewById(R.id.answers_list);
+            final ArrayAdapter<HashMap<String, String>> answersadapter = new AdapterQuizAnswerList(getContext(), answers);
             answersListView.setAdapter(answersadapter);
 
             Button submit = (Button) view.findViewById(R.id.submit);
@@ -141,6 +143,16 @@ public class QuizFragment extends Fragment {
                     RequestParams params = new RequestParams();
                     params.put("answers", answers_json);
                     invokeWS(params);
+                }
+            });
+
+            final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    answersadapter.notifyDataSetChanged();
+                    answersListView.setAdapter(answersadapter);
+                    swipeContainer.setRefreshing(false);
                 }
             });
 

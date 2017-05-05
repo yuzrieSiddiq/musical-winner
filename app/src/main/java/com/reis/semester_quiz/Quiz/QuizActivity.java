@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ public class QuizActivity extends AppCompatActivity {
         pager = (ViewPager) findViewById(R.id.pager);
 
         invokeWS();
+
     }
 
     @Override
@@ -148,6 +150,7 @@ public class QuizActivity extends AppCompatActivity {
 
                     QuizPagerAdapter adapter = new QuizPagerAdapter(getSupportFragmentManager(), questions, student_answers, quiz_id);
                     pager.setAdapter(adapter);
+                    pager.setOffscreenPageLimit(questions.size());
 
                     final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
                     pager.setPageMargin(pageMargin);

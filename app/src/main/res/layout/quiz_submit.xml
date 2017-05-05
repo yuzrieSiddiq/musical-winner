@@ -4,31 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10">
+    android:weightSum="15">
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/review_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="REVIEW ANSWERS"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/review_text"
+            android:textSize="12sp"
+            android:text="Pull to refresh the answers"
+            android:gravity="center"/>
+    </RelativeLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textSize="16sp"
-        android:text="PLEASE CONFIRM YOUR ANSWER"
-        android:gravity="center"/>
+        android:layout_weight="13">
 
-    <ListView
-        android:id="@+id/answers_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8">
-
-    </ListView>
+        <ListView
+            android:id="@+id/answers_list"
+            android:layout_width="match_parent"
+            android:layout_height="403dp"
+            android:divider="@null">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <Button
         android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:layout_gravity="bottom"
         android:textColor="#FFF"
         android:backgroundTint="#689F38"
