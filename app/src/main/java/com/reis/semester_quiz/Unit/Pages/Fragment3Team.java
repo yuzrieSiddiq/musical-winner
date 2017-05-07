@@ -105,41 +105,46 @@ public class Fragment3Team extends Fragment {
                     ListView teamListView = (ListView) view.findViewById(R.id.team_list);
                     ArrayAdapter<HashMap<String, String>> adapter = new AdapterTeamList(getContext(), this_team_list, this_student);
                     teamListView.setAdapter(adapter);
-                    teamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
 
-                            // set title
-                            alertDialogBuilder.setTitle("Confirm remove member?");
+                    if (this_student.getString("is_group_leader").equals("1")) {
+                        teamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                                if (position != 0) {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
 
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setMessage("Student ID: " + this_team_list.get(position).get("student_std_id") + "\n" +
-                                            "Name: " + this_team_list.get(position).get("user_name"))
-                                    .setCancelable(true)
-                                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,int id) {
-                                            String student_id = this_team_list.get(position).get("student_id");
-                                            final String unit_id = getActivity().getIntent().getExtras().getString("unit_id");
-                                            final String unit_name = getActivity().getIntent().getExtras().getString("unit_name");
+                                    // set title
+                                    alertDialogBuilder.setTitle("Confirm remove member?");
 
-                                            invokeWS(student_id, unit_id, unit_name);
-                                        }
-                                    })
-                                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
+                                    // set dialog message
+                                    alertDialogBuilder
+                                            .setMessage("Student ID: " + this_team_list.get(position).get("student_std_id") + "\n" +
+                                                    "Name: " + this_team_list.get(position).get("user_name"))
+                                            .setCancelable(true)
+                                            .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog,int id) {
+                                                    String student_id = this_team_list.get(position).get("student_id");
+                                                    final String unit_id = getActivity().getIntent().getExtras().getString("unit_id");
+                                                    final String unit_name = getActivity().getIntent().getExtras().getString("unit_name");
 
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    invokeWS(student_id, unit_id, unit_name);
+                                                }
+                                            })
+                                            .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog,int id) {
+                                                    dialog.cancel();
+                                                }
+                                            });
 
-                            // show it
-                            alertDialog.show();
-                        }
-                    });
+                                    // create alert dialog
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                                    // show it
+                                    alertDialog.show();
+                                }
+                            }
+                        });
+                    }
 
 
                     final ArrayList<HashMap<String, String>> available_students_list = new ArrayList<HashMap<String, String>>();

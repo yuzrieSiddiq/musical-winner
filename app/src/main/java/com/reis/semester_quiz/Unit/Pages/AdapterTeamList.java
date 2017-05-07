@@ -55,7 +55,11 @@ public class AdapterTeamList extends ArrayAdapter<HashMap<String, String>> {
         TextView studentidTextView= (TextView) view.findViewById(R.id.student_id);
 
         studentnameTextView.setText(team_list.get(position).get("user_name"));
-        studentidTextView.setText(team_list.get(position).get("student_std_id"));
+        if (team_list.get(position).get("is_group_leader").equals("1")) {
+            studentidTextView.setText(team_list.get(position).get("student_std_id") + " [Group Leader]");
+        } else {
+            studentidTextView.setText(team_list.get(position).get("student_std_id"));
+        }
 
         AssetManager assetManager = getContext().getAssets();
         typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
