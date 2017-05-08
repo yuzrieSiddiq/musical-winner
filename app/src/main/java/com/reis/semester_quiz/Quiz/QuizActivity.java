@@ -124,6 +124,7 @@ public class QuizActivity extends AppCompatActivity {
                         HashMap<String, String> data_question = new HashMap<String, String>();
                         data_question.put("question_id", String.valueOf(question_id));
                         data_question.put("question_no", String.valueOf(question_no));
+                        data_question.put("answer_type", question.getString("answer_type"));
                         data_question.put("question", question.getString("question"));
                         data_question.put("answer1", question.getString("answer1"));
                         data_question.put("answer2", question.getString("answer2"));

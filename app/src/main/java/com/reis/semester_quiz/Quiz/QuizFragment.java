@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -43,14 +44,20 @@ import com.reis.semester_quiz.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import cz.msebera.android.httpclient.Header;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.reis.semester_quiz.R.id.answer;
 
 public class QuizFragment extends Fragment {
 
@@ -160,111 +167,224 @@ public class QuizFragment extends Fragment {
 
             return view;
         } else {
-            View view = inflater.inflate(R.layout.quiz_questions, container, false);
+            if (question.get("answer_type").toLowerCase().equals("ranking")) {
+                View view = inflater.inflate(R.layout.quiz_questions_ranking, container, false);
+                populateRankingQuestion(view);
 
-            final Integer question_no = Integer.valueOf(question.get("question_no"));
+                return view;
+            } else {
+                View view = inflater.inflate(R.layout.quiz_questions, container, false);
+                populateMCQQuestion(view);
 
-            // overlay tutorial on first time use
-            if (position == 0) {
-                final RelativeLayout overlayLayout = (RelativeLayout) view.findViewById(R.id.rlOverlay);
+                return view;
+            }
+        }
+    }
 
-                if (quiz_tutorial) {
-                    overlayLayout.setVisibility(View.VISIBLE);
-                } else {
-                    overlayLayout.setVisibility(View.GONE);
-                }
+    public void populateRankingQuestion(View view) {
+        final Integer question_no = Integer.valueOf(question.get("question_no"));
 
-                overlayLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SharedPreferences.Editor preferences_editor= getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
-                        preferences_editor.putBoolean("quiz_tutorial", false);
-                        preferences_editor.apply();
+        // overlay tutorial on first time use
+        if (position == 0) {
+            final RelativeLayout overlayLayout = (RelativeLayout) view.findViewById(R.id.rlOverlay);
 
-                        Animation fadeOut = new AlphaAnimation(1, 0);
-                        fadeOut.setInterpolator(new AccelerateInterpolator());
-                        fadeOut.setDuration(300);
-
-                        fadeOut.setAnimationListener(new Animation.AnimationListener()
-                        {
-                            public void onAnimationEnd(Animation animation)
-                            {
-                                overlayLayout.setVisibility(View.GONE);
-                            }
-                            public void onAnimationRepeat(Animation animation) {}
-                            public void onAnimationStart(Animation animation) {}
-                        });
-
-                        overlayLayout.startAnimation(fadeOut);
-                    }
-                });
+            if (quiz_tutorial) {
+                overlayLayout.setVisibility(View.VISIBLE);
+            } else {
+                overlayLayout.setVisibility(View.GONE);
             }
 
-            TextView questionTextView = (TextView) view.findViewById(R.id.question);
-            final Button answerA = (Button) view.findViewById(R.id.answerA);
-            final Button answerB = (Button) view.findViewById(R.id.answerB);
-            final Button answerC = (Button) view.findViewById(R.id.answerC);
-            final Button answerD = (Button) view.findViewById(R.id.answerD);
-
-            questionTextView.setText(question.get("question"));
-            answerA.setText(question.get("answer1"));
-            answerB.setText(question.get("answer2"));
-            answerC.setText(question.get("answer3"));
-            answerD.setText(question.get("answer4"));
-
-
-            answerA.setOnClickListener(new View.OnClickListener() {
+            overlayLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_answerA), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer1"));
+                    SharedPreferences.Editor preferences_editor= getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+                    preferences_editor.putBoolean("quiz_tutorial", false);
+                    preferences_editor.apply();
+
+                    Animation fadeOut = new AlphaAnimation(1, 0);
+                    fadeOut.setInterpolator(new AccelerateInterpolator());
+                    fadeOut.setDuration(300);
+
+                    fadeOut.setAnimationListener(new Animation.AnimationListener()
+                    {
+                        public void onAnimationEnd(Animation animation)
+                        {
+                            overlayLayout.setVisibility(View.GONE);
+                        }
+                        public void onAnimationRepeat(Animation animation) {}
+                        public void onAnimationStart(Animation animation) {}
+                    });
+
+                    overlayLayout.startAnimation(fadeOut);
                 }
             });
-
-            answerB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_answerB), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer2"));
-                }
-            });
-
-            answerC.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_answerC), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer3"));
-                }
-            });
-
-            answerD.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_answerD), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer4"));
-                }
-            });
-
-            questionTextView.setTypeface(typeface);
-            answerA.setTypeface(typeface2);
-            answerB.setTypeface(typeface2);
-            answerC.setTypeface(typeface2);
-            answerD.setTypeface(typeface2);
-
-            return view;
         }
+
+        TextView questionTextView = (TextView) view.findViewById(R.id.question);
+        questionTextView.setText(question.get("question"));
+
+        final ArrayList<HashMap<String, String>> answers = new ArrayList<HashMap<String, String>>();
+        final ArrayList<HashMap<String, Integer>> answers_rank = new ArrayList<HashMap<String, Integer>>();
+        for (int i = 4; i < 9; i++) {
+            HashMap<String, String> answer = new HashMap<>();
+            Integer answerPosition = i - 3;
+            String answerAtPosition = "answer" + answerPosition;
+            answer.put(answerAtPosition, question.get(answerAtPosition));   // 'answer1: sample answer'
+            answer.put(answerAtPosition+"_rank", String.valueOf(0));        // 'answer1_rank': 0
+
+            answers.add(answer);
+
+            HashMap<String, Integer> answer_rank = new HashMap<>();
+            answer_rank.put(answerAtPosition+"_rank", 0);
+            answers_rank.add(answer_rank);
+        }
+
+        final Integer[] current_rank = {0, 0, 0, 0, 0};
+        final ListView ranking_answers_list = (ListView) view.findViewById(R.id.ranking_answer_list);
+        final ArrayAdapter ranking_answers_list_adapter = new AdapterRankingAnswerList(getContext(), answers);
+        ranking_answers_list.setAdapter(ranking_answers_list_adapter);
+        ranking_answers_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                current_rank[position]++;
+                TextView rank_no = (TextView) view.findViewById(R.id.rank_no);
+
+                Integer answerPosition = position+1;
+                String answerAtPosition = "answer" + answerPosition + "_rank";
+
+                Integer theAnswer = Integer.parseInt(answers.get(position).get(answerAtPosition));
+                theAnswer = current_rank[position];
+                rank_no.setText(theAnswer.toString());
+
+                // get all the answers
+                answers.get(position).put(answerAtPosition, String.valueOf(theAnswer));
+                answers_rank.get(position).put(answerAtPosition, theAnswer);
+
+                // rearrange into ascending order
+                // TODO: sort
+            }
+        });
+
+        Button clearranks = (Button) view.findViewById(R.id.clear_rank);
+        clearranks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < current_rank.length; i++) {
+                    current_rank[i] = 0;
+
+                    Integer answerPosition = i+1;
+                    String answerAtPosition = "answer" + answerPosition + "_rank";
+                    answers.get(i).put(answerAtPosition, String.valueOf(current_rank[i]));
+                }
+
+                ranking_answers_list.setAdapter(ranking_answers_list_adapter);
+            }
+        });
+
+//        answers.get(question_no).put("answer", question.get("answer2"));
+    }
+
+    public void populateMCQQuestion(View view) {
+        final Integer question_no = Integer.valueOf(question.get("question_no"));
+
+        // overlay tutorial on first time use
+        if (position == 0) {
+            final RelativeLayout overlayLayout = (RelativeLayout) view.findViewById(R.id.rlOverlay);
+
+            if (quiz_tutorial) {
+                overlayLayout.setVisibility(View.VISIBLE);
+            } else {
+                overlayLayout.setVisibility(View.GONE);
+            }
+
+            overlayLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharedPreferences.Editor preferences_editor= getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+                    preferences_editor.putBoolean("quiz_tutorial", false);
+                    preferences_editor.apply();
+
+                    Animation fadeOut = new AlphaAnimation(1, 0);
+                    fadeOut.setInterpolator(new AccelerateInterpolator());
+                    fadeOut.setDuration(300);
+
+                    fadeOut.setAnimationListener(new Animation.AnimationListener()
+                    {
+                        public void onAnimationEnd(Animation animation)
+                        {
+                            overlayLayout.setVisibility(View.GONE);
+                        }
+                        public void onAnimationRepeat(Animation animation) {}
+                        public void onAnimationStart(Animation animation) {}
+                    });
+
+                    overlayLayout.startAnimation(fadeOut);
+                }
+            });
+        }
+
+        TextView questionTextView = (TextView) view.findViewById(R.id.question);
+        final Button answerA = (Button) view.findViewById(R.id.answerA);
+        final Button answerB = (Button) view.findViewById(R.id.answerB);
+        final Button answerC = (Button) view.findViewById(R.id.answerC);
+        final Button answerD = (Button) view.findViewById(R.id.answerD);
+
+        questionTextView.setText(question.get("question"));
+        answerA.setText(question.get("answer1"));
+        answerB.setText(question.get("answer2"));
+        answerC.setText(question.get("answer3"));
+        answerD.setText(question.get("answer4"));
+
+
+        answerA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                answerA.getBackground().setColorFilter(Color.parseColor(color_answerA), PorterDuff.Mode.MULTIPLY);
+                answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answers.get(question_no).put("answer", question.get("answer1"));
+            }
+        });
+
+        answerB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerB.getBackground().setColorFilter(Color.parseColor(color_answerB), PorterDuff.Mode.MULTIPLY);
+                answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answers.get(question_no).put("answer", question.get("answer2"));
+            }
+        });
+
+        answerC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerC.getBackground().setColorFilter(Color.parseColor(color_answerC), PorterDuff.Mode.MULTIPLY);
+                answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answers.get(question_no).put("answer", question.get("answer3"));
+            }
+        });
+
+        answerD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
+                answerD.getBackground().setColorFilter(Color.parseColor(color_answerD), PorterDuff.Mode.MULTIPLY);
+                answers.get(question_no).put("answer", question.get("answer4"));
+            }
+        });
+
+        questionTextView.setTypeface(typeface);
+        answerA.setTypeface(typeface2);
+        answerB.setTypeface(typeface2);
+        answerC.setTypeface(typeface2);
+        answerD.setTypeface(typeface2);
     }
 
     public void invokeWS(RequestParams params){
