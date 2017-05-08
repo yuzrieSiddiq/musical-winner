@@ -13,4 +13,12 @@
     <string name="sample_question">Different people may express prejudice differently. There are people who often disclose outwardly how they are opposed to unequal treatment, but their inner feelings may suggest otherwise. They may say they are egalitarian and use that open display as an excuse when they act in a way that is not in the interests of diversity. This way of expressing prejudice is known as</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_activity_add_new_member">AddNewMemberActivity</string>
+
+    <string-array name="ranking_numbers">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 </resources>

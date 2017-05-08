@@ -2,6 +2,7 @@ package com.reis.semester_quiz.Quiz;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +50,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -160,6 +164,8 @@ public class QuizFragment extends Fragment {
                     answersadapter.notifyDataSetChanged();
                     answersListView.setAdapter(answersadapter);
                     swipeContainer.setRefreshing(false);
+
+//                    Toast.makeText(getContext(), answers.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -223,8 +229,7 @@ public class QuizFragment extends Fragment {
         TextView questionTextView = (TextView) view.findViewById(R.id.question);
         questionTextView.setText(question.get("question"));
 
-        final ArrayList<HashMap<String, String>> answers = new ArrayList<HashMap<String, String>>();
-        final ArrayList<HashMap<String, Integer>> answers_rank = new ArrayList<HashMap<String, Integer>>();
+        final ArrayList<HashMap<String, String>> answers_ranking = new ArrayList<HashMap<String, String>>();
         for (int i = 4; i < 9; i++) {
             HashMap<String, String> answer = new HashMap<>();
             Integer answerPosition = i - 3;
@@ -232,36 +237,65 @@ public class QuizFragment extends Fragment {
             answer.put(answerAtPosition, question.get(answerAtPosition));   // 'answer1: sample answer'
             answer.put(answerAtPosition+"_rank", String.valueOf(0));        // 'answer1_rank': 0
 
-            answers.add(answer);
-
-            HashMap<String, Integer> answer_rank = new HashMap<>();
-            answer_rank.put(answerAtPosition+"_rank", 0);
-            answers_rank.add(answer_rank);
+            answers_ranking.add(answer);
         }
 
         final Integer[] current_rank = {0, 0, 0, 0, 0};
+        final String[] answerString = {"", "", "", "", ""};
+
         final ListView ranking_answers_list = (ListView) view.findViewById(R.id.ranking_answer_list);
-        final ArrayAdapter ranking_answers_list_adapter = new AdapterRankingAnswerList(getContext(), answers);
+        final ArrayAdapter ranking_answers_list_adapter = new AdapterRankingAnswerList(getContext(), answers_ranking);
         ranking_answers_list.setAdapter(ranking_answers_list_adapter);
         ranking_answers_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                current_rank[position]++;
-                TextView rank_no = (TextView) view.findViewById(R.id.rank_no);
+            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
 
-                Integer answerPosition = position+1;
-                String answerAtPosition = "answer" + answerPosition + "_rank";
+                final ArrayAdapter<String> dialogAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
+                dialogAdapter.add("1");
+                dialogAdapter.add("2");
+                dialogAdapter.add("3");
+                dialogAdapter.add("4");
+                dialogAdapter.add("5");
 
-                Integer theAnswer = Integer.parseInt(answers.get(position).get(answerAtPosition));
-                theAnswer = current_rank[position];
-                rank_no.setText(theAnswer.toString());
+                alertDialogBuilder.setAdapter(dialogAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String strName = dialogAdapter.getItem(which);
+                        final Integer answerI = position+1;
+                        String answerAtPositionI = "answer" + answerI;
+                        String answerAtPositionI_rank = "answer" + answerI + "_rank";
 
-                // get all the answers
-                answers.get(position).put(answerAtPosition, String.valueOf(theAnswer));
-                answers_rank.get(position).put(answerAtPosition, theAnswer);
+                        TextView answer = (TextView) view.findViewById(R.id.answer);
+                        TextView rank_no = (TextView) view.findViewById(R.id.rank_no);
+                        rank_no.setText(strName);
 
-                // rearrange into ascending order
-                // TODO: sort
+                        if (rank_no.getText().equals("1")) {
+                            answerString[0] = answer.getText().toString();
+                        }
+
+                        if (rank_no.getText().equals("2")) {
+                            answerString[1] = answer.getText().toString();
+                        }
+
+                        if (rank_no.getText().equals("3")) {
+                            answerString[2] = answer.getText().toString();
+                        }
+
+                        if (rank_no.getText().equals("4")) {
+                            answerString[3] = answer.getText().toString();
+                        }
+
+                        if (rank_no.getText().equals("5")) {
+                            answerString[4] = answer.getText().toString();
+                        }
+
+                        String answerFullString = answerString[0] + ", " + answerString[1] + ", " + answerString[2] + ", " + answerString[3] + ", " + answerString[4];
+                        answers.get(question_no).put("answer", answerFullString);
+                        Toast.makeText(getContext(), String.valueOf(answers.get(question_no).get("answer")), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDialogBuilder.show();
             }
         });
 
@@ -274,14 +308,13 @@ public class QuizFragment extends Fragment {
 
                     Integer answerPosition = i+1;
                     String answerAtPosition = "answer" + answerPosition + "_rank";
-                    answers.get(i).put(answerAtPosition, String.valueOf(current_rank[i]));
+                    answerString[i] = "";
+                    answers_ranking.get(i).put(answerAtPosition, String.valueOf(current_rank[i]));
                 }
 
                 ranking_answers_list.setAdapter(ranking_answers_list_adapter);
             }
         });
-
-//        answers.get(question_no).put("answer", question.get("answer2"));
     }
 
     public void populateMCQQuestion(View view) {
