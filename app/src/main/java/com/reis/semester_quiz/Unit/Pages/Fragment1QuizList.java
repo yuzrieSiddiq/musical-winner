@@ -74,10 +74,15 @@ public class Fragment1QuizList extends Fragment {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject quiz_data = jsonArray.getJSONObject(i);
                         JSONObject quiz = new JSONObject(quiz_data.getString("quiz"));
+                        JSONObject this_student = new JSONObject(quiz_data.getString("this_student"));
+
                         Boolean attempted = quiz_data.getBoolean("has_been_attempted");
                         Integer answers_count = quiz_data.getInt("answers_count");
                         Integer correct_count = quiz_data.getInt("correct_count");
                         Integer total_students = quiz_data.getInt("total_students");
+                        Integer total_teams = quiz_data.getInt("total_teams");
+
+                        Integer is_group_leader = this_student.getInt("is_group_leader");
 
                         Integer quiz_id = quiz.getInt("id");
 
@@ -90,6 +95,8 @@ public class Fragment1QuizList extends Fragment {
                         data.put("answers_count", String.valueOf(answers_count));
                         data.put("correct_count", String.valueOf(correct_count));
                         data.put("total_students", String.valueOf(total_students));
+                        data.put("total_teams", String.valueOf(total_teams));
+                        data.put("is_group_leader", String.valueOf(is_group_leader));
 
                         if (!quiz_data.isNull("rank")) {
                             JSONObject rank = new JSONObject(quiz_data.getString("rank"));
@@ -104,6 +111,8 @@ public class Fragment1QuizList extends Fragment {
                             group_list_items.add(data);
                         }
                     }
+
+                    // Toast.makeText(getContext(), group_list_items.toString(), Toast.LENGTH_LONG).show();
 
                     // adapter is AdapterUnitQuizList, quiz_list get from unit_quiz_list.xml, in array adapter is from unit_quiz_list_fragment
                     ArrayAdapter individualListAdapter = new AdapterUnitQuizList(getContext(), individual_list_items);

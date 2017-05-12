@@ -73,12 +73,27 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
         // if quiz is not yet attempted, its open
         if (quiz_item.get(position).get("has_been_attempted").toLowerCase().equals("false")) {
             quiz_type.setText("Type: " + quiz_item.get(position).get("type"));
-            quiz_rank.setText("Rank: -" + "/" + quiz_item.get(position).get("total_students"));
+            if (quiz_item.get(position).get("type").equals("group")) {
+                quiz_rank.setText("Rank: -" + "/" + quiz_item.get(position).get("total_teams"));
+            } else {
+                quiz_rank.setText("Rank: -" + "/" + quiz_item.get(position).get("total_students"));
+            }
             quiz_score.setText("Score: -");
 
-            attempt_button.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.answerA));
-            attempt_button.setTextColor(getContext().getResources().getColor(R.color.white));
-            attempt_button.setText("OPEN");
+            if (quiz_item.get(position).get("type").equals("group")) {
+                if (quiz_item.get(position).get("is_group_leader").equals("0")) {
+                    attempt_button.setText("TEAM LEADER ONLY");
+                    attempt_button.setEnabled(false);
+                } else {
+                    attempt_button.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.answerA));
+                    attempt_button.setTextColor(getContext().getResources().getColor(R.color.white));
+                    attempt_button.setText("OPEN");
+                }
+            } else {
+                attempt_button.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.answerA));
+                attempt_button.setTextColor(getContext().getResources().getColor(R.color.white));
+                attempt_button.setText("OPEN");
+            }
             attempt_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,10 +104,15 @@ public class AdapterUnitQuizList extends ArrayAdapter<HashMap<String, String>> {
             String score = quiz_item.get(position).get("correct_count") + "/" + quiz_item.get(position).get("answers_count");
             Integer score_percentage = (Integer.parseInt(quiz_item.get(position).get("correct_count")) * 100 / Integer.parseInt(quiz_item.get(position).get("answers_count")));
             quiz_type.setText("Type: " + quiz_item.get(position).get("type"));
-            quiz_rank.setText("Rank: " + quiz_item.get(position).get("rank_no") + "/" + quiz_item.get(position).get("total_students"));
+            if (quiz_item.get(position).get("type").equals("group")) {
+                quiz_rank.setText("Rank: " + quiz_item.get(position).get("rank_no") + "/" + quiz_item.get(position).get("total_teams"));
+            } else {
+                quiz_rank.setText("Rank: " + quiz_item.get(position).get("rank_no") + "/" + quiz_item.get(position).get("total_students"));
+            }
             quiz_score.setText("Score: " + score_percentage + "% (" + score + ")");
 
             attempt_button.setText("ATTEMPTED");
+            attempt_button.setEnabled(false);
         }
 
         return view;

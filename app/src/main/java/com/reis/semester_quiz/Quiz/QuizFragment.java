@@ -292,27 +292,9 @@ public class QuizFragment extends Fragment {
 
                         String answerFullString = answerString[0] + ", " + answerString[1] + ", " + answerString[2] + ", " + answerString[3] + ", " + answerString[4];
                         answers.get(question_no).put("answer", answerFullString);
-                        Toast.makeText(getContext(), String.valueOf(answers.get(question_no).get("answer")), Toast.LENGTH_SHORT).show();
                     }
                 });
                 alertDialogBuilder.show();
-            }
-        });
-
-        Button clearranks = (Button) view.findViewById(R.id.clear_rank);
-        clearranks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (int i = 0; i < current_rank.length; i++) {
-                    current_rank[i] = 0;
-
-                    Integer answerPosition = i+1;
-                    String answerAtPosition = "answer" + answerPosition + "_rank";
-                    answerString[i] = "";
-                    answers_ranking.get(i).put(answerAtPosition, String.valueOf(current_rank[i]));
-                }
-
-                ranking_answers_list.setAdapter(ranking_answers_list_adapter);
             }
         });
     }
@@ -430,6 +412,8 @@ public class QuizFragment extends Fragment {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog
                 prgDialog.hide();
+//                String jsonstring = new String (responseBody);
+//                Toast.makeText(getContext(), jsonstring, Toast.LENGTH_LONG).show();
                 Intent backToDashboard = new Intent(getContext(), DashboardActivity.class);
                 getContext().startActivity(backToDashboard);
             }
@@ -444,7 +428,8 @@ public class QuizFragment extends Fragment {
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    String jsonstring = new String (responseBody);
+                    Toast.makeText(getContext(), jsonstring, Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
