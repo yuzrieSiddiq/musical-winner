@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.reis.semester_quiz.Auth.LoginActivity;
 import com.reis.semester_quiz.Unit.UnitActivity;
 
 import org.json.JSONArray;
@@ -73,6 +74,17 @@ public class DashboardActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.dashboard, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_logout) {
+            Intent backToLogin = new Intent(this, LoginActivity.class);
+            startActivity(backToLogin);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

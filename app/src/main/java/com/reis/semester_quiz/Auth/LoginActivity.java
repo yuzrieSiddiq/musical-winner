@@ -57,6 +57,15 @@ public class LoginActivity extends AppCompatActivity {
         prgDialog.setCancelable(false);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
     public void loginUser(View view){
         Email = email.getText().toString();
         Password = password.getText().toString();

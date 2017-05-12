@@ -1,5 +1,6 @@
 package com.reis.semester_quiz.Unit;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
 
 public class UnitActivity extends AppCompatActivity {
@@ -70,4 +72,10 @@ public class UnitActivity extends AppCompatActivity {
             handler.removeCallbacks(what);
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        Intent backIntent = new Intent(this, DashboardActivity.class);
+        startActivity(backIntent);
+    }
 }
