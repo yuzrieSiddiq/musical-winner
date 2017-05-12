@@ -16,6 +16,15 @@
         android:gravity="center"/>
 
     <!-- stores list of current members -->
+    <TextView
+        android:id="@+id/not_attached"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NOT ATTACHED TO ANY TEAM YET"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
+        android:gravity="center"
+        android:layout_margin="14dp"
+        android:visibility="gone"/>
     <ListView
         android:id="@+id/team_list"
         android:layout_width="match_parent"

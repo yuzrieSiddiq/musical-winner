@@ -28,6 +28,7 @@ import com.reis.semester_quiz.Unit.UnitActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,10 +86,14 @@ public class Fragment3Team extends Fragment {
 
                         Integer student_id = team_member.getInt("student_id");
                         Integer user_id= team_member.getInt("user_id");
-                        Integer team_number = team_member.getInt("team_number");
                         Integer is_group_leader = team_member.getInt("is_group_leader");
                         String student_std_id = team_member.getString("student_std_id");
                         String name = team_member.getString("user_name");
+
+                        Integer team_number = 0;
+                        if (!team_member.isNull("team_number")) {
+                            team_number = team_member.getInt("team_number");
+                        }
 
                         HashMap<String, String> data = new HashMap<String, String>();
                         data.put("student_id", String.valueOf(student_id));
@@ -101,90 +106,100 @@ public class Fragment3Team extends Fragment {
                         this_team_list.add(data);
                     }
 
-                    // set to list data: this_team
-                    ListView teamListView = (ListView) view.findViewById(R.id.team_list);
-                    ArrayAdapter<HashMap<String, String>> adapter = new AdapterTeamList(getContext(), this_team_list, this_student);
-                    teamListView.setAdapter(adapter);
+                    // set to list data: this_team if has team
+                    if (this_student.isNull("team_number")) {
+                        ListView teamListView = (ListView) view.findViewById(R.id.team_list);
+                        teamListView.setVisibility(View.INVISIBLE);
 
-                    if (this_student.getString("is_group_leader").equals("1")) {
-                        teamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        TextView notAttached = (TextView) view.findViewById(R.id.not_attached);
+                        notAttached.setVisibility(View.VISIBLE);
+
+                        Button addNewMember = (Button) view.findViewById(R.id.enlist_new);
+                        addNewMember.setVisibility(View.INVISIBLE);
+                    } else {
+                        ListView teamListView = (ListView) view.findViewById(R.id.team_list);
+                        ArrayAdapter<HashMap<String, String>> adapter = new AdapterTeamList(getContext(), this_team_list, this_student);
+                        teamListView.setAdapter(adapter);
+
+                        if (this_student.getString("is_group_leader").equals("1")) {
+                            teamListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                                    if (position != 0) {
+                                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+                                        // set title
+                                        alertDialogBuilder.setTitle("Confirm remove member?");
+
+                                        // set dialog message
+                                        alertDialogBuilder
+                                                .setMessage("Student ID: " + this_team_list.get(position).get("student_std_id") + "\n" +
+                                                        "Name: " + this_team_list.get(position).get("user_name"))
+                                                .setCancelable(true)
+                                                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog,int id) {
+                                                        String student_id = this_team_list.get(position).get("student_id");
+                                                        final String unit_id = getActivity().getIntent().getExtras().getString("unit_id");
+                                                        final String unit_name = getActivity().getIntent().getExtras().getString("unit_name");
+
+                                                        invokeWS(student_id, unit_id, unit_name);
+                                                    }
+                                                })
+                                                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog,int id) {
+                                                        dialog.cancel();
+                                                    }
+                                                });
+
+                                        // create alert dialog
+                                        AlertDialog alertDialog = alertDialogBuilder.create();
+
+                                        // show it
+                                        alertDialog.show();
+                                    }
+                                }
+                            });
+                        }
+
+                        final ArrayList<HashMap<String, String>> available_students_list = new ArrayList<HashMap<String, String>>();
+
+                        for (int i = 0; i < available_students.length(); i++) {
+                            JSONObject student = available_students.getJSONObject(i);
+
+                            Integer student_id = student.getInt("student_id");
+                            String student_std_id = student.getString("student_std_id");
+                            String name = student.getString("user_name");
+
+                            HashMap<String, String> data = new HashMap<String, String>();
+                            data.put("student_id", String.valueOf(student_id));
+                            data.put("student_std_id", student_std_id);
+                            data.put("user_name", name);
+
+                            available_students_list.add(data);
+                        }
+
+                        Button addNewMember = (Button) view.findViewById(R.id.enlist_new);
+                        addNewMember.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                                if (position != 0) {
-                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                            public void onClick(View v) {
+                                try {
+                                    JSONObject unitObject = new JSONObject(this_student.getString("unit"));
+                                    Intent addMemberIntent = new Intent(getContext(), AddNewMemberActivity.class);
 
-                                    // set title
-                                    alertDialogBuilder.setTitle("Confirm remove member?");
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("unit_id", String.valueOf(unitObject.getInt("id")));
+                                    bundle.putString("unit_name", unitObject.getString("name"));
+                                    bundle.putSerializable("available_students_list", available_students_list);
+                                    addMemberIntent.putExtras(bundle);
 
-                                    // set dialog message
-                                    alertDialogBuilder
-                                            .setMessage("Student ID: " + this_team_list.get(position).get("student_std_id") + "\n" +
-                                                    "Name: " + this_team_list.get(position).get("user_name"))
-                                            .setCancelable(true)
-                                            .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog,int id) {
-                                                    String student_id = this_team_list.get(position).get("student_id");
-                                                    final String unit_id = getActivity().getIntent().getExtras().getString("unit_id");
-                                                    final String unit_name = getActivity().getIntent().getExtras().getString("unit_name");
+                                    startActivity(addMemberIntent);
 
-                                                    invokeWS(student_id, unit_id, unit_name);
-                                                }
-                                            })
-                                            .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog,int id) {
-                                                    dialog.cancel();
-                                                }
-                                            });
-
-                                    // create alert dialog
-                                    AlertDialog alertDialog = alertDialogBuilder.create();
-
-                                    // show it
-                                    alertDialog.show();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }
                         });
                     }
-
-
-                    final ArrayList<HashMap<String, String>> available_students_list = new ArrayList<HashMap<String, String>>();
-
-                    for (int i = 0; i < available_students.length(); i++) {
-                        JSONObject student = available_students.getJSONObject(i);
-
-                        Integer student_id = student.getInt("student_id");
-                        String student_std_id = student.getString("student_std_id");
-                        String name = student.getString("user_name");
-
-                        HashMap<String, String> data = new HashMap<String, String>();
-                        data.put("student_id", String.valueOf(student_id));
-                        data.put("student_std_id", student_std_id);
-                        data.put("user_name", name);
-
-                        available_students_list.add(data);
-                    }
-
-                    Button addNewMember = (Button) view.findViewById(R.id.enlist_new);
-                    addNewMember.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                JSONObject unitObject = new JSONObject(this_student.getString("unit"));
-                                Intent addMemberIntent = new Intent(getContext(), AddNewMemberActivity.class);
-
-                                Bundle bundle = new Bundle();
-                                bundle.putString("unit_id", String.valueOf(unitObject.getInt("id")));
-                                bundle.putString("unit_name", unitObject.getString("name"));
-                                bundle.putSerializable("available_students_list", available_students_list);
-                                addMemberIntent.putExtras(bundle);
-
-                                startActivity(addMemberIntent);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
 
                 } catch (JSONException e) {
                     Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
