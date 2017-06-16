@@ -41,7 +41,7 @@ public class DashboardActivity extends AppCompatActivity {
     ListView unit_listingListView;
 
     String _token;
-    String API_URL = "http://192.168.43.2:8000/api/";
+    String API_URL = "http://52.220.127.134/api/";
 //    String API_URL = "http://10.0.2.2:8000/api/";
 
     String user_firstname;

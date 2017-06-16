@@ -30,7 +30,7 @@ import cz.msebera.android.httpclient.Header;
 public class AddNewMemberActivity extends AppCompatActivity {
 
     String _token;
-    String API_URL = "http://192.168.43.2:8000/api/";
+    String API_URL = "http://52.220.127.134/api/";
     //    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override

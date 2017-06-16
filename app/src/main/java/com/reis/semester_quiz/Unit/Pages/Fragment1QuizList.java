@@ -35,7 +35,7 @@ public class Fragment1QuizList extends Fragment {
 
     String _token, unit_id;
     ListView individual_quiz_list, group_quiz_list;
-    String API_URL = "http://192.168.43.2:8000/api/";
+    String API_URL = "http://52.220.127.134/api/";
 //    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Nullable

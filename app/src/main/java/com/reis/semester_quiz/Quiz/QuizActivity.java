@@ -41,7 +41,7 @@ public class QuizActivity extends AppCompatActivity {
 
     String _token, quiz_id, quiz_name;
     ListView quiz_list;
-    String API_URL = "http://192.168.43.2:8000/api/";
+    String API_URL = "http://52.220.127.134/api/";
 //    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override

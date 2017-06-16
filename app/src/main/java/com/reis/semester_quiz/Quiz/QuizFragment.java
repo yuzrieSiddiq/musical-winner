@@ -88,7 +88,7 @@ public class QuizFragment extends Fragment {
     ArrayList<HashMap<String, String>> answers;
 
 //    String API_URL = "http://10.0.2.2:8000/api/";
-    String API_URL = "http://192.168.43.2:8000/api/";
+    String API_URL = "http://52.220.127.134/api/";
     Typeface typeface, typeface2;
 
     public static QuizFragment newInstance(int position, int length, HashMap<String, String> question, ArrayList<HashMap<String, String>> answers, String quiz_id) {

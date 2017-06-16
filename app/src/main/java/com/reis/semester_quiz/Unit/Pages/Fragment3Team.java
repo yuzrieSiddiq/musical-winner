@@ -44,7 +44,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class Fragment3Team extends Fragment {
 
     String _token, unit_id;
-    String API_URL = "http://192.168.43.2:8000/api/";
+    String API_URL = "http://52.220.127.134/api/";
     //    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Nullable
