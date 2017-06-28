@@ -100,15 +100,31 @@ public class DashboardActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog
                 prgDialog.hide();
-                try {
-                    // JSON Object
-                    String jsonstring = new String (responseBody);
 
-                    JSONArray jsonArray = new JSONArray(jsonstring);
+                String jsonstring = new String(responseBody);
+                try {
+                    JSONObject jsonresponse = new JSONObject(jsonstring);
+
+                    // get user part
+                    // return api response: User::with('student_info')
+                    JSONObject user = jsonresponse.getJSONObject("user");
+                    JSONObject student_info = user.getJSONObject("student_info");
+
+                    user_firstname = user.getString("firstname");
+                    user_lastname = user.getString("lastname");
+
+                    nameTextView.setText(user_firstname + " " + user_lastname);
+                    idTextView.setText("Student ID: " + student_info.getString("student_id"));
+
+                    // get this_student
+                    // return api response: Student::with('unit, user')
+                    String this_student = jsonresponse.getString("this_student");
+                    JSONArray units = new JSONArray(this_student);
 
                     final ArrayList<HashMap<String, String>> listitems = new ArrayList<HashMap<String, String>>();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject obj = jsonArray.getJSONObject(i);
+
+                    for (int i = 0; i < units.length(); i++) {
+                        JSONObject obj = new JSONObject(units.get(i).toString());
                         JSONObject unit = obj.getJSONObject("unit");
 
                         Integer student_id = obj.getInt("id");
@@ -126,13 +142,6 @@ public class DashboardActivity extends AppCompatActivity {
                         listitems.add(data);
                     }
 
-                    JSONObject user = jsonArray.getJSONObject(0).getJSONObject("user");
-                    user_firstname = user.getString("firstname");
-                    user_lastname = user.getString("lastname");
-
-                    nameTextView.setText(user_firstname + " " + user_lastname);
-                    idTextView.setText("Student ID: " + listitems.get(0).get("student_id"));
-
                     ArrayAdapter arrayAdapter = new DashboardUnitList(getApplicationContext(), listitems);
                     unit_listingListView = (ListView) findViewById(R.id.unit_listing);
                     unit_listingListView.setAdapter(arrayAdapter);
@@ -146,9 +155,7 @@ public class DashboardActivity extends AppCompatActivity {
                     });
 
                 } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
-
                 }
             }
 
