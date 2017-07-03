@@ -1,21 +1,258 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10">
 
-    <com.astuetz.PagerSlidingTabStrip
-        android:id="@+id/dashboard_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="48dip"
-        android:background="#5160BB"
-        app:pstsTabTextColor="@color/white"/>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/dashboard_pager"
+    <!-- 1st ROW -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dashboard_tabs"
-        tools:context=".Unit.UnitActivity" />
+        android:orientation="horizontal"
+        android:layout_weight="3"
+        android:weightSum="3">
 
-</RelativeLayout>
+        <!-- UNIT INFO BOX -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:src="@drawable/ic_collections_bookmark_black_24dp"
+                android:scaleX="0.25"
+                android:scaleY="0.25"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="UNIT INFO"/>
+        </LinearLayout>
+
+        <!-- TEAM BOX -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:src="@drawable/ic_people_black_24dp"
+                android:scaleX="0.25"
+                android:scaleY="0.25"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="TEAM"/>
+        </LinearLayout>
+
+        <!-- CHAT BOX -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:src="@drawable/ic_chat_black_24dp"
+                android:scaleX="0.25"
+                android:scaleY="0.25"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="CHAT"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 2nd ROW -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="3"
+        android:weightSum="3">
+
+        <!-- INDIVIDUAL QUIZ BOX 1-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <TextView android:id="@+id/iQuiz1_status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="SCORE: \nRANK: "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="iRAT1"/>
+        </LinearLayout>
+
+        <!-- INDIVIDUAL QUIZ BOX 2-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <TextView android:id="@+id/iQuiz2_status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="TEST NOW"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="iRAT2"/>
+        </LinearLayout>
+
+        <!-- INDIVIDUAL QUIZ BOX 3-->
+        <LinearLayout android:id="@+id/iQuiz3_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="TEST CLOSED"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="iRAT3"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 3rd ROW -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="3"
+        android:weightSum="3">
+        <!-- INDIVIDUAL QUIZ BOX 1-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <TextView android:id="@+id/tQuiz1_status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="SCORE: \nRANK: "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="iRAT1"/>
+        </LinearLayout>
+
+        <!-- INDIVIDUAL QUIZ BOX 2-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <TextView android:id="@+id/tQuiz2_status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="SCORE: \nRANK: "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="iRAT2"/>
+        </LinearLayout>
+
+        <!-- INDIVIDUAL QUIZ BOX 3-->
+        <LinearLayout android:id="@+id/tQuiz3_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="SCORE: \nRANK: "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="iRAT3"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:weightSum="4">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>
