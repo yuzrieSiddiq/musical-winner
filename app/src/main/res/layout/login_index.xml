@@ -23,18 +23,18 @@
             android:textSize="36sp"
             android:text="Semester Quiz App"/>
 
-        <!-- Email Label -->
+        <!-- Usesrname Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:textColorHint="@color/white">
-            <EditText android:id="@+id/email"
+            <EditText android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="Email"
+                android:inputType="text"
+                android:hint="Student ID"
                 android:textColor="@color/white"/>
         </android.support.design.widget.TextInputLayout>
 

@@ -29,7 +29,7 @@ import cz.msebera.android.httpclient.Header;
 public class LoginActivity extends AppCompatActivity {
 
     Typeface typeface;
-    EditText email, password;
+    EditText username, password;
     String Email, Password;
     ProgressDialog prgDialog;
     String API_URL = "http://52.220.127.134/api/";
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView app_title = (TextView) findViewById(R.id.app_title);
         app_title.setTypeface(typeface);
 
-        email = (EditText) findViewById(R.id.email);
+        username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
         prgDialog = new ProgressDialog(this);
@@ -67,25 +67,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginUser(View view){
-        Email = email.getText().toString();
+        Email = username.getText().toString() + "@students.swinburne.edu.my";
         Password = password.getText().toString();
         // Instantiate Http Request Param Object
         RequestParams params = new RequestParams();
         // When Email Edit View and Password Edit View have values other than Null
         if(Utility.isNotNull(Email) && Utility.isNotNull(Password)){
-            // When Email entered is Valid
-            if(Utility.validate(Email)){
-                // Put Http parameter username with value of Email Edit View control
-                params.put("email", Email);
-                // Put Http parameter password with value of Password Edit Value control
-                params.put("password", Password);
-                // Invoke RESTful Web Service with Http parameters
-                invokeWS(params);
-            }
-            // When Email is invalid
-            else{
-                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
-            }
+            // Put Http parameter username with value of Email Edit View control
+            params.put("email", Email);
+            // Put Http parameter password with value of Password Edit Value control
+            params.put("password", Password);
+            // Invoke RESTful Web Service with Http parameters
+            invokeWS(params);
+
         } else{
             Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
         }
