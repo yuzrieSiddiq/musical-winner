@@ -23,7 +23,8 @@
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:onClick="navigateToUnitInfo">
+                android:onClick="navigateToUnitInfo"
+                android:background="@drawable/unit_menu_item">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -37,7 +38,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="UNIT INFO"/>
+                    android:text="UNIT INFO"
+                    android:textColor="@color/darkgrey"/>
 
             </LinearLayout>
 
@@ -47,7 +49,8 @@
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:onClick="navigateToTeamInfo">
+                android:onClick="navigateToTeamInfo"
+                android:background="@drawable/unit_menu_item">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -61,7 +64,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="TEAM"/>
+                    android:text="TEAM"
+                    android:textColor="@color/darkgrey"/>
 
             </LinearLayout>
 
@@ -71,7 +75,8 @@
                 android:gravity="center"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:onClick="navigateToChat">
+                android:onClick="navigateToChat"
+                android:background="@drawable/unit_menu_item">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -85,7 +90,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="CHAT"/>
+                    android:text="CHAT"
+                    android:textColor="@color/darkgrey"/>
 
             </LinearLayout>
         </TableRow>
@@ -103,7 +109,8 @@
                 android:layout_weight="1"
                 android:weightSum="5"
                 android:clickable="true"
-                android:onClick="navigateToIQuiz1">
+                android:onClick="navigateToIQuiz1"
+                android:background="@drawable/unit_menu_item">
 
                 <TextView android:id="@+id/iQuiz1_status"
                     android:layout_width="match_parent"
@@ -117,7 +124,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="iRAT1"/>
+                    android:text="iRAT1"
+                    android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
             <LinearLayout android:id="@+id/IQuiz2"
@@ -127,7 +135,8 @@
                 android:layout_weight="1"
                 android:weightSum="5"
                 android:clickable="true"
-                android:onClick="navigateToIQuiz2">
+                android:onClick="navigateToIQuiz2"
+                android:background="@drawable/unit_menu_item">
 
                 <TextView android:id="@+id/iQuiz2_status"
                     android:layout_width="match_parent"
@@ -141,7 +150,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="iRAT2"/>
+                    android:text="iRAT2"
+                    android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
             <LinearLayout android:id="@+id/IQuiz3"
@@ -151,7 +161,8 @@
                 android:layout_weight="1"
                 android:weightSum="5"
                 android:clickable="true"
-                android:onClick="navigateToIQuiz3">
+                android:onClick="navigateToIQuiz3"
+                android:background="@drawable/unit_menu_item">
 
                 <TextView android:id="@+id/iQuiz3_status"
                     android:layout_width="match_parent"
@@ -165,7 +176,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="iRAT3"/>
+                    android:text="iRAT3"
+                    android:textColor="@color/darkgrey"/>
             </LinearLayout>
         </TableRow>
 
@@ -182,7 +194,8 @@
                 android:layout_weight="1"
                 android:weightSum="5"
                 android:clickable="true"
-                android:onClick="navigateToTQuiz1">
+                android:onClick="navigateToTQuiz1"
+                android:background="@drawable/unit_menu_item">
 
                 <TextView android:id="@+id/tQuiz1_status"
                     android:layout_width="match_parent"
@@ -196,7 +209,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="tRAT1"/>
+                    android:text="tRAT1"
+                    android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
             <LinearLayout android:id="@+id/TQuiz2"
@@ -206,21 +220,23 @@
                 android:layout_weight="1"
                 android:weightSum="5"
                 android:clickable="true"
-                android:onClick="navigateToTQuiz2">
+                android:onClick="navigateToTQuiz2"
+                android:background="@drawable/unit_menu_item">
 
                 <TextView android:id="@+id/tQuiz2_status"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
                     android:gravity="center"
-                    android:text="TEST NOW"/>
+                    android:text="TEST CLOSED"/>
 
                 <TextView android:id="@+id/TQuiz2_title"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="tRAT2"/>
+                    android:text="tRAT2"
+                    android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
             <LinearLayout android:id="@+id/TQuiz3"
@@ -230,7 +246,8 @@
                 android:layout_weight="1"
                 android:weightSum="5"
                 android:clickable="true"
-                android:onClick="navigateToTQuiz3">
+                android:onClick="navigateToTQuiz3"
+                android:background="@drawable/unit_menu_item">
 
                 <TextView android:id="@+id/tQuiz3_status"
                     android:layout_width="match_parent"
@@ -244,7 +261,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="tRAT3"/>
+                    android:text="tRAT3"
+                    android:textColor="@color/darkgrey"/>
             </LinearLayout>
         </TableRow>
     </TableLayout>
@@ -254,6 +272,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -268,7 +287,8 @@
             android:layout_weight="1.3"
             android:weightSum="3"
             android:clickable="true"
-            android:onClick="navigateToMain">
+            android:onClick="navigateToMain"
+            android:background="@drawable/unit_menu_item_light_right">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -292,7 +312,8 @@
             android:layout_weight="0.6"
             android:weightSum="3"
             android:clickable="true"
-            android:onClick="navigateToAccount">
+            android:onClick="navigateToAccount"
+            android:background="@drawable/unit_menu_item_light_right">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -316,7 +337,8 @@
             android:layout_weight="1.5"
             android:weightSum="3"
             android:clickable="true"
-            android:onClick="navigateToInbox">
+            android:onClick="navigateToInbox"
+            android:background="@drawable/unit_menu_item_light_right">
 
             <ImageView
                 android:layout_width="match_parent"
