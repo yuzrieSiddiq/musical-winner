@@ -108,23 +108,22 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:weightSum="5"
-                android:clickable="true"
-                android:onClick="navigateToIQuiz1"
+                android:clickable="false"
                 android:background="@drawable/unit_menu_item">
 
-                <TextView android:id="@+id/iQuiz1_status"
+                <TextView android:id="@+id/IQuiz1_status"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
                     android:gravity="center"
-                    android:text="SCORE: 100 \nRANK: 1/10"/>
+                    android:text="TEST CLOSED"/>
 
                 <TextView android:id="@+id/IQuiz1_title"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="iRAT1"
+                    android:text="-"
                     android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
@@ -134,23 +133,22 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:weightSum="5"
-                android:clickable="true"
-                android:onClick="navigateToIQuiz2"
+                android:clickable="false"
                 android:background="@drawable/unit_menu_item">
 
-                <TextView android:id="@+id/iQuiz2_status"
+                <TextView android:id="@+id/IQuiz2_status"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
                     android:gravity="center"
-                    android:text="TEST NOW"/>
+                    android:text="TEST CLOSED"/>
 
                 <TextView android:id="@+id/IQuiz2_title"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="iRAT2"
+                    android:text="-"
                     android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
@@ -160,11 +158,10 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:weightSum="5"
-                android:clickable="true"
-                android:onClick="navigateToIQuiz3"
+                android:clickable="false"
                 android:background="@drawable/unit_menu_item">
 
-                <TextView android:id="@+id/iQuiz3_status"
+                <TextView android:id="@+id/IQuiz3_status"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
@@ -176,7 +173,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="iRAT3"
+                    android:text="-"
                     android:textColor="@color/darkgrey"/>
             </LinearLayout>
         </TableRow>
@@ -193,11 +190,10 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:weightSum="5"
-                android:clickable="true"
-                android:onClick="navigateToTQuiz1"
+                android:clickable="false"
                 android:background="@drawable/unit_menu_item">
 
-                <TextView android:id="@+id/tQuiz1_status"
+                <TextView android:id="@+id/TQuiz1_status"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
@@ -209,7 +205,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="tRAT1"
+                    android:text="-"
                     android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
@@ -219,11 +215,10 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:weightSum="5"
-                android:clickable="true"
-                android:onClick="navigateToTQuiz2"
+                android:clickable="false"
                 android:background="@drawable/unit_menu_item">
 
-                <TextView android:id="@+id/tQuiz2_status"
+                <TextView android:id="@+id/TQuiz2_status"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
@@ -235,7 +230,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="tRAT2"
+                    android:text="-"
                     android:textColor="@color/darkgrey"/>
             </LinearLayout>
 
@@ -245,11 +240,10 @@
                 android:orientation="vertical"
                 android:layout_weight="1"
                 android:weightSum="5"
-                android:clickable="true"
-                android:onClick="navigateToTQuiz3"
+                android:clickable="false"
                 android:background="@drawable/unit_menu_item">
 
-                <TextView android:id="@+id/tQuiz3_status"
+                <TextView android:id="@+id/TQuiz3_status"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
@@ -261,7 +255,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="tRAT3"
+                    android:text="-"
                     android:textColor="@color/darkgrey"/>
             </LinearLayout>
         </TableRow>
