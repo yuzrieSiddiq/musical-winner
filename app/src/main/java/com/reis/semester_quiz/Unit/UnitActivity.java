@@ -82,7 +82,8 @@ public class UnitActivity extends AppCompatActivity {
     }
 
     public void navigateToMain(View view) {
-        Toast.makeText(getApplicationContext(), "Test Main Button", Toast.LENGTH_SHORT).show();
+        Intent backIntent = new Intent(this, DashboardActivity.class);
+        startActivity(backIntent);
     }
 
     public void navigateToAccount(View view) {
@@ -239,7 +240,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = group_list_item.get("quiz_id");
                                 String quiz_name = group_list_item.get("title");
-                                navigateToIQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name);
                             }
                         });
                     }
@@ -268,7 +269,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = group_list_item.get("quiz_id");
                                 String quiz_name = group_list_item.get("title");
-                                navigateToIQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name);
                             }
                         });
                     }
@@ -297,7 +298,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = group_list_item.get("quiz_id");
                                 String quiz_name = group_list_item.get("title");
-                                navigateToIQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name);
                             }
                         });
                     }
@@ -340,7 +341,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = individual_list_item.get("quiz_id");
                                 String quiz_name = individual_list_item.get("title");
-                                navigateToIQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name);
                             }
                         });
                     }
@@ -369,7 +370,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = individual_list_item.get("quiz_id");
                                 String quiz_name = individual_list_item.get("title");
-                                navigateToIQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name);
                             }
                         });
                     }
@@ -398,7 +399,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = individual_list_item.get("quiz_id");
                                 String quiz_name = individual_list_item.get("title");
-                                navigateToIQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name);
                             }
                         });
                     }
@@ -410,7 +411,7 @@ public class UnitActivity extends AppCompatActivity {
                  * */
             }
 
-            public void navigateToIQuiz(View view, String quiz_id, String quiz_name) {
+            public void navigateToQuiz(View view, String quiz_id, String quiz_name) {
                 // switch page intent
                 Intent quizintent = new Intent(getApplicationContext(), QuizActivity.class);
 
