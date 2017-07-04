@@ -50,7 +50,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_index);
-        getSupportActionBar().setTitle("Semester Quiz");
+        getSupportActionBar().setTitle(R.string.app_name);
 
         nameTextView = (TextView) findViewById(R.id.student_name);
         idTextView = (TextView) findViewById(R.id.student_id);

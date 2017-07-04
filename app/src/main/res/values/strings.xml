@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Semester Quiz</string>
+    <string name="app_name">Team Based Learning</string>
     <string name="title_activity_test_drawer">TestDrawer</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
