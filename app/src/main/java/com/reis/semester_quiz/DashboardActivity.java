@@ -1,6 +1,7 @@
 package com.reis.semester_quiz;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.reis.semester_quiz.Auth.LoginActivity;
+import com.reis.semester_quiz.Unit.Pages.AddNewMemberActivity;
 import com.reis.semester_quiz.Unit.UnitActivity;
 
 import org.json.JSONArray;
@@ -81,8 +84,26 @@ public class DashboardActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.nav_logout) {
-            Intent backToLogin = new Intent(this, LoginActivity.class);
-            startActivity(backToLogin);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DashboardActivity.this);
+            alertDialogBuilder
+                    .setTitle("LOGOUT")
+                    .setMessage("Confirm logout?")
+                    .setCancelable(true)
+                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                            startActivity(backToLogin);
+                        }
+                    })
+                    .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog,int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            // create the dialog prompt
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }

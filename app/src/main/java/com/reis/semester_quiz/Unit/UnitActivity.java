@@ -15,6 +15,7 @@ import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.Quiz.QuizActivity;
 import com.reis.semester_quiz.R;
 import com.reis.semester_quiz.Unit.Pages.UnitInfoActivity;
+import com.reis.semester_quiz.Unit.Pages.UnitTeamActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,7 +69,7 @@ public class UnitActivity extends AppCompatActivity {
     }
 
     public void navigateToTeamInfo(View view) {
-        Intent unitTeamInfoIntent = new Intent(this, UnitInfoActivity.class);
+        Intent unitTeamInfoIntent = new Intent(this, UnitTeamActivity.class);
 
         Bundle bundle = new Bundle();
         bundle.putString("unit_id", UNIT_ID);
