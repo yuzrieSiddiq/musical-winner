@@ -18,11 +18,6 @@ import com.reis.semester_quiz.R;
 
 public class UnitActivity extends AppCompatActivity {
 
-    private final Handler handler = new Handler();
-
-    private PagerSlidingTabStrip tabs;
-    private ViewPager pager;
-    private UnitPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +27,6 @@ public class UnitActivity extends AppCompatActivity {
         // get from bundle
         String unit_name = getIntent().getExtras().getString("unit_name");
         getSupportActionBar().setTitle(unit_name);
-
-//        tabs = (PagerSlidingTabStrip) findViewById(R.id.dashboard_tabs);
-//        tabs.setIndicatorColorResource(R.color.answerD);
-//        tabs.setIndicatorHeight(8);
-//        pager = (ViewPager) findViewById(R.id.dashboard_pager);
-//        adapter = new UnitPagerAdapter(getSupportFragmentManager());
-//
-//        pager.setAdapter(adapter);
-//
-//        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-//                .getDisplayMetrics());
-//        pager.setPageMargin(pageMargin);
-//
-//        tabs.setViewPager(pager);
     }
 
     @Override
@@ -57,23 +38,6 @@ public class UnitActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
-
-    private Drawable.Callback drawableCallback = new Drawable.Callback() {
-        @Override
-        public void invalidateDrawable(Drawable who) {
-            getActionBar().setBackgroundDrawable(who);
-        }
-
-        @Override
-        public void scheduleDrawable(Drawable who, Runnable what, long when) {
-            handler.postAtTime(what, when);
-        }
-
-        @Override
-        public void unscheduleDrawable(Drawable who, Runnable what) {
-            handler.removeCallbacks(what);
-        }
-    };
 
     @Override
     public void onBackPressed() {
