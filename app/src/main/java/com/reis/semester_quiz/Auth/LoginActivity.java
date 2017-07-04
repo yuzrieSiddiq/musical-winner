@@ -32,8 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     EditText username, password;
     String Email, Password;
     ProgressDialog prgDialog;
-    String API_URL = "http://52.220.127.134/api/";
-//    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(API_URL + "auth/login", params ,new AsyncHttpResponseHandler() {
+        client.post(Utility.API_URL() + "auth/login", params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog
@@ -107,9 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject obj = new JSONObject(jsonstring);
 
                     // add token to app
-                    SharedPreferences.Editor preferences_editor= getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
-                    preferences_editor.putString("_token", obj.getString("token"));
-                    preferences_editor.apply();
+                    Utility.setToken(getApplicationContext(), obj);
 
                     navigatetoHomeActivity(jsonstring);
                 } catch (JSONException e) {
@@ -147,11 +143,6 @@ public class LoginActivity extends AppCompatActivity {
         try {
             JSONObject obj = new JSONObject(json_data);
             JSONObject user = obj.getJSONObject("user");
-
-            // add token to app
-            SharedPreferences.Editor preferences_editor= getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
-            preferences_editor.putString("_token", obj.getString("token"));
-            preferences_editor.apply();
 
             // switch page intent
             Intent homeIntent = new Intent(getApplicationContext(),DashboardActivity.class);

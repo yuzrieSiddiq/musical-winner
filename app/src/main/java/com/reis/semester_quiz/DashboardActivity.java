@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.reis.semester_quiz.Auth.LoginActivity;
+import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.Unit.Pages.AddNewMemberActivity;
 import com.reis.semester_quiz.Unit.UnitActivity;
 
@@ -43,10 +44,6 @@ public class DashboardActivity extends AppCompatActivity {
     TextView nameTextView, idTextView;
     ListView unit_listingListView;
 
-    String _token;
-    String API_URL = "http://52.220.127.134/api/";
-//    String API_URL = "http://10.0.2.2:8000/api/";
-
     String user_firstname;
     String user_lastname;
 
@@ -55,10 +52,6 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_index);
         getSupportActionBar().setTitle("Semester Quiz");
-
-        // get token from shared preferences
-        SharedPreferences preferences = getSharedPreferences("semester_quiz", MODE_PRIVATE);
-        _token = preferences.getString("_token", null);
 
         // set views
         prgDialog = new ProgressDialog(this);
@@ -116,7 +109,7 @@ public class DashboardActivity extends AppCompatActivity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(API_URL + "students?token=" + _token, new AsyncHttpResponseHandler() {
+        client.get(Utility.API_URL() + "students?token=" + Utility.getToken(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog

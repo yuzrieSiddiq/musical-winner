@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.Quiz.QuizActivity;
 import com.reis.semester_quiz.R;
@@ -28,10 +29,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class UnitActivity extends AppCompatActivity {
 
-    private String _token;
     private String UNIT_ID, UNIT_NAME;
-    private String API_URL = "http://52.220.127.134/api/";
-//    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +40,6 @@ public class UnitActivity extends AppCompatActivity {
         UNIT_ID = getIntent().getExtras().getString("unit_id");
         UNIT_NAME = getIntent().getExtras().getString("unit_name");
         getSupportActionBar().setTitle(UNIT_NAME);
-
-        // get token from shared preferences
-        SharedPreferences preferences = getSharedPreferences("semester_quiz", MODE_PRIVATE);
-        _token = preferences.getString("_token", null);
 
         // invoke REST Call
         invokeWS();
@@ -106,7 +100,7 @@ public class UnitActivity extends AppCompatActivity {
      * */
     public void invokeWS(){
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(API_URL + "quizzes/unit/" + UNIT_ID + "?token=" + _token ,new AsyncHttpResponseHandler() {
+        client.get(Utility.API_URL() + "quizzes/unit/" + UNIT_ID + "?token=" + Utility.getToken() ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.R;
 
 import org.json.JSONException;
@@ -20,9 +21,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class UnitInfoActivity extends AppCompatActivity {
 
-    String _token, unit_id;
-    String API_URL = "http://52.220.127.134/api/";
-    //    String API_URL = "http://10.0.2.2:8000/api/";
+    String unit_id;
     Typeface typeface, typeface2, typeface3;
 
     @Override
@@ -32,10 +31,6 @@ public class UnitInfoActivity extends AppCompatActivity {
 
         unit_id = getIntent().getExtras().getString("unit_id");
 
-        // get token from shared preferences
-        SharedPreferences preferences = this.getSharedPreferences("semester_quiz", MODE_PRIVATE);
-        _token = preferences.getString("_token", null);
-
         // get the view and invoke the REST call
         invokeWS();
     }
@@ -43,7 +38,7 @@ public class UnitInfoActivity extends AppCompatActivity {
     public void invokeWS() {
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(API_URL + "units/" + unit_id + "?token=" + _token ,new AsyncHttpResponseHandler() {
+        client.get(Utility.API_URL() + "units/" + unit_id + "?token=" + Utility.getToken() ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {

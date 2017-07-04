@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.astuetz.PagerSlidingTabStrip;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.R;
 
 import org.json.JSONArray;
@@ -33,10 +34,8 @@ public class QuizActivity extends AppCompatActivity {
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
 
-    String _token, quiz_id, quiz_name;
+    String quiz_id, quiz_name;
     ListView quiz_list;
-    String API_URL = "http://52.220.127.134/api/";
-//    String API_URL = "http://10.0.2.2:8000/api/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +47,6 @@ public class QuizActivity extends AppCompatActivity {
         quiz_id = getIntent().getExtras().getString("quiz_id");
 
         getSupportActionBar().setTitle(quiz_name);
-
-        // get token from shared preferences
-        SharedPreferences preferences = getSharedPreferences("semester_quiz", MODE_PRIVATE);
-        _token = preferences.getString("_token", null);
 
         // set the original view
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -111,7 +106,7 @@ public class QuizActivity extends AppCompatActivity {
 
     public void invokeWS() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(API_URL + "quizzes/" + quiz_id+ "?token=" + _token ,new AsyncHttpResponseHandler() {
+        client.get(Utility.API_URL() + "quizzes/" + quiz_id+ "?token=" + Utility.getToken() ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {

@@ -41,6 +41,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
 
@@ -81,14 +82,11 @@ public class QuizFragment extends Fragment {
     private String color_maintheme = "#5160BB";
 
     private int position, length;
-    String _token, quiz_id;
+    String quiz_id;
     Boolean quiz_tutorial;
     ProgressDialog prgDialog;
     HashMap<String, String> question;
     ArrayList<HashMap<String, String>> answers;
-
-//    String API_URL = "http://10.0.2.2:8000/api/";
-    String API_URL = "http://52.220.127.134/api/";
     Typeface typeface, typeface2;
 
     public static QuizFragment newInstance(int position, int length, HashMap<String, String> question, ArrayList<HashMap<String, String>> answers, String quiz_id) {
@@ -113,9 +111,8 @@ public class QuizFragment extends Fragment {
         question = (HashMap<String, String>) getArguments().getSerializable(ARG_QUESTION);
         answers = (ArrayList<HashMap<String, String>>) getArguments().getSerializable(ARG_ANSWERS);
 
-        // get token from shared preferences
+        // get quiz_tutorial from shared preferences
         SharedPreferences preferences = getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE);
-        _token = preferences.getString("_token", null);
         quiz_tutorial = preferences.getBoolean("quiz_tutorial", true);
     }
 
@@ -407,7 +404,7 @@ public class QuizFragment extends Fragment {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(API_URL + "quizzes/submit/" + quiz_id + "?token=" + _token, params ,new AsyncHttpResponseHandler() {
+        client.post(Utility.API_URL() + "quizzes/submit/" + quiz_id + "?token=" + Utility.getToken(), params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog

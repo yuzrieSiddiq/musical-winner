@@ -4,8 +4,17 @@ package com.reis.semester_quiz.Auth;
  * Created by reis on 3/13/17.
  */
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Class which has Utility methods
  *
@@ -13,6 +22,8 @@ import java.util.regex.Pattern;
 public class Utility {
     private static Pattern pattern;
     private static Matcher matcher;
+    private static Context context;
+
     //Email Pattern
     private static final String EMAIL_PATTERN =
 //            "^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@"
@@ -40,5 +51,31 @@ public class Utility {
      */
     public static boolean isNotNull(String txt){
         return txt!=null && txt.trim().length()>0 ? true: false;
+    }
+
+    public static String API_URL() {
+        String url = "http://52.220.127.134/api/";
+        return url;
+    }
+
+    public static String API_URL_LOCAL() {
+        String url = "http://10.0.2.2:8000/api/";
+        return url;
+    }
+
+    public static String getToken() {
+        // get token from shared preferences
+        SharedPreferences preferences = context.getSharedPreferences("semester_quiz", MODE_PRIVATE);
+        return preferences.getString("_token", null);
+    }
+
+    public static void setToken(Context ctx, JSONObject tokenObject) throws JSONException {
+        // save context to Utility class
+        context = ctx;
+
+        // save token to context
+        SharedPreferences.Editor preferences_editor= context.getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+        preferences_editor.putString("_token", tokenObject.getString("token"));
+        preferences_editor.apply();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.DashboardUnitList;
 import com.reis.semester_quiz.R;
 import com.reis.semester_quiz.Unit.UnitActivity;
@@ -29,19 +30,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class AddNewMemberActivity extends AppCompatActivity {
 
-    String _token;
-    String API_URL = "http://52.220.127.134/api/";
-    //    String API_URL = "http://10.0.2.2:8000/api/";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setTitle("Enlist New Member");
         setContentView(R.layout.activity_add_new_member);
-
-        // get token from shared preferences
-        SharedPreferences preferences = getSharedPreferences("semester_quiz", MODE_PRIVATE);
-        _token = preferences.getString("_token", null);
 
         // get available students list from previous activity
         final ArrayList<HashMap<String, String>> available_students_list =
@@ -94,7 +87,7 @@ public class AddNewMemberActivity extends AppCompatActivity {
     public void invokeWS(String student_id, final String unit_id, final String unit_name){
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(API_URL + "enlist/" + student_id + "/unit/" + unit_id + "?token=" + _token, new AsyncHttpResponseHandler() {
+        client.post(Utility.API_URL() + "enlist/" + student_id + "/unit/" + unit_id + "?token=" + Utility.getToken(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Intent backToUnitIntent = new Intent(AddNewMemberActivity.this, UnitActivity.class);
