@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -59,6 +61,42 @@ public class QuizActivity extends AppCompatActivity {
 
         invokeWS();
 
+        final ImageView leftarrow = (ImageView) findViewById(R.id.prevQuestion);
+        final ImageView rightarrow = (ImageView) findViewById(R.id.nextQuestion);
+
+        // on first question
+        // set left invisible on first page
+        leftarrow.setVisibility(View.INVISIBLE);
+
+        // on left or right swipe
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            /**
+             * Check on first and last page.
+             * Hide the left and right arrow
+             * */
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    // set left arrow invisible on first page
+                    leftarrow.setVisibility(View.INVISIBLE);
+                    rightarrow.setVisibility(View.VISIBLE);
+                } else if (position == tabs.getTabCount()-1) {
+                    // set right arrow invisible on last page
+                    leftarrow.setVisibility(View.VISIBLE);
+                    rightarrow.setVisibility(View.INVISIBLE);
+                } else {
+                    // by default, both arrows are visible
+                    leftarrow.setVisibility(View.VISIBLE);
+                    rightarrow.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
     @Override
@@ -71,35 +109,12 @@ public class QuizActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    private Drawable.Callback drawableCallback = new Drawable.Callback() {
-        @Override
-        public void invalidateDrawable(Drawable who) {
-            getActionBar().setBackgroundDrawable(who);
-        }
-
-        @Override
-        public void scheduleDrawable(Drawable who, Runnable what, long when) {
-            handler.postAtTime(what, when);
-        }
-
-        @Override
-        public void unscheduleDrawable(Drawable who, Runnable what) {
-            handler.removeCallbacks(what);
-        }
-    };
-
-    public void invokeWS(){
-        // Show Progress Dialog
-//        prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
+    public void invokeWS() {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(API_URL + "quizzes/" + quiz_id+ "?token=" + _token ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Hide Progress Dialog
-//                prgDialog.hide();
                 try {
-                    // JSON Object
                     String jsonstring = new String (responseBody);
                     JSONArray jsonArray = new JSONArray(jsonstring);
 
@@ -150,7 +165,7 @@ public class QuizActivity extends AppCompatActivity {
                     tabs.setViewPager(pager);
 
                 } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onSuccess). Error Occured [Server's JSON response might be invalid]!. Probably JSON response is []", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
@@ -158,21 +173,35 @@ public class QuizActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // Hide Progress Dialog
-                //prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 404). Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 500). Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 403){
+                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token. Check other pages.", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 401){
+                    Toast.makeText(getApplicationContext(), "(onFailure 401). Something is wrong with the authentication. Check login.", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
-                    Toast.makeText(getApplicationContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure). Status: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    public void navigatePreviousQuestion(View view) {
+        pager.setCurrentItem(pager.getCurrentItem()-1);
+    }
+
+    public void navigateNextQuestion(View view) {
+        pager.setCurrentItem(pager.getCurrentItem()+1);
     }
 }
