@@ -4,9 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.reis.semester_quiz.Unit.Pages.Fragment1QuizList;
-import com.reis.semester_quiz.Unit.Pages.Fragment2UnitInfo;
-import com.reis.semester_quiz.Unit.Pages.Fragment3Team;
 import com.reis.semester_quiz.Quiz.QuizFragment;
 
 /**

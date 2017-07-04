@@ -3,17 +3,10 @@ package com.reis.semester_quiz.Quiz;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,7 +14,6 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.reis.semester_quiz.R;
-import com.reis.semester_quiz.Unit.Pages.AdapterUnitQuizList;
 
 import org.json.JSONArray;
 import org.json.JSONException;

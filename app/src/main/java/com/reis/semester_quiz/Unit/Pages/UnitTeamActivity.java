@@ -3,20 +3,14 @@ package com.reis.semester_quiz.Unit.Pages;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,42 +22,38 @@ import com.reis.semester_quiz.Unit.UnitActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 
-import static android.content.Context.MODE_PRIVATE;
-
-/**
- * Created by reis on 22/03/2017.
- */
-
-public class Fragment3Team extends Fragment {
+public class UnitTeamActivity extends AppCompatActivity {
 
     String _token, unit_id;
     String API_URL = "http://52.220.127.134/api/";
     //    String API_URL = "http://10.0.2.2:8000/api/";
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.unit_team_info);
 
-        unit_id = getActivity().getIntent().getExtras().getString("unit_id");
+        unit_id = getIntent().getExtras().getString("unit_id");
 
         // get token from shared preferences
-        SharedPreferences preferences = this.getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("semester_quiz", MODE_PRIVATE);
         _token = preferences.getString("_token", null);
 
-        View view = inflater.inflate(R.layout.unit_team_fragment, container, false);
-        invokeWS(view);
-
-        return view;
+        invokeWS();
     }
 
-    public void invokeWS(final View view){
+    /**
+     * GET|HEAD
+     * /api/team_info/{unit_id}
+     * Get the list of team members of this student from this unit
+     * */
+    public void invokeWS(){
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(API_URL + "team_info/" + unit_id + "?token=" + _token ,new AsyncHttpResponseHandler() {
@@ -108,17 +98,17 @@ public class Fragment3Team extends Fragment {
 
                     // set to list data: this_team if has team
                     if (this_student.isNull("team_number")) {
-                        ListView teamListView = (ListView) view.findViewById(R.id.team_list);
+                        ListView teamListView = (ListView) findViewById(R.id.team_list);
                         teamListView.setVisibility(View.INVISIBLE);
 
-                        TextView notAttached = (TextView) view.findViewById(R.id.not_attached);
+                        TextView notAttached = (TextView) findViewById(R.id.not_attached);
                         notAttached.setVisibility(View.VISIBLE);
 
-                        Button addNewMember = (Button) view.findViewById(R.id.enlist_new);
+                        Button addNewMember = (Button) findViewById(R.id.enlist_new);
                         addNewMember.setVisibility(View.INVISIBLE);
                     } else {
-                        ListView teamListView = (ListView) view.findViewById(R.id.team_list);
-                        ArrayAdapter<HashMap<String, String>> adapter = new AdapterTeamList(getContext(), this_team_list, this_student);
+                        ListView teamListView = (ListView) findViewById(R.id.team_list);
+                        ArrayAdapter<HashMap<String, String>> adapter = new AdapterTeamList(getApplicationContext(), this_team_list, this_student);
                         teamListView.setAdapter(adapter);
 
                         if (this_student.getString("is_group_leader").equals("1")) {
@@ -126,7 +116,7 @@ public class Fragment3Team extends Fragment {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                                     if (position != 0) {
-                                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
 
                                         // set title
                                         alertDialogBuilder.setTitle("Confirm remove member?");
@@ -139,8 +129,8 @@ public class Fragment3Team extends Fragment {
                                                 .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog,int id) {
                                                         String student_id = this_team_list.get(position).get("student_id");
-                                                        final String unit_id = getActivity().getIntent().getExtras().getString("unit_id");
-                                                        final String unit_name = getActivity().getIntent().getExtras().getString("unit_name");
+                                                        final String unit_id = getIntent().getExtras().getString("unit_id");
+                                                        final String unit_name = getIntent().getExtras().getString("unit_name");
 
                                                         invokeWS(student_id, unit_id, unit_name);
                                                     }
@@ -178,13 +168,13 @@ public class Fragment3Team extends Fragment {
                             available_students_list.add(data);
                         }
 
-                        Button addNewMember = (Button) view.findViewById(R.id.enlist_new);
+                        Button addNewMember = (Button) findViewById(R.id.enlist_new);
                         addNewMember.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 try {
                                     JSONObject unitObject = new JSONObject(this_student.getString("unit"));
-                                    Intent addMemberIntent = new Intent(getContext(), AddNewMemberActivity.class);
+                                    Intent addMemberIntent = new Intent(getApplicationContext(), AddNewMemberActivity.class);
 
                                     Bundle bundle = new Bundle();
                                     bundle.putString("unit_id", String.valueOf(unitObject.getInt("id")));
@@ -202,7 +192,7 @@ public class Fragment3Team extends Fragment {
                     }
 
                 } catch (JSONException e) {
-                    Toast.makeText(getContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onSuccess). Error Occured [Server's JSON response might be invalid]. Probably the JSON is []!", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
 
                 }
@@ -212,27 +202,32 @@ public class Fragment3Team extends Fragment {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 // When Http response code is '404'
                 if(statusCode == 404){
-                    Toast.makeText(getContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
-                    Toast.makeText(getContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
+    /**
+     * POST
+     * /api/delist/{student_id}/unit/{unit_id}
+     * Removes a student from the team
+     * */
     public void invokeWS(String student_id, final String unit_id, final String unit_name){
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(API_URL + "delist/" + student_id + "/unit/" + unit_id + "?token=" + _token, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Intent backToUnitIntent = new Intent(getContext(), UnitActivity.class);
+                Intent backToUnitIntent = new Intent(getApplicationContext(), UnitActivity.class);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("unit_id", unit_id);
@@ -245,15 +240,15 @@ public class Fragment3Team extends Fragment {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 // When Http response code is '404'
                 if(statusCode == 404){
-                    Toast.makeText(getContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    Toast.makeText(getContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
-                    Toast.makeText(getContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
         });
