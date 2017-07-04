@@ -84,7 +84,6 @@ public class QuizFragment extends Fragment {
     private int position, length;
     String quiz_id;
     Boolean quiz_tutorial;
-    ProgressDialog prgDialog;
     HashMap<String, String> question;
     ArrayList<HashMap<String, String>> answers;
     Typeface typeface, typeface2;
@@ -121,10 +120,6 @@ public class QuizFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        prgDialog = new ProgressDialog(getContext());
-        prgDialog.setMessage("Please wait...");
-        prgDialog.setCancelable(false);
-
         AssetManager assetManager = getContext().getAssets();
         typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Light.ttf");
         typeface = Typeface.createFromAsset(assetManager, "fonts/Roboto-Regular.ttf");
@@ -399,38 +394,41 @@ public class QuizFragment extends Fragment {
         answerD.setTypeface(typeface2);
     }
 
+    /**
+     * POST | App\Api\V1\Controllers\QuizController@submit_answers
+     * /api/quizzes/submit/{quiz_id}           |
+     * Sends a POST request to submit the quiz
+     * */
     public void invokeWS(RequestParams params){
-        // Show Progress Dialog
-        prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(Utility.API_URL() + "quizzes/submit/" + quiz_id + "?token=" + Utility.getToken(), params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Hide Progress Dialog
-                prgDialog.hide();
-//                String jsonstring = new String (responseBody);
-//                Toast.makeText(getContext(), jsonstring, Toast.LENGTH_LONG).show();
                 Intent backToDashboard = new Intent(getContext(), DashboardActivity.class);
                 getContext().startActivity(backToDashboard);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // Hide Progress Dialog
-                prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){
-                    Toast.makeText(getContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "(onFailure 404). Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    String jsonstring = new String (responseBody);
-                    Toast.makeText(getContext(), jsonstring, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "(onFailure 500). Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 403){
+                    Toast.makeText(getContext(), "(onFailure 403). Something is wrong with the token/authentication. Check other pages.", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 401){
+                    Toast.makeText(getContext(), "(onFailure 401). Something is wrong with the authentication. Check login.", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
-                    Toast.makeText(getContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "(onFailure). Status: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
         });

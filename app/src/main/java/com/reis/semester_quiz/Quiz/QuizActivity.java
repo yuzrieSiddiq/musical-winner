@@ -104,6 +104,11 @@ public class QuizActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    /**
+     *  GET|HEAD | App\Api\V1\Controllers\QuizController@show
+     *  /api/quizzes/{quiz_id}
+     *  Get the quiz,questions,answers of a specified quiz
+     * */
     public void invokeWS() {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(Utility.API_URL() + "quizzes/" + quiz_id+ "?token=" + Utility.getToken() ,new AsyncHttpResponseHandler() {
@@ -178,7 +183,7 @@ public class QuizActivity extends AppCompatActivity {
                 }
                 // When Http response code is '500'
                 else if(statusCode == 403){
-                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token. Check other pages.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token/authentication. Check other pages.", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 401){

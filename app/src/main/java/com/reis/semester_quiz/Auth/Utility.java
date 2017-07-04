@@ -54,13 +54,9 @@ public class Utility {
     }
 
     public static String API_URL() {
-        String url = "http://52.220.127.134/api/";
-        return url;
-    }
-
-    public static String API_URL_LOCAL() {
-        String url = "http://10.0.2.2:8000/api/";
-        return url;
+        String domain = "http://52.220.127.134/api/";
+        String local = "http://10.0.2.2:8000/api/";
+        return domain;
     }
 
     public static String getToken() {

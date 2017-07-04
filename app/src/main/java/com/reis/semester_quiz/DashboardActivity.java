@@ -40,7 +40,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    ProgressDialog prgDialog;
     TextView nameTextView, idTextView;
     ListView unit_listingListView;
 
@@ -52,11 +51,6 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_index);
         getSupportActionBar().setTitle("Semester Quiz");
-
-        // set views
-        prgDialog = new ProgressDialog(this);
-        prgDialog.setMessage("Please wait...");
-        prgDialog.setCancelable(false);
 
         nameTextView = (TextView) findViewById(R.id.student_name);
         idTextView = (TextView) findViewById(R.id.student_id);
@@ -102,19 +96,15 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     /**
-     *  REST call
+     *  GET|HEAD | App\Api\V1\Controllers\StudentController@index
+     *  /api/students
+     *  Get from the "students" table which have their units. Lists out all units currently taken by the student
      *  */
     public void invokeWS(){
-        // Show Progress Dialog
-        prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(Utility.API_URL() + "students?token=" + Utility.getToken(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Hide Progress Dialog
-                prgDialog.hide();
-
                 String jsonstring = new String(responseBody);
                 try {
                     JSONObject jsonresponse = new JSONObject(jsonstring);
@@ -175,19 +165,25 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // Hide Progress Dialog
-                prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 404). Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 500). Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 403){
+                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token/authentication. Check other pages.", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 401){
+                    Toast.makeText(getApplicationContext(), "(onFailure 401). Something is wrong with the authentication. Check login.", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
-                    Toast.makeText(getApplicationContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure). Status: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     Typeface typeface;
     EditText username, password;
     String Email, Password;
-    ProgressDialog prgDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +46,6 @@ public class LoginActivity extends AppCompatActivity {
 
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
-
-        prgDialog = new ProgressDialog(this);
-        // Set Progress Dialog Text
-        prgDialog.setMessage("Authenticating...");
-        // Set Cancelable as False
-        prgDialog.setCancelable(false);
     }
 
     @Override
@@ -85,26 +78,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Method that performs RESTful webservice invocations
-     *
-     * @param params
+     *  POST | App\Api\V1\Controllers\LoginController@login
+     *  /api/auth/login
+     *  Sends username and password through api to retrieve token
      */
     public void invokeWS(RequestParams params){
-        // Show Progress Dialog
-        prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(Utility.API_URL() + "auth/login", params ,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Hide Progress Dialog
-                prgDialog.hide();
                 try {
                     // JSON Object
                     String jsonstring = new String (responseBody);
                     JSONObject obj = new JSONObject(jsonstring);
 
-                    // add token to app
+                    // add token and context to app
                     Utility.setToken(getApplicationContext(), obj);
 
                     navigatetoHomeActivity(jsonstring);
@@ -117,27 +105,30 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // Hide Progress Dialog
-                prgDialog.hide();
                 // When Http response code is '404'
                 if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 404). Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 500). Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 403){
+                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token/authentication. Check other pages.", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 401){
+                    Toast.makeText(getApplicationContext(), "(onFailure 401). Something is wrong with the authentication. Check login.", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
-                    Toast.makeText(getApplicationContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure). Status: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    /**
-     * Method which navigates from Login Activity to Home Activity
-     */
     public void navigatetoHomeActivity(String json_data){
 
         try {

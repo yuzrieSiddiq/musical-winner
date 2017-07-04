@@ -192,7 +192,7 @@ public class UnitActivity extends AppCompatActivity {
                 }
                 // When Http response code is '500'
                 else if(statusCode == 403){
-                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token. Check other pages.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token/authentication. Check other pages.", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 401){

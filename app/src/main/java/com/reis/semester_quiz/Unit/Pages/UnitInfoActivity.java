@@ -30,13 +30,15 @@ public class UnitInfoActivity extends AppCompatActivity {
         setContentView(R.layout.unit_info);
 
         unit_id = getIntent().getExtras().getString("unit_id");
-
-        // get the view and invoke the REST call
         invokeWS();
     }
 
+    /**
+     * GET|HEAD | App\Api\V1\Controllers\UnitController@show
+     * /api/units/{unit_id}
+     * Get unit information of a specified unit
+     * */
     public void invokeWS() {
-        // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(Utility.API_URL() + "units/" + unit_id + "?token=" + Utility.getToken() ,new AsyncHttpResponseHandler() {
             @Override
@@ -72,15 +74,23 @@ public class UnitInfoActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 // When Http response code is '404'
                 if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 404). Requested resource not found", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code is '500'
                 else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure 500). Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 403){
+                    Toast.makeText(getApplicationContext(), "(onFailure 403). Something is wrong with the token/authentication. Check other pages.", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 401){
+                    Toast.makeText(getApplicationContext(), "(onFailure 401). Something is wrong with the authentication. Check login.", Toast.LENGTH_LONG).show();
                 }
                 // When Http response code other than 404, 500
                 else{
-                    Toast.makeText(getApplicationContext(), "Status: " + statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "(onFailure). Status: " + statusCode, Toast.LENGTH_LONG).show();
                 }
             }
         });
