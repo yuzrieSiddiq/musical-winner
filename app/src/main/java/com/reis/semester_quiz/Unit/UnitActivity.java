@@ -15,9 +15,9 @@ import android.widget.Toast;
 import com.astuetz.PagerSlidingTabStrip;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
+import com.reis.semester_quiz.Unit.Pages.UnitInfoActivity;
 
 public class UnitActivity extends AppCompatActivity {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,23 +30,17 @@ public class UnitActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
     public void onBackPressed() {
         Intent backIntent = new Intent(this, DashboardActivity.class);
         startActivity(backIntent);
     }
 
     public void navigateToUnitInfo(View view) {
-        Toast.makeText(this, "Test Unit Info Button", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Test Unit Info Button", Toast.LENGTH_SHORT).show();
+
+        Intent unitInfoIntent = new Intent(this, UnitInfoActivity.class);
+        startActivity(unitInfoIntent);
     }
 
     public void navigateToTeamInfo(View view) {

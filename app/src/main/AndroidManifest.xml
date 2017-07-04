@@ -14,18 +14,20 @@
         <activity android:name=".Unit.UnitActivity" />
         <activity android:name=".Quiz.QuizActivity" />
         <activity
-            android:name=".DashboardActivity" android:noHistory="true"
-            android:label="@string/title_activity_dashboard">
-        </activity>
-        <activity android:name=".Auth.LoginActivity" android:noHistory="true">
+            android:name=".DashboardActivity"
+            android:label="@string/title_activity_dashboard"
+            android:noHistory="true" />
+        <activity
+            android:name=".Auth.LoginActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
-        <activity android:name=".Unit.Pages.AddNewMemberActivity"></activity>
+        <activity android:name=".Unit.Pages.UnitInfoActivity" />
+        <activity android:name=".Unit.Pages.UnitTeamActivity"></activity>
     </application>
 
 </manifest>
