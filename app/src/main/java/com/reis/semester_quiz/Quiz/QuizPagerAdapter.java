@@ -14,13 +14,14 @@ import java.util.HashMap;
 public class QuizPagerAdapter extends FragmentPagerAdapter {
     ArrayList<HashMap<String, String>> questions;
     ArrayList<HashMap<String, String>> answers;
-    String quiz_id;
+    String quiz_id, quiz_type;
 
-    public QuizPagerAdapter(FragmentManager fm, ArrayList<HashMap<String, String>> questions, ArrayList<HashMap<String, String>> answers, String quiz_id) {
+    public QuizPagerAdapter(FragmentManager fm, ArrayList<HashMap<String, String>> questions, ArrayList<HashMap<String, String>> answers, String quiz_id, String quiz_type) {
         super(fm);
         this.questions = questions;
         this.answers = answers;
         this.quiz_id = quiz_id;
+        this.quiz_type = quiz_type;
     }
 
     @Override
@@ -41,6 +42,6 @@ public class QuizPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return QuizFragment.newInstance(position, getCount(), questions.get(position), answers, quiz_id);
+        return QuizFragment.newInstance(position, getCount(), questions.get(position), answers, quiz_id, quiz_type);
     }
 }

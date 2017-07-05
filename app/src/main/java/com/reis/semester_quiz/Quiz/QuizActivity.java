@@ -1,7 +1,5 @@
 package com.reis.semester_quiz.Quiz;
 
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +32,7 @@ public class QuizActivity extends AppCompatActivity {
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
 
-    String quiz_id, quiz_name;
-    ListView quiz_list;
+    String quiz_id, quiz_name, quiz_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +40,9 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.quiz_index);
 
         // get from bundle
-        quiz_name = getIntent().getExtras().getString("quiz_name");
         quiz_id = getIntent().getExtras().getString("quiz_id");
+        quiz_name = getIntent().getExtras().getString("quiz_name");
+        quiz_type = getIntent().getExtras().getString("quiz_type");
 
         getSupportActionBar().setTitle(quiz_name);
 
@@ -58,6 +56,7 @@ public class QuizActivity extends AppCompatActivity {
 
         final ImageView leftarrow = (ImageView) findViewById(R.id.prevQuestion);
         final ImageView rightarrow = (ImageView) findViewById(R.id.nextQuestion);
+        final ListView submissionanswers = (ListView) findViewById(R.id.answers_list);
 
         // on first question
         // set left invisible on first page
@@ -82,6 +81,11 @@ public class QuizActivity extends AppCompatActivity {
                     // set right arrow invisible on last page
                     leftarrow.setVisibility(View.VISIBLE);
                     rightarrow.setVisibility(View.INVISIBLE);
+
+                    // TODO: reset the list at submit page
+                    // final ArrayAdapter<HashMap<String, String>> answersadapter = new AdapterQuizAnswerList(getApplicationContext(), answers);
+                    // answersadapter.notifyDataSetChanged();
+                    // answersListView.setAdapter(answersadapter);
                 } else {
                     // by default, both arrows are visible
                     leftarrow.setVisibility(View.VISIBLE);
@@ -146,6 +150,7 @@ public class QuizActivity extends AppCompatActivity {
                         data_answers.put("question_id", String.valueOf(question_id));
                         data_answers.put("question_no", String.valueOf(question_no));
                         data_answers.put("answer", "");
+                        data_answers.put("incorrect_count", "0");
 
                         student_answers.add(data_answers);
 
@@ -156,7 +161,7 @@ public class QuizActivity extends AppCompatActivity {
                     data.put("question_no", "n");
                     questions.add(data);
 
-                    QuizPagerAdapter adapter = new QuizPagerAdapter(getSupportFragmentManager(), questions, student_answers, quiz_id);
+                    QuizPagerAdapter adapter = new QuizPagerAdapter(getSupportFragmentManager(), questions, student_answers, quiz_id, quiz_type);
                     pager.setAdapter(adapter);
                     pager.setOffscreenPageLimit(questions.size());
 

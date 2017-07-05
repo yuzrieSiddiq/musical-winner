@@ -210,6 +210,7 @@ public class UnitActivity extends AppCompatActivity {
             private void populateTQuizzes(final HashMap<String, String> group_list_item) {
                 String quiz_title = "t" + group_list_item.get("title");
                 String is_attempted = group_list_item.get("has_been_attempted");
+                final String type = group_list_item.get("type");
 
                 if (quiz_title.contains("1")) {
                     LinearLayout TQuiz1 = (LinearLayout) findViewById(R.id.TQuiz1);
@@ -235,7 +236,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = group_list_item.get("quiz_id");
                                 String quiz_name = group_list_item.get("title");
-                                navigateToQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name, type);
                             }
                         });
                     }
@@ -264,7 +265,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = group_list_item.get("quiz_id");
                                 String quiz_name = group_list_item.get("title");
-                                navigateToQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name, type);
                             }
                         });
                     }
@@ -293,7 +294,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = group_list_item.get("quiz_id");
                                 String quiz_name = group_list_item.get("title");
-                                navigateToQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name, type);
                             }
                         });
                     }
@@ -311,6 +312,7 @@ public class UnitActivity extends AppCompatActivity {
             private void populateIQuizzes(final HashMap<String, String> individual_list_item) {
                 String quiz_title = "i" + individual_list_item.get("title");
                 String is_attempted = individual_list_item.get("has_been_attempted");
+                final String type = individual_list_item.get("type");
 
                 if (quiz_title.contains("1")) {
                     LinearLayout IQuiz1 = (LinearLayout) findViewById(R.id.IQuiz1);
@@ -336,7 +338,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = individual_list_item.get("quiz_id");
                                 String quiz_name = individual_list_item.get("title");
-                                navigateToQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name, type);
                             }
                         });
                     }
@@ -365,7 +367,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = individual_list_item.get("quiz_id");
                                 String quiz_name = individual_list_item.get("title");
-                                navigateToQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name, type);
                             }
                         });
                     }
@@ -394,7 +396,7 @@ public class UnitActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 String quiz_id = individual_list_item.get("quiz_id");
                                 String quiz_name = individual_list_item.get("title");
-                                navigateToQuiz(v, quiz_id, quiz_name);
+                                navigateToQuiz(v, quiz_id, quiz_name, type);
                             }
                         });
                     }
@@ -406,7 +408,7 @@ public class UnitActivity extends AppCompatActivity {
                  * */
             }
 
-            public void navigateToQuiz(View view, String quiz_id, String quiz_name) {
+            public void navigateToQuiz(View view, String quiz_id, String quiz_name, String type) {
                 // switch page intent
                 Intent quizintent = new Intent(getApplicationContext(), QuizActivity.class);
 
@@ -414,6 +416,7 @@ public class UnitActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("quiz_id", quiz_id);
                 bundle.putString("quiz_name", quiz_name);
+                bundle.putString("quiz_type", type);
                 quizintent.putExtras(bundle);
 
                 startActivity(quizintent);
