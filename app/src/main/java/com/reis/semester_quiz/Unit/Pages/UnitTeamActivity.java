@@ -168,7 +168,7 @@ public class UnitTeamActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 try {
                                     JSONObject unitObject = new JSONObject(this_student.getString("unit"));
-                                    Intent addMemberIntent = new Intent(getApplicationContext(), AddNewMemberActivity.class);
+                                    Intent addMemberIntent = new Intent(UnitTeamActivity.this, AddNewMemberActivity.class);
 
                                     Bundle bundle = new Bundle();
                                     bundle.putString("unit_id", String.valueOf(unitObject.getInt("id")));

@@ -91,13 +91,13 @@ public class AddNewMemberActivity extends AppCompatActivity {
         client.post(Utility.API_URL() + "enlist/" + student_id + "/unit/" + unit_id + "?token=" + Utility.getToken(), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Intent backToUnitIntent = new Intent(AddNewMemberActivity.this, UnitActivity.class);
+                Intent backToUnitTeamIntent = new Intent(AddNewMemberActivity.this, UnitTeamActivity.class);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("unit_id", unit_id);
                 bundle.putString("unit_name", unit_name);
-                backToUnitIntent.putExtras(bundle);
-                startActivity(backToUnitIntent);
+                backToUnitTeamIntent.putExtras(bundle);
+                startActivity(backToUnitTeamIntent);
             }
 
             @Override
