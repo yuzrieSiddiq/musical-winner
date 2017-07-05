@@ -356,7 +356,8 @@
             android:layout_weight="0.5"
             android:weightSum="3"
             android:clickable="true"
-            android:onClick="navigateToCalendar">
+            android:onClick="navigateToCalendar"
+            android:background="@drawable/unit_menu_item_light_rightmost_item">
 
             <ImageView
                 android:layout_width="match_parent"
