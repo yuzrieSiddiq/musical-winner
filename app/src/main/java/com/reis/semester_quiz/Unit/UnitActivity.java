@@ -155,8 +155,6 @@ public class UnitActivity extends AppCompatActivity {
                         }
                     }
 
-//                    Toast.makeText(getApplicationContext(), group_list_items.toString(), Toast.LENGTH_LONG).show();
-
                     /**
                      * IMPLEMENTATION CHANGE
                      * Retrieving data remains the same
@@ -169,8 +167,19 @@ public class UnitActivity extends AppCompatActivity {
                         populateIQuizzes(individual_list_items.get(i));
                     }
 
-                    for (int i = 0; i < group_list_items.size(); i++) {
-                        populateTQuizzes(group_list_items.get(i));
+                    if (group_list_items.get(0).get("is_group_leader").equals("0")) {
+                        TextView TQuiz1_status = (TextView) findViewById(R.id.TQuiz1_status);
+                        TextView TQuiz2_status = (TextView) findViewById(R.id.TQuiz2_status);
+                        TextView TQuiz3_status = (TextView) findViewById(R.id.TQuiz3_status);
+
+                        String for_leader_only = "TEAM LEADER\nONLY";
+                        TQuiz1_status.setText(for_leader_only);
+                        TQuiz2_status.setText(for_leader_only);
+                        TQuiz3_status.setText(for_leader_only);
+                    } else {
+                        for (int i = 0; i < group_list_items.size(); i++) {
+                            populateTQuizzes(group_list_items.get(i));
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -210,6 +219,7 @@ public class UnitActivity extends AppCompatActivity {
             private void populateTQuizzes(final HashMap<String, String> group_list_item) {
                 String quiz_title = "t" + group_list_item.get("title");
                 String is_attempted = group_list_item.get("has_been_attempted");
+                Integer is_group_leader = Integer.parseInt(group_list_item.get("is_group_leader"));
                 final String type = group_list_item.get("type");
 
                 if (quiz_title.contains("1")) {
