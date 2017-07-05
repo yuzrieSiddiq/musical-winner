@@ -219,7 +219,7 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = group_list_item.get("rank") + " / " + group_list_item.get("total_students");
+                        String rank = group_list_item.get("rank_no") + " / " + group_list_item.get("total_teams");
                         String score = group_list_item.get("correct_count") + " / " + group_list_item.get("answers_count");
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
@@ -248,7 +248,7 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = group_list_item.get("rank") + " / " + group_list_item.get("total_students");
+                        String rank = group_list_item.get("rank_no") + " / " + group_list_item.get("total_teams");
                         String score = group_list_item.get("correct_count") + " / " + group_list_item.get("answers_count");
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
@@ -277,7 +277,7 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = group_list_item.get("rank") + " / " + group_list_item.get("total_teams");
+                        String rank = group_list_item.get("rank_no") + " / " + group_list_item.get("total_teams");
                         String score = group_list_item.get("correct_count") + " / " + group_list_item.get("answers_count");
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
@@ -321,7 +321,7 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = individual_list_item.get("rank") + " / " + individual_list_item.get("total_students");
+                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_students");
                         String score = individual_list_item.get("correct_count") + " / " + individual_list_item.get("answers_count");
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
@@ -350,7 +350,7 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = individual_list_item.get("rank") + " / " + individual_list_item.get("total_students");
+                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_students");
                         String score = individual_list_item.get("correct_count") + " / " + individual_list_item.get("answers_count");
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
@@ -379,7 +379,7 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = individual_list_item.get("rank") + " / " + individual_list_item.get("total_students");
+                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_students");
                         String score = individual_list_item.get("correct_count") + " / " + individual_list_item.get("answers_count");
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
