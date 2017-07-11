@@ -192,48 +192,12 @@ public class QuizFragment extends Fragment {
 
     public void populateIQuestion(View view) {
         final Integer question_no = Integer.valueOf(question.get("question_no"));
+        final Integer q_no = question_no+1;
         final String correct_answer = question.get("correct_answer");
         final String answer1 = question.get("answer1");
         final String answer2 = question.get("answer2");
         final String answer3 = question.get("answer3");
         final String answer4 = question.get("answer4");
-
-        // overlay tutorial on first time use
-        // TODO: remove this tutorial
-        if (position == 0) {
-            final RelativeLayout overlayLayout = (RelativeLayout) view.findViewById(R.id.rlOverlay);
-
-            if (quiz_tutorial) {
-                overlayLayout.setVisibility(View.VISIBLE);
-            } else {
-                overlayLayout.setVisibility(View.GONE);
-            }
-
-            overlayLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SharedPreferences.Editor preferences_editor= getActivity().getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
-                    preferences_editor.putBoolean("quiz_tutorial", false);
-                    preferences_editor.apply();
-
-                    Animation fadeOut = new AlphaAnimation(1, 0);
-                    fadeOut.setInterpolator(new AccelerateInterpolator());
-                    fadeOut.setDuration(300);
-
-                    fadeOut.setAnimationListener(new Animation.AnimationListener()
-                    {
-                        public void onAnimationEnd(Animation animation)
-                        {
-                            overlayLayout.setVisibility(View.GONE);
-                        }
-                        public void onAnimationRepeat(Animation animation) {}
-                        public void onAnimationStart(Animation animation) {}
-                    });
-
-                    overlayLayout.startAnimation(fadeOut);
-                }
-            });
-        }
 
         // get the xml layouts and set the texts
         TextView questionTextView = (TextView) view.findViewById(R.id.question);
@@ -242,7 +206,7 @@ public class QuizFragment extends Fragment {
         final Button answerC = (Button) view.findViewById(R.id.answerC);
         final Button answerD = (Button) view.findViewById(R.id.answerD);
 
-        questionTextView.setText(question.get("question"));
+        questionTextView.setText("Q" + q_no + ". " + question.get("question"));
         answerA.setText(answer1);
         answerB.setText(answer2);
         answerC.setText(answer3);
