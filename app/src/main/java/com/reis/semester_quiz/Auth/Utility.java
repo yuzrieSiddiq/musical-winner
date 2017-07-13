@@ -56,7 +56,7 @@ public class Utility {
     public static String API_URL() {
         String domain = "http://52.220.127.134/api/";
         String local = "http://10.0.2.2:8000/api/";
-        return domain;
+        return local;
     }
 
     public static String getToken() {
@@ -72,6 +72,12 @@ public class Utility {
         // save token to context
         SharedPreferences.Editor preferences_editor= context.getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
         preferences_editor.putString("_token", tokenObject.getString("token"));
+        preferences_editor.apply();
+    }
+
+    public static void clearPreferences() {
+        SharedPreferences.Editor preferences_editor= context.getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+        preferences_editor.clear();
         preferences_editor.apply();
     }
 }

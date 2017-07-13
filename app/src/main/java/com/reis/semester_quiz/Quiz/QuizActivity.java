@@ -1,5 +1,6 @@
 package com.reis.semester_quiz.Quiz;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -119,8 +120,31 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
-                    String jsonstring = new String (responseBody);
-                    JSONArray jsonArray = new JSONArray(jsonstring);
+
+                    String JSONData = "";                                   // to store new/existing responseBody
+                    String json_questions_id = "json_questions_" + quiz_id; // preferences key
+
+                    // get json_questions from Preferences
+                    SharedPreferences preferences = getSharedPreferences("semester_quiz", MODE_PRIVATE);
+                    String getJSONDataFromPreferences = preferences.getString(json_questions_id, null);
+
+                    /**
+                     * get JSONData from Preferences if retrying the questions (not submitted on previous attempt)
+                     * else if first time opening the quiz, load new data and save it to Preferences.
+                     * */
+                    if (getJSONDataFromPreferences != null) {
+                        JSONData = getJSONDataFromPreferences;
+
+                    } else {
+                        JSONData = new String (responseBody);
+
+                        SharedPreferences.Editor preferences_editor= getSharedPreferences("semester_quiz", MODE_PRIVATE).edit();
+                        preferences_editor.putString(json_questions_id, JSONData);
+                        preferences_editor.apply();
+                    }
+
+                    // use the data from preferences or new fetched data
+                    JSONArray jsonArray = new JSONArray(JSONData);
 
                     // populate the quizzes
                     final ArrayList<HashMap<String, String>> questions = new ArrayList<HashMap<String, String>>();

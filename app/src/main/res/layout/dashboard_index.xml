@@ -30,7 +30,7 @@
                 android:id="@+id/student_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Mohamad Yuzrie Bin Khalid"
+                android:text="Your Name"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp"
                 android:paddingBottom="4dp"/>
@@ -39,7 +39,7 @@
                 android:id="@+id/student_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Student ID: 4318595"
+                android:text="Student ID: Your Student ID"
                 android:textSize="14sp"
                 android:paddingBottom="4dp"/>
 

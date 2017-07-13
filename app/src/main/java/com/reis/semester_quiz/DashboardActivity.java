@@ -78,6 +78,10 @@ public class DashboardActivity extends AppCompatActivity {
                     .setCancelable(true)
                     .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog,int id) {
+                            // clear all items in preferences after logout (to refresh new content when login)
+                            Utility.clearPreferences();
+
+                            // let there be light! to go back
                             Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
                             startActivity(backToLogin);
                         }
