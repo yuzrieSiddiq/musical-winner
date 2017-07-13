@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Typeface typeface;
     EditText username, password;
-    String Email, Password;
+    String Username, Password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +58,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void loginUser(View view){
-        Email = username.getText().toString() + "@students.swinburne.edu.my";
+        Username = username.getText().toString();
         Password = password.getText().toString();
         // Instantiate Http Request Param Object
         RequestParams params = new RequestParams();
         // When Email Edit View and Password Edit View have values other than Null
-        if(Utility.isNotNull(Email) && Utility.isNotNull(Password)){
+        if(Utility.isNotNull(Username) && Utility.isNotNull(Password)){
             // Put Http parameter username with value of Email Edit View control
-            params.put("email", Email);
+            params.put("username", Username);
             // Put Http parameter password with value of Password Edit Value control
             params.put("password", Password);
             // Invoke RESTful Web Service with Http parameters
