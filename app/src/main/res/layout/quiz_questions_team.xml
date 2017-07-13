@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.reis.semester_quiz.Quiz.QuizActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="9"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/question"
+                    android:layout_margin="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/darkgrey"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"/>
+
+                <Button
+                    android:id="@+id/answerA_color_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerA"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerA_color_red"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerB"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/darkgrey"
+                    android:textColor="#FFF"
+                    android:text="A: "/>
+
+                <Button
+                    android:id="@+id/answerB_color_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerA"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerB_color_red"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerB"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/darkgrey"
+                    android:textColor="#FFF"
+                    android:text="B: "/>
+
+                <Button
+                    android:id="@+id/answerC_color_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerA"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerC_color_red"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerB"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/darkgrey"
+                    android:textColor="#FFF"
+                    android:text="C: "/>
+
+                <Button
+                    android:id="@+id/answerD_color_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerA"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerD_color_red"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/answerB"
+                    android:textColor="#FFF"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/answerD"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="textStart"
+                    android:backgroundTint="@color/darkgrey"
+                    android:textColor="#FFF"
+                    android:text="D: "/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/dim_dark"
+        android:alpha="0.9"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textHelp"
+            android:layout_width="match_parent"
+            android:gravity="center|center_vertical|center_horizontal"
+            android:layout_height="wrap_content"
+            android:text="Swipe left or right to move onto the next question"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@id/textHelp"
+            android:text="Touch the screen to continue"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</FrameLayout>

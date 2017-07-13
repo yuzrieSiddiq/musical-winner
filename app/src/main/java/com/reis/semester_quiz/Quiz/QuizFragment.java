@@ -16,20 +16,15 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.reis.semester_quiz.Auth.LoginActivity;
 import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
@@ -183,7 +178,12 @@ public class QuizFragment extends Fragment {
             // 2. If this is not last page, generate questions
             // separate implementation for individual and group quizzes
 
-            View view = inflater.inflate(R.layout.quiz_questions, container, false);
+            View view = null;
+            if (quiz_type.toLowerCase().equals("individual"))
+                view = inflater.inflate(R.layout.quiz_questions_individual, container, false);
+            else
+                view = inflater.inflate(R.layout.quiz_questions_team, container, false);
+
             populateIQuestion(view);
 
             return view;
@@ -267,21 +267,30 @@ public class QuizFragment extends Fragment {
         } else {
             // 2. group quiz
 
-            // default color: darkgrey
-            answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-            answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-            answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-            answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-
-            // onclick: if correct, button turns green
-            // if wrong answer, button turns red
+            final Button answerA_color_green = (Button) view.findViewById(R.id.answerA_color_green);
+            final Button answerA_color_red   = (Button) view.findViewById(R.id.answerA_color_red);
+            final Button answerB_color_green = (Button) view.findViewById(R.id.answerB_color_green);
+            final Button answerB_color_red   = (Button) view.findViewById(R.id.answerB_color_red);
+            final Button answerC_color_green = (Button) view.findViewById(R.id.answerC_color_green);
+            final Button answerC_color_red   = (Button) view.findViewById(R.id.answerC_color_red);
+            final Button answerD_color_green = (Button) view.findViewById(R.id.answerD_color_green);
+            final Button answerD_color_red   = (Button) view.findViewById(R.id.answerD_color_red);
+            /**
+             * onclick: if correct, button turns green
+             * if wrong answer, button turns red
+             * */
             answerA.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (answer1.equals(correct_answer)) {
-                        answerA.getBackground().setColorFilter(Color.parseColor(color_green), PorterDuff.Mode.MULTIPLY);
+                        answerA_color_green.setVisibility(View.VISIBLE);
+                        answerA_color_green.setText(answerA.getText());
+                        answerA.setVisibility(View.GONE);
                     } else {
-                        answerA.getBackground().setColorFilter(Color.parseColor(color_red), PorterDuff.Mode.MULTIPLY);
+                        answerA_color_red.setVisibility(View.VISIBLE);
+                        answerA_color_red.setText(answerA.getText());
+                        answerA.setVisibility(View.GONE);
+
                         addIncorrectCount(question_no);
                     }
                     addAnswersPoints(question_no);
@@ -292,9 +301,14 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (answer2.equals(correct_answer)) {
-                        answerB.getBackground().setColorFilter(Color.parseColor(color_green), PorterDuff.Mode.MULTIPLY);
+                        answerB_color_green.setVisibility(View.VISIBLE);
+                        answerB_color_green.setText(answerB.getText());
+                        answerB.setVisibility(View.GONE);
                     } else {
-                        answerB.getBackground().setColorFilter(Color.parseColor(color_red), PorterDuff.Mode.MULTIPLY);
+                        answerB_color_red.setVisibility(View.VISIBLE);
+                        answerB_color_red.setText(answerB.getText());
+                        answerB.setVisibility(View.GONE);
+
                         addIncorrectCount(question_no);
                     }
                     addAnswersPoints(question_no);
@@ -305,9 +319,14 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (answer3.equals(correct_answer)) {
-                        answerC.getBackground().setColorFilter(Color.parseColor(color_green), PorterDuff.Mode.MULTIPLY);
+                        answerC_color_green.setVisibility(View.VISIBLE);
+                        answerC_color_green.setText(answerC.getText());
+                        answerC.setVisibility(View.GONE);
                     } else {
-                        answerC.getBackground().setColorFilter(Color.parseColor(color_red), PorterDuff.Mode.MULTIPLY);
+                        answerC_color_red.setVisibility(View.VISIBLE);
+                        answerC_color_red.setText(answerC.getText());
+                        answerC.setVisibility(View.GONE);
+
                         addIncorrectCount(question_no);
                     }
                     addAnswersPoints(question_no);
@@ -318,9 +337,13 @@ public class QuizFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (answer4.equals(correct_answer)) {
-                        answerD.getBackground().setColorFilter(Color.parseColor(color_green), PorterDuff.Mode.MULTIPLY);
+                        answerD_color_green.setVisibility(View.VISIBLE);
+                        answerD_color_green.setText(answerD.getText());
+                        answerD.setVisibility(View.GONE);
                     } else {
-                        answerD.getBackground().setColorFilter(Color.parseColor(color_red), PorterDuff.Mode.MULTIPLY);
+                        answerD_color_red.setVisibility(View.VISIBLE);
+                        answerD_color_red.setText(answerD.getText());
+                        answerD.setVisibility(View.GONE);
                         addIncorrectCount(question_no);
                     }
                     addAnswersPoints(question_no);
