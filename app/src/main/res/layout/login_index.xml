@@ -20,7 +20,7 @@
             android:layout_marginBottom="24dp"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:text="@string/app_name"/>
 
         <!-- Usesrname Label -->
