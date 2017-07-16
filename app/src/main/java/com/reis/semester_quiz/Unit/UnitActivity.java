@@ -67,6 +67,7 @@ public class UnitActivity extends AppCompatActivity {
 
         Bundle bundle = new Bundle();
         bundle.putString("unit_id", UNIT_ID);
+        bundle.putString("unit_name", UNIT_NAME);
         unitTeamInfoIntent .putExtras(bundle);
 
         startActivity(unitTeamInfoIntent );

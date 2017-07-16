@@ -204,6 +204,6 @@ public class DashboardActivity extends AppCompatActivity {
         bundle.putString("unit_name", unit_name);
         unitintent.putExtras(bundle);
 
-        startActivity(unitintent  );
+        startActivity(unitintent);
     }
 }

@@ -31,15 +31,30 @@ import cz.msebera.android.httpclient.Header;
 
 public class UnitTeamActivity extends AppCompatActivity {
 
-    String unit_id;
+    String unit_id, unit_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.unit_team_info);
         unit_id = getIntent().getExtras().getString("unit_id");
+        unit_name = getIntent().getExtras().getString("unit_name");
 
         invokeWS();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // switch page intent
+        Intent unitintent = new Intent(getApplicationContext(), UnitActivity.class);
+
+        // add to bundle
+        Bundle bundle = new Bundle();
+        bundle.putString("unit_id", unit_id);
+        bundle.putString("unit_name", unit_name);
+        unitintent.putExtras(bundle);
+
+        startActivity(unitintent);
     }
 
     /**
