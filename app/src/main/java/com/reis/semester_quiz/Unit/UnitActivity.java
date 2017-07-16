@@ -144,7 +144,9 @@ public class UnitActivity extends AppCompatActivity {
                         if (!quiz_data.isNull("rank")) {
                             JSONObject rank = new JSONObject(quiz_data.getString("rank"));
                             Integer ranking_no = rank.getInt("rank_no");
+                            Integer ranking_score = rank.getInt("score");
                             data.put("rank_no", String.valueOf(ranking_no));
+                            data.put("rank_score", String.valueOf(ranking_score));
                         }
 
                         // separate the quizzes into two
@@ -231,7 +233,7 @@ public class UnitActivity extends AppCompatActivity {
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
                         String rank = group_list_item.get("rank_no") + " / " + group_list_item.get("total_teams");
-                        String score = group_list_item.get("correct_count") + " / " + group_list_item.get("answers_count");
+                        String score = group_list_item.get("rank_score") + "%";
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
                         TQuiz1.setClickable(false);
@@ -260,7 +262,7 @@ public class UnitActivity extends AppCompatActivity {
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
                         String rank = group_list_item.get("rank_no") + " / " + group_list_item.get("total_teams");
-                        String score = group_list_item.get("correct_count") + " / " + group_list_item.get("answers_count");
+                        String score = group_list_item.get("rank_score") + "%";
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
                         TQuiz2.setClickable(false);
@@ -289,7 +291,7 @@ public class UnitActivity extends AppCompatActivity {
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
                         String rank = group_list_item.get("rank_no") + " / " + group_list_item.get("total_teams");
-                        String score = group_list_item.get("correct_count") + " / " + group_list_item.get("answers_count");
+                        String score = group_list_item.get("rank_score") + "%";
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
                         TQuiz3.setClickable(false);
