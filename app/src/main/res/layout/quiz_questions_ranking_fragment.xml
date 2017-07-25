@@ -14,6 +14,7 @@
         android:background="@drawable/ranking_card">
 
         <LinearLayout
+            android:id="@+id/answer_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -25,7 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="8"
                 android:text="Test Header"
-                android:textColor="#878787"
+                android:textColor="@color/white"
                 android:padding="12dp"/>
             <TextView
                 android:layout_height="match_parent"
@@ -33,8 +34,7 @@
                 android:gravity="center"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
-                android:background="@drawable/ranking_border"
-                android:text="0"/>
+                android:background="@drawable/ranking_border"/>
 
             <TextView
                 android:id="@+id/rank_no"
@@ -42,7 +42,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:text="0"/>
+                android:text="0"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 

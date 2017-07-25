@@ -16,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,6 +29,7 @@ import com.loopj.android.http.RequestParams;
 import com.reis.semester_quiz.Auth.Utility;
 import com.reis.semester_quiz.DashboardActivity;
 import com.reis.semester_quiz.R;
+import com.reis.semester_quiz.Unit.Pages.AdapterAvailableStudentsList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,17 +49,6 @@ public class QuizFragment extends Fragment {
     private static final String ARG_ANSWERS  = "answers";
     private static final String ARG_QUIZ_ID  = "quiz_id";
     private static final String ARG_QUIZ_TYPE= "quiz_type";
-
-    private String color_darkgrey= "#4B4B4B";
-    private String color_white   = "#FFFFFF";
-    private String color_green   = "#679E36";
-    private String color_red     = "#C64B46";
-    private String color_answerA = "#679E36";
-    private String color_answerB = "#C64B46";
-    private String color_answerC = "#F3822C";
-    private String color_answerD = "#3F9EDE";
-    private String color_answerE = "#4D62BB";
-    private String color_maintheme = "#5160BB";
 
     private int position, length;
     private String quiz_id, quiz_type;
@@ -123,7 +114,6 @@ public class QuizFragment extends Fragment {
             answersListView.setAdapter(answersadapter);
 
             // sends a POST request on submit
-            // TODO: Confirmation Dialog Prompt to submit
             Button submit = (Button) view.findViewById(R.id.submit);
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -177,20 +167,124 @@ public class QuizFragment extends Fragment {
         } else {
             // 2. If this is not last page, generate questions
             // separate implementation for individual and group quizzes
+            if (quiz_type.toLowerCase().equals("individual")) {
+                View view = inflater.inflate(R.layout.quiz_questions_ranking, container, false);
 
-            View view = null;
-            if (quiz_type.toLowerCase().equals("individual"))
-                view = inflater.inflate(R.layout.quiz_questions_individual, container, false);
-            else
-                view = inflater.inflate(R.layout.quiz_questions_team, container, false);
+                populateIQuestion(view);
 
-            populateIQuestion(view);
+                return view;
 
-            return view;
+            } else {
+
+                View view = inflater.inflate(R.layout.quiz_questions_team, container, false);
+                populateGQuestion(view);
+
+                return view;
+            }
         }
     }
 
+    /**
+     * Implementation of answering the questions
+     * Individual: Can choose only once, will light up only the chosen answer
+     * Group: Can choose many times, will light up each chosen answers. Correct answers shows '*', Wrong answers shows 'x'
+     * */
+
+    /** Individual **/
     public void populateIQuestion(View view) {
+        final Integer question_no = Integer.valueOf(question.get("question_no"));
+        final Integer q_no = question_no+1;
+        TextView questionTextView = (TextView) view.findViewById(R.id.question);
+        questionTextView.setText("Q" + q_no + ". " + question.get("question"));
+
+        final ArrayList<HashMap<String, String>> answers_ranking = new ArrayList<HashMap<String, String>>();
+
+        for (int i = 4; i < 8; i++) {
+            HashMap<String, String> answer = new HashMap<>();
+            Integer answerPosition = i - 3;
+            String answerAtPosition = "answer" + answerPosition;
+            answer.put(answerAtPosition, question.get(answerAtPosition));   // 'answer1: sample answer'
+            answer.put(answerAtPosition+"_rank", String.valueOf(0));        // 'answer1_rank': 0
+
+            answers_ranking.add(answer);
+        }
+
+        final Integer[] current_rank = {0, 0, 0, 0};
+        final String[] answerString = {"", "", "", ""};
+
+        final ListView ranking_answers_list = (ListView) view.findViewById(R.id.ranking_answer_list);
+        final ArrayAdapter ranking_answers_list_adapter = new AdapterRankingAnswerList(getContext(), answers_ranking);
+        ranking_answers_list.setAdapter(ranking_answers_list_adapter);
+        ranking_answers_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+                final ArrayAdapter<String> dialogAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.select_dialog_item);
+
+                Integer current_rank_total = 0;
+                for (int i = 0; i < current_rank.length; i++) {
+                    current_rank_total += current_rank[i];
+                }
+
+                /**
+                 * Each questions has a maximum marks of 4
+                 * If the student decides the answer on A, he can put 4 on the first answer
+                 * Otherwise he can split the numbers, 2 on A, 2 on B, 0 on the rest
+                 * If already selected 4, the dialog should show only 0...
+                 * 0-4, 1-3, 2-2
+                 * */
+                if (current_rank_total == 4) { // if max
+                    dialogAdapter.add("0");
+                } else if (current_rank_total == 3) {
+                    dialogAdapter.add("1");
+                    dialogAdapter.add("0");
+                } else if (current_rank_total == 2) {
+                    dialogAdapter.add("2");
+                    dialogAdapter.add("1");
+                    dialogAdapter.add("0");
+                } else if (current_rank_total == 1) {
+                    dialogAdapter.add("3");
+                    dialogAdapter.add("2");
+                    dialogAdapter.add("1");
+                    dialogAdapter.add("0");
+                } else if (current_rank_total == 0) { // if min
+                    dialogAdapter.add("4");
+                    dialogAdapter.add("3");
+                    dialogAdapter.add("2");
+                    dialogAdapter.add("1");
+                    dialogAdapter.add("0");
+                }
+
+                /**
+                 * onclick one of the answer will show the dialog prompt
+                 * */
+                alertDialogBuilder.setAdapter(dialogAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String rank = dialogAdapter.getItem(which);
+                        final Integer answerI = position;
+
+                        /** the view here refers to the singulars inside the ListView - only get the rank_no **/
+                        TextView rank_no = (TextView) view.findViewById(R.id.rank_no);
+
+                        /** update current_rank and set the rank no on each answer **/
+                        current_rank[answerI] = Integer.parseInt(rank);
+                        rank_no.setText(rank);
+
+                        /** string of answer to put on the last page **/
+                        String answerFullString = "A(" +current_rank[0] + ") B(" + current_rank[1] + ") C(" + current_rank[2] + ") D(" + current_rank[3] +")";
+                        answers.get(question_no).put("answer", answerFullString);
+//                        Toast.makeText(getContext(), answerFullString, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alertDialogBuilder.show();
+            }
+        });
+    }
+
+    /** Group **/
+    public void populateGQuestion(View view) {
         final Integer question_no = Integer.valueOf(question.get("question_no"));
         final Integer q_no = question_no+1;
         final String correct_answer = question.get("correct_answer");
@@ -212,144 +306,90 @@ public class QuizFragment extends Fragment {
         answerC.setText(answer3);
         answerD.setText(answer4);
 
+
+        final Button answerA_color_green = (Button) view.findViewById(R.id.answerA_color_green);
+        final Button answerA_color_red   = (Button) view.findViewById(R.id.answerA_color_red);
+        final Button answerB_color_green = (Button) view.findViewById(R.id.answerB_color_green);
+        final Button answerB_color_red   = (Button) view.findViewById(R.id.answerB_color_red);
+        final Button answerC_color_green = (Button) view.findViewById(R.id.answerC_color_green);
+        final Button answerC_color_red   = (Button) view.findViewById(R.id.answerC_color_red);
+        final Button answerD_color_green = (Button) view.findViewById(R.id.answerD_color_green);
+        final Button answerD_color_red   = (Button) view.findViewById(R.id.answerD_color_red);
+
         /**
-         * Implementation of answering the questions
-         * Individual: Can choose only once, will light up only the chosen answer
-         * Group: Can choose many times, will light up each chosen answers. Correct answers shows '*', Wrong answers shows 'x'
+         * onclick: if correct, button turns green
+         * if wrong answer, button turns red
          * */
+        answerA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (answer1.equals(correct_answer)) {
+                    answerA_color_green.setVisibility(View.VISIBLE);
+                    answerA_color_green.setText(answerA.getText());
+                    answerA.setVisibility(View.GONE);
+                } else {
+                    answerA_color_red.setVisibility(View.VISIBLE);
+                    answerA_color_red.setText(answerA.getText());
+                    answerA.setVisibility(View.GONE);
 
-        if (quiz_type.toLowerCase().equals("individual")) {
-            // 1. individual quiz
-            answerA.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_answerA), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer1"));
+                    addIncorrectCount(question_no);
                 }
-            });
+                addAnswersPoints(question_no);
+            }
+        });
 
-            answerB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_answerB), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer2"));
+        answerB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (answer2.equals(correct_answer)) {
+                    answerB_color_green.setVisibility(View.VISIBLE);
+                    answerB_color_green.setText(answerB.getText());
+                    answerB.setVisibility(View.GONE);
+                } else {
+                    answerB_color_red.setVisibility(View.VISIBLE);
+                    answerB_color_red.setText(answerB.getText());
+                    answerB.setVisibility(View.GONE);
+
+                    addIncorrectCount(question_no);
                 }
-            });
+                addAnswersPoints(question_no);
+            }
+        });
 
-            answerC.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_answerC), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer3"));
+        answerC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (answer3.equals(correct_answer)) {
+                    answerC_color_green.setVisibility(View.VISIBLE);
+                    answerC_color_green.setText(answerC.getText());
+                    answerC.setVisibility(View.GONE);
+                } else {
+                    answerC_color_red.setVisibility(View.VISIBLE);
+                    answerC_color_red.setText(answerC.getText());
+                    answerC.setVisibility(View.GONE);
+
+                    addIncorrectCount(question_no);
                 }
-            });
+                addAnswersPoints(question_no);
+            }
+        });
 
-            answerD.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    answerA.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerB.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerC.getBackground().setColorFilter(Color.parseColor(color_darkgrey), PorterDuff.Mode.MULTIPLY);
-                    answerD.getBackground().setColorFilter(Color.parseColor(color_answerD), PorterDuff.Mode.MULTIPLY);
-                    answers.get(question_no).put("answer", question.get("answer4"));
+        answerD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (answer4.equals(correct_answer)) {
+                    answerD_color_green.setVisibility(View.VISIBLE);
+                    answerD_color_green.setText(answerD.getText());
+                    answerD.setVisibility(View.GONE);
+                } else {
+                    answerD_color_red.setVisibility(View.VISIBLE);
+                    answerD_color_red.setText(answerD.getText());
+                    answerD.setVisibility(View.GONE);
+                    addIncorrectCount(question_no);
                 }
-            });
-
-        } else {
-            // 2. group quiz
-
-            final Button answerA_color_green = (Button) view.findViewById(R.id.answerA_color_green);
-            final Button answerA_color_red   = (Button) view.findViewById(R.id.answerA_color_red);
-            final Button answerB_color_green = (Button) view.findViewById(R.id.answerB_color_green);
-            final Button answerB_color_red   = (Button) view.findViewById(R.id.answerB_color_red);
-            final Button answerC_color_green = (Button) view.findViewById(R.id.answerC_color_green);
-            final Button answerC_color_red   = (Button) view.findViewById(R.id.answerC_color_red);
-            final Button answerD_color_green = (Button) view.findViewById(R.id.answerD_color_green);
-            final Button answerD_color_red   = (Button) view.findViewById(R.id.answerD_color_red);
-            /**
-             * onclick: if correct, button turns green
-             * if wrong answer, button turns red
-             * */
-            answerA.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (answer1.equals(correct_answer)) {
-                        answerA_color_green.setVisibility(View.VISIBLE);
-                        answerA_color_green.setText(answerA.getText());
-                        answerA.setVisibility(View.GONE);
-                    } else {
-                        answerA_color_red.setVisibility(View.VISIBLE);
-                        answerA_color_red.setText(answerA.getText());
-                        answerA.setVisibility(View.GONE);
-
-                        addIncorrectCount(question_no);
-                    }
-                    addAnswersPoints(question_no);
-                }
-            });
-
-            answerB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (answer2.equals(correct_answer)) {
-                        answerB_color_green.setVisibility(View.VISIBLE);
-                        answerB_color_green.setText(answerB.getText());
-                        answerB.setVisibility(View.GONE);
-                    } else {
-                        answerB_color_red.setVisibility(View.VISIBLE);
-                        answerB_color_red.setText(answerB.getText());
-                        answerB.setVisibility(View.GONE);
-
-                        addIncorrectCount(question_no);
-                    }
-                    addAnswersPoints(question_no);
-                }
-            });
-
-            answerC.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (answer3.equals(correct_answer)) {
-                        answerC_color_green.setVisibility(View.VISIBLE);
-                        answerC_color_green.setText(answerC.getText());
-                        answerC.setVisibility(View.GONE);
-                    } else {
-                        answerC_color_red.setVisibility(View.VISIBLE);
-                        answerC_color_red.setText(answerC.getText());
-                        answerC.setVisibility(View.GONE);
-
-                        addIncorrectCount(question_no);
-                    }
-                    addAnswersPoints(question_no);
-                }
-            });
-
-            answerD.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (answer4.equals(correct_answer)) {
-                        answerD_color_green.setVisibility(View.VISIBLE);
-                        answerD_color_green.setText(answerD.getText());
-                        answerD.setVisibility(View.GONE);
-                    } else {
-                        answerD_color_red.setVisibility(View.VISIBLE);
-                        answerD_color_red.setText(answerD.getText());
-                        answerD.setVisibility(View.GONE);
-                        addIncorrectCount(question_no);
-                    }
-                    addAnswersPoints(question_no);
-                }
-            });
-        }
+                addAnswersPoints(question_no);
+            }
+        });
 
         questionTextView.setTypeface(typeface);
         answerA.setTypeface(typeface2);
