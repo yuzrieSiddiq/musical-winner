@@ -56,6 +56,7 @@ public class Utility {
     public static String API_URL() {
         String domain = "http://52.220.127.134/api/";
         String local = "http://10.0.2.2:8000/api/";
+        String hotspot = "http://192.168.43.2:8000/api/";
         return domain;
     }
 
