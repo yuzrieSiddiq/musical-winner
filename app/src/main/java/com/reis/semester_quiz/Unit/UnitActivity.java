@@ -334,9 +334,10 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_students");
-                        String score = individual_list_item.get("correct_count") + " / " + individual_list_item.get("answers_count");
+                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_teams");
+                        String score = individual_list_item.get("rank_score") + "%";
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
+
 
                         IQuiz1.setClickable(false);
                         IQuiz1_title.setText(quiz_title);
@@ -363,8 +364,8 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_students");
-                        String score = individual_list_item.get("correct_count") + " / " + individual_list_item.get("answers_count");
+                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_teams");
+                        String score = individual_list_item.get("rank_score") + "%";
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
                         IQuiz2.setClickable(false);
@@ -392,8 +393,8 @@ public class UnitActivity extends AppCompatActivity {
 
                     // if already attempted, not allow click
                     if (is_attempted.toLowerCase().equals("true")) {
-                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_students");
-                        String score = individual_list_item.get("correct_count") + " / " + individual_list_item.get("answers_count");
+                        String rank = individual_list_item.get("rank_no") + " / " + individual_list_item.get("total_teams");
+                        String score = individual_list_item.get("rank_score") + "%";
                         String quiz_status = "RANK: "+ rank +"\nSCORE: " + score;
 
                         IQuiz3.setClickable(false);

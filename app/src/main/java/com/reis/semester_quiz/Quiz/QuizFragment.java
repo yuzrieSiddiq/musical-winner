@@ -135,6 +135,7 @@ public class QuizFragment extends Fragment {
                                     JSONArray answers_json = new JSONArray(list_answer_json);
                                     RequestParams params = new RequestParams();
                                     params.put("answers", answers_json);
+//                                    Toast.makeText(getContext(), answers_json.toString(), Toast.LENGTH_SHORT).show();
                                     invokeWS(params);
                                 }
                             })
@@ -334,7 +335,7 @@ public class QuizFragment extends Fragment {
 
                     addIncorrectCount(question_no);
                 }
-                addAnswersPoints(question_no);
+                addAnswersPoints(question_no, answer1, correct_answer);
             }
         });
 
@@ -352,7 +353,7 @@ public class QuizFragment extends Fragment {
 
                     addIncorrectCount(question_no);
                 }
-                addAnswersPoints(question_no);
+                addAnswersPoints(question_no, answer2, correct_answer);
             }
         });
 
@@ -370,7 +371,7 @@ public class QuizFragment extends Fragment {
 
                     addIncorrectCount(question_no);
                 }
-                addAnswersPoints(question_no);
+                addAnswersPoints(question_no, answer3, correct_answer);
             }
         });
 
@@ -387,7 +388,7 @@ public class QuizFragment extends Fragment {
                     answerD.setVisibility(View.GONE);
                     addIncorrectCount(question_no);
                 }
-                addAnswersPoints(question_no);
+                addAnswersPoints(question_no, answer4, correct_answer);
             }
         });
 
@@ -405,16 +406,21 @@ public class QuizFragment extends Fragment {
         answers.get(question_no).put("incorrect_count", String.valueOf(incorrect_count));
     }
 
-    private void addAnswersPoints(Integer question_no) {
+    private void addAnswersPoints(Integer question_no, String answer, String correct_answer) {
         int incorrect_count = Integer.parseInt(answers.get(question_no).get("incorrect_count"));
-        if (incorrect_count == 0) {
-            answers.get(question_no).put("answer", "4 POINTS");
-        } else if (incorrect_count == 1) {
-            answers.get(question_no).put("answer", "2 POINTS");
-        } else if (incorrect_count == 2) {
-            answers.get(question_no).put("answer", "1 POINTS");
-        } else if (incorrect_count >= 3) {
+
+        if (!answer.equals(correct_answer)) {
             answers.get(question_no).put("answer", "0 POINTS");
+        } else {
+            if (incorrect_count == 0) {
+                answers.get(question_no).put("answer", "4 POINTS");
+            } else if (incorrect_count == 1) {
+                answers.get(question_no).put("answer", "2 POINTS");
+            } else if (incorrect_count == 2) {
+                answers.get(question_no).put("answer", "1 POINTS");
+            } else if (incorrect_count >= 3) {
+                answers.get(question_no).put("answer", "0 POINTS");
+            }
         }
     }
 
