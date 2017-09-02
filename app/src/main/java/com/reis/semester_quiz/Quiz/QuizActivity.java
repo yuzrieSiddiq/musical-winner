@@ -120,7 +120,6 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
-
                     String JSONData = "";                                   // to store new/existing responseBody
                     String json_questions_id = "json_questions_" + quiz_id; // preferences key
 
@@ -159,7 +158,6 @@ public class QuizActivity extends AppCompatActivity {
                         HashMap<String, String> data_question = new HashMap<String, String>();
                         data_question.put("question_id", String.valueOf(question_id));
                         data_question.put("question_no", String.valueOf(question_no));
-                        data_question.put("answer_type", question.getString("answer_type"));
                         data_question.put("question", question.getString("question"));
                         data_question.put("answer1", question.getString("answer1"));
                         data_question.put("answer2", question.getString("answer2"));
@@ -181,6 +179,7 @@ public class QuizActivity extends AppCompatActivity {
                         question_no++;
                     }
 
+                    // add one last data to questions to add the submit page
                     HashMap<String, String> data = new HashMap<String, String>();
                     data.put("question_no", "n");
                     questions.add(data);

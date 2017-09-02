@@ -429,7 +429,7 @@ public class QuizFragment extends Fragment {
      * /api/quizzes/submit/{quiz_id}           |
      * Sends a POST request to submit the quiz
      * */
-    public void invokeWS(RequestParams params){
+    public void invokeWS(final RequestParams params){
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(Utility.API_URL() + "quizzes/submit/" + quiz_id + "?token=" + Utility.getToken(), params ,new AsyncHttpResponseHandler() {
             @Override

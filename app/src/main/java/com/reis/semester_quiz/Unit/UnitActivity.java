@@ -115,7 +115,8 @@ public class UnitActivity extends AppCompatActivity {
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject quiz_data = jsonArray.getJSONObject(i);
-                        JSONObject quiz = new JSONObject(quiz_data.getString("quiz"));
+                        JSONObject group = new JSONObject(quiz_data.getString("quiz"));
+                        JSONObject quiz = new JSONObject(group.getString("quiz"));
                         JSONObject this_student = new JSONObject(quiz_data.getString("this_student"));
 
                         Boolean attempted = quiz_data.getBoolean("has_been_attempted");
@@ -123,7 +124,6 @@ public class UnitActivity extends AppCompatActivity {
                         Integer correct_count = quiz_data.getInt("correct_count");
                         Integer total_students = quiz_data.getInt("total_students");
                         Integer total_teams = quiz_data.getInt("total_teams");
-
                         Integer is_group_leader = this_student.getInt("is_group_leader");
 
                         Integer quiz_id = quiz.getInt("id");
@@ -132,7 +132,6 @@ public class UnitActivity extends AppCompatActivity {
                         data.put("quiz_id", String.valueOf(quiz_id));
                         data.put("title", quiz.getString("title"));
                         data.put("type", quiz.getString("type"));
-                        data.put("status", quiz.getString("status"));
                         data.put("has_been_attempted", String.valueOf(attempted));
                         data.put("answers_count", String.valueOf(answers_count));
                         data.put("correct_count", String.valueOf(correct_count));
